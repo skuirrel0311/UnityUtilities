@@ -48,7 +48,6 @@ namespace KanekoUtilities
         //MaxCountを超えてオブジェクトが生成されている場合は使用していないオブジェクトを破棄する
         void RemoveCheck()
         {
-            Debug.Log("remove check");
             RemoveNullObject();
             if (instanceList.Count <= MaxCount) return;
 
@@ -74,6 +73,12 @@ namespace KanekoUtilities
 
         public PoolMonoBehaviour GetInstance()
         {
+            if(instanceList.Count == 0)
+            {
+                instanceList.Add(GetOriginal);
+                return GetOriginal;
+            }
+
             RemoveNullObject();
 
             //Activeが切れているのがあればそれを優先して使う

@@ -15,6 +15,6 @@ namespace KanekoUtilities
 
     public class PoolMonoBehaviour : MonoBehaviour, IPoolObject
     {
-        public bool IsActive { get { return gameObject.activeSelf; } }
+        public virtual bool IsActive { get { return gameObject.activeSelf; } }
     }
 }

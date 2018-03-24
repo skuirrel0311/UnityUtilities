@@ -8,21 +8,52 @@ namespace KanekoUtilities
     {
         Dictionary<string, ObjectPooler> spriteAnimationDictionary = new Dictionary<string, ObjectPooler>();
 
-        public void Play(string name, Vector3 position, float lifeTime)
+        public PoolMonoBehaviour Play(string name, Vector3 localPosition, Transform parent)
         {
             ObjectPooler pooler = GetSpriteAnimationPooler(name);
 
-            if (pooler == null) return;
+            if (pooler == null) return null;
 
             PoolMonoBehaviour spriteAnimation = pooler.GetInstance();
 
+            spriteAnimation.transform.parent = parent;
+            spriteAnimation.transform.localPosition = localPosition;
+            spriteAnimation.gameObject.SetActive(true);
+
+            return spriteAnimation;
+        }
+
+        public PoolMonoBehaviour Play(string name, Vector3 position)
+        {
+            ObjectPooler pooler = GetSpriteAnimationPooler(name);
+
+            if (pooler == null) return null;
+
+            PoolMonoBehaviour spriteAnimation = pooler.GetInstance();
+
+            spriteAnimation.transform.parent = pooler.transform;
             spriteAnimation.transform.position = position;
             spriteAnimation.gameObject.SetActive(true);
 
-            KKUtilities.Delay(lifeTime, () =>
-            {
-                spriteAnimation.gameObject.SetActive(false);
-            }, this);
+            return spriteAnimation;
+        }
+
+        public PoolMonoBehaviour Play(string name, Vector3 position, float limitLife)
+        {
+            PoolMonoBehaviour spriteAnimation = Play(name, position);
+
+            KKUtilities.Delay(limitLife, () => spriteAnimation.gameObject.SetActive(false), this);
+
+            return spriteAnimation;
+        }
+
+        public PoolMonoBehaviour Play(string name, Vector3 position,float limitLife, Transform parent)
+        {
+            PoolMonoBehaviour spriteAnimation = Play(name, position, parent);
+
+            KKUtilities.Delay(limitLife, () => spriteAnimation.gameObject.SetActive(false), this);
+
+            return spriteAnimation;
         }
 
         ObjectPooler GetSpriteAnimationPooler(string name)
@@ -33,15 +64,11 @@ namespace KanekoUtilities
                 return pooler;
             }
 
-            GameObject poolerObjectPrefab = MyAssetStore.I.GetAsset<GameObject>(name, "SpriteAnimations/");
+            ObjectPooler poolerPrefab = MyAssetStore.I.GetAsset<ObjectPooler>(name, "SpriteAnimations/");
 
-            if (poolerObjectPrefab == null) return null;
+            if (poolerPrefab == null) return null;
 
-            GameObject poolerObject = Instantiate(poolerObjectPrefab, transform);
-
-            pooler = poolerObject.GetComponent<ObjectPooler>();
-
-            if (pooler == null) return null;
+            pooler = Instantiate(poolerPrefab, transform);
 
             //登録する
             spriteAnimationDictionary.Add(name, pooler);

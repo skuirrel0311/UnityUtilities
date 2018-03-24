@@ -21,7 +21,7 @@ namespace KanekoUtilities
             T data = Resources.Load<T>(path + name);
             if (data == null)
             {
-                Debug.LogError("not found " + name);
+                Debug.LogError("can't loaded " + name + " because not found file in " + path);
                 return null;
             }
             asset = new MyAsset<T>(name, path, data);

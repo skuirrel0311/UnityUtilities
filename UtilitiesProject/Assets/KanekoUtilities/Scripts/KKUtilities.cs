@@ -6,18 +6,24 @@ namespace KanekoUtilities
 {
     public class KKUtilities
     {
-        //duration秒後にactionを実行します
+        /// <summary>
+        /// duration秒後にactionを実行する
+        /// </summary>
         public static IEnumerator Delay(float duration, Action action)
         {
             yield return new WaitForSeconds(duration);
             action.Invoke();
         }
-
+        /// <summary>
+        /// duration秒後にactionを実行する
+        /// </summary>
         public static void Delay(float duration, Action action, MonoBehaviour mono)
         {
             mono.StartCoroutine(Delay(duration, action));
         }
-
+        /// <summary>
+        /// duration秒後にactionを実行する
+        /// </summary>
         public static IEnumerator Delay(int frameCount, Action action)
         {
             for(int i = 0;i< frameCount;i++)
@@ -27,18 +33,21 @@ namespace KanekoUtilities
 
             action.Invoke();
         }
-
+        /// <summary>
+        /// duration秒後にactionを実行する
+        /// </summary>
         public static void Delay(int frameCount, Action action, MonoBehaviour mono)
         {
             mono.StartCoroutine(Delay(frameCount, action));
         }
-
-        //与えられたActionにduration秒かけて０→１になる値を毎フレーム渡す
+        
+        /// <summary>
+        /// 与えられたActionにduration秒かけて０→１になる値を毎フレーム渡す
+        /// </summary>
         public static MyCoroutine FloatLerp(float duration, Action<float> action)
         {
             return new MyCoroutine(M_FloatLerp(duration, action));
         }
-
         static IEnumerator M_FloatLerp(float duration, Action<float> action)
         {
             float t = 0.0f;
@@ -50,6 +59,24 @@ namespace KanekoUtilities
                 if (t > duration) break;
                 yield return null;
             }
+        }
+        
+        /// <summary>
+        /// １フレームに１回actionを実行する(updateの戻り値は継続するか？)
+        /// </summary>
+        public static IEnumerator While(Func<bool> update)
+        {
+            while(update.Invoke())
+            {
+                yield return null;
+            }
+        }
+        /// <summary>
+        /// １フレームに１回actionを実行する(updateの戻り値は継続するか？)
+        /// </summary>
+        public static void While(Func<bool> update, MonoBehaviour mono)
+        {
+            mono.StartCoroutine(While(update));
         }
 
         /// <summary>
@@ -71,7 +98,6 @@ namespace KanekoUtilities
         /// </summary>
         /// <param name="longitude">経度</param>
         /// <param name="latitude">緯度</param>
-        /// <returns></returns>
         public static Vector3 SphereCoordinate(float longitude, float latitude, float distance)
         {
             Vector3 position = Vector3.zero;

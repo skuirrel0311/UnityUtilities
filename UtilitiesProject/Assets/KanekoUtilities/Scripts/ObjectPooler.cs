@@ -21,6 +21,7 @@ namespace KanekoUtilities
 
         public int MaxCount { get { return maxCount; } }
         public float RemoveIntervalTime { get { return removeIntervalTime; } }
+        public List<PoolMonoBehaviour> InstanceList { get { return instanceList; } }
 
         protected PoolMonoBehaviour original;
         List<PoolMonoBehaviour> instanceList = new List<PoolMonoBehaviour>();
@@ -73,24 +74,23 @@ namespace KanekoUtilities
 
         public PoolMonoBehaviour GetInstance()
         {
-            if(instanceList.Count == 0)
-            {
-                instanceList.Add(GetOriginal);
-                return GetOriginal;
-            }
-
             RemoveNullObject();
 
             //Activeが切れているのがあればそれを優先して使う
             for (int i = 0; i < instanceList.Count; i++)
             {
-                if (!instanceList[i].IsActive) return instanceList[i];
+                if (!instanceList[i].IsActive)
+                {
+                    instanceList[i].gameObject.SetActive(true);
+                    return instanceList[i];
+                }
             }
 
             //足りない場合はとりあえず生成する
             PoolMonoBehaviour instance = Instantiate(GetOriginal, transform);
             instanceList.Add(instance);
 
+            instance.gameObject.SetActive(true);
             return instance;
         }
 

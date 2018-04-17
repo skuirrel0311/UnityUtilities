@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
-    
     public class NotificationManager : SingletonMonobehaviour<NotificationManager>
     {
+        [Serializable]
         public struct FontSettings
         {
             public Color color;
@@ -35,7 +35,9 @@ namespace KanekoUtilities
             textPooler = GetComponent<ObjectPooler>();
             Text text = ((NotificationMessageText)textPooler.GetInstance()).Message;
             DefaultFontSettings = new FontSettings(text);
+            text.gameObject.SetActive(false);
             if (uiCamera == null) uiCamera = Camera.main;
+
         }
 
         public void ShowMessage(string text, float limitLife = 2.0f)
@@ -93,7 +95,7 @@ namespace KanekoUtilities
                 message.gameObject.SetActive(false);
             }, this);
         }
-        
+
         public void ShowMessage(string text, Vector2 position, Action<float, Text> onUpdate, FontSettings settings, float limitLife = 2.0f)
         {
             Text message = ((NotificationMessageText)textPooler.GetInstance()).Message;

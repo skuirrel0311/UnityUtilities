@@ -138,7 +138,9 @@ namespace KanekoUtilities
     public class MyCoroutine : IEnumerator
     {
         IEnumerator logic;
-        Action callback;
+        Action onCompleted;
+        Action onStart;
+        Action onUpdate;
 
         public MyCoroutine(IEnumerator logic)
         {
@@ -163,27 +165,39 @@ namespace KanekoUtilities
 
         IEnumerator Start()
         {
+            if (onStart != null) onStart.Invoke();
             while (logic.MoveNext())
             {
+                if (onUpdate != null) onUpdate.Invoke();
                 yield return null;
             }
 
-            if (callback != null)
+            if (onCompleted != null)
             {
-                callback.Invoke();
-                callback = null;
+                onCompleted.Invoke();
+                onCompleted = null;
             }
         }
 
-        public MyCoroutine OnCompleted(Action callback)
+        public MyCoroutine OnCompleted(Action onCompleted)
         {
-            this.callback += callback;
+            this.onCompleted += onCompleted;
+            return this;
+        }
+        public MyCoroutine OnStart(Action onStart)
+        {
+            this.onStart += onStart;
+            return this;
+        }
+        public MyCoroutine OnUpdate(Action onUpdate)
+        {
+            this.onUpdate += onUpdate;
             return this;
         }
 
         public void CallCompletedSelf()
         {
-            if (callback != null) callback.Invoke();
+            if (onCompleted != null) onCompleted.Invoke();
         }
     }
 

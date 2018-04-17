@@ -43,6 +43,11 @@ namespace KanekoUtilities
             AudioSource.PlayClipAtPoint(clip, position, volume);
         }
 
+        public void SetBGMVolume(float volume)
+        {
+            loopAudioSource.volume = volume;
+        }
+
         AudioClip GetAudioClip(string name)
         {
             AudioClip clip;
@@ -52,7 +57,7 @@ namespace KanekoUtilities
             clip = MyAssetStore.I.GetAsset<AudioClip>(name, "Audios/");
             
             if (clip == null) return null;
-
+            
             clipDictionary.Add(name, clip);
             return clip;
         }

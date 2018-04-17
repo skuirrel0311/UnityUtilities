@@ -112,6 +112,27 @@ namespace KanekoUtilities
 
             return position;
         }
+
+        /// <summary>
+        /// 0~360の値で返す(-10なら350)
+        /// </summary>
+        public static float ClampRotation(float rotationValue)
+        {
+            if (rotationValue == 0.0f) return 0.0f;
+            float clampValue = 0.0f;
+
+            int temp = (int)(Mathf.Abs(rotationValue) / 360.0f);
+            if (rotationValue > 0)
+            {
+                clampValue = rotationValue - (360.0f * temp);
+            }
+            else
+            {
+                clampValue = rotationValue + (360.0f * (temp + 1));
+            }
+
+            return clampValue;
+        }
     }
 
     public class MyCoroutine : IEnumerator

@@ -3,10 +3,21 @@ using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
+    [RequireComponent(typeof(Text))]
     public class MessageText : PoolMonoBehaviour
     {
-        [SerializeField]
-        Text message = null;
-        public Text Message { get { return message; } }
+        Text message;
+        public Text Message
+        {
+            get
+            {
+                if(message == null)
+                {
+                    message = GetComponent<Text>();
+                }
+
+                return message;
+            }
+        }
     }
 }

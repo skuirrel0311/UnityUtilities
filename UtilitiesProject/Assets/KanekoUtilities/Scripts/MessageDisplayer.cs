@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
+    [RequireComponent(typeof(MessageTextPool))]
     public class MessageDisplayer : SingletonMonobehaviour<MessageDisplayer>
     {
         [Serializable]
@@ -37,7 +38,6 @@ namespace KanekoUtilities
             DefaultFontSettings = new FontSettings(text);
             text.gameObject.SetActive(false);
             if (uiCamera == null) uiCamera = Camera.main;
-
         }
 
         public void ShowMessage(string text, float limitLife = 2.0f)

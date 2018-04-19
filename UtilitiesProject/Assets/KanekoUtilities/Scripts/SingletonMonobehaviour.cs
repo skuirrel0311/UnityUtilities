@@ -8,7 +8,7 @@ namespace KanekoUtilities
     public class SingletonMonobehaviour<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T instance;
-        public static T I
+        public static T Instance
         {
             get
             {
@@ -42,8 +42,8 @@ namespace KanekoUtilities
             List<T> instances = new List<T>();
             instances.AddRange((T[])FindObjectsOfType(typeof(T)));
 
-            if (I == null) I = instances[0];
-            instances.Remove(I);
+            if (Instance == null) Instance = instances[0];
+            instances.Remove(Instance);
 
             if (instances.Count == 0) return;
             //あぶれ者のinstanceはデストロイ 
@@ -61,7 +61,7 @@ namespace KanekoUtilities
         protected virtual void OnDestroy()
         {
             SceneManager.sceneLoaded -= WasLoaded;
-            I = null;
+            Instance = null;
         }
     }
 }

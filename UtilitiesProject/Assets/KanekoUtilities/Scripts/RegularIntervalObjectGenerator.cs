@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
 
-[RequireComponent(typeof(ObjectPooler))]
-public class RegularIntervalObjectGenerator :  MonoBehaviour
+//オブジェクトを一定間隔に生成する人
+//使うときは空のクラスを定義して明示的に生成するオブジェクトの型を指定してください
+public class RegularIntervalObjectGenerator<T> : ObjectPool<T>
+    where T : PoolMonoBehaviour
 {
     [SerializeField]
     protected Vector3 objectDistance = Vector3.zero;
@@ -12,17 +14,12 @@ public class RegularIntervalObjectGenerator :  MonoBehaviour
     [SerializeField]
     protected int startGenerateNum = 10;
     protected Vector3 startPosition;
-
-    public ObjectPooler Pooler { get; private set; }
-    protected List<PoolMonoBehaviour> objectList = new List<PoolMonoBehaviour>();
-    public List<PoolMonoBehaviour> ObjectList { get { return objectList; } }
     protected int totalObjectCount;
     public int TotalObjectCount { get { return totalObjectCount; } }
 
     protected virtual void Awake()
     {
         startPosition = transform.position;
-        Pooler = GetComponent<ObjectPooler>();
     }
 
     protected virtual void Start()
@@ -32,12 +29,11 @@ public class RegularIntervalObjectGenerator :  MonoBehaviour
 
     public virtual void Init()
     {
-        for(int i = 0;i < ObjectList.Count;i++)
+        for (int i = 0; i < ActiveInstanceList.Count; i++)
         {
-            ObjectList[i].gameObject.SetActive(false);
+            ReturnInstance(ActiveInstanceList[i]);
         }
 
-        ObjectList.Clear();
         totalObjectCount = 0;
 
         for (int i = 0; i < startGenerateNum; i++)
@@ -46,13 +42,12 @@ public class RegularIntervalObjectGenerator :  MonoBehaviour
         }
     }
 
-    public PoolMonoBehaviour Generate()
+    public T Generate()
     {
-        PoolMonoBehaviour obj = Pooler.GetInstance();
+        T obj = GetInstance();
 
         obj.transform.position = startPosition + objectDistance * totalObjectCount;
 
-        objectList.Add(obj);
         totalObjectCount++;
         return obj;
     }

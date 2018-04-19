@@ -8,13 +8,7 @@ namespace KanekoUtilities
     /// Monobehaviourを継承しないクラスにも使えるようにinterfaceで実装
     /// </summary>
     /// <typeparam name="T">poolするクラス</typeparam>
-    public interface IPoolObject
-    {
-        bool IsActive { get; }
-    }
+    public interface IPoolObject { }
 
-    public class PoolMonoBehaviour : MonoBehaviour, IPoolObject
-    {
-        public virtual bool IsActive { get { return gameObject.activeSelf; } }
-    }
+    public class PoolMonoBehaviour : MonoBehaviour, IPoolObject { }
 }

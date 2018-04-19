@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoreText : MonoBehaviour
+namespace KanekoUtilities
 {
-    [SerializeField]
-    Text score = null;
-
-    //何桁まで表示するか？
-    [SerializeField]
-    int maxDigit = 7;
-
-    int value;
-    public int Value
+    public class ScoreText : MonoBehaviour
     {
-        get
-        {
-            return value;
-        }
-        set
-        {
-            this.value = value;
+        [SerializeField]
+        Text score = null;
 
-            score.text = this.value.ToString().PadLeft(maxDigit, '0');
+        //何桁まで表示するか？
+        [SerializeField]
+        int maxDigit = 7;
+
+        int value;
+        public int Value
+        {
+            get
+            {
+                return value;
+            }
+            set
+            {
+                this.value = value;
+
+                score.text = this.value.ToString().PadLeft(maxDigit, '0');
+            }
         }
     }
 }

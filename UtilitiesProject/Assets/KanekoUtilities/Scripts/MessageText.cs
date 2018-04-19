@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
-    public class NotificationMessageText : PoolMonoBehaviour
+    public class MessageText : PoolMonoBehaviour
     {
         [SerializeField]
         Text message = null;

@@ -54,7 +54,7 @@ namespace KanekoUtilities
 
             if (clipDictionary.TryGetValue(name, out clip)) return clip;
 
-            clip = MyAssetStore.I.GetAsset<AudioClip>(name, "Audios/");
+            clip = MyAssetStore.Instance.GetAsset<AudioClip>(name, "Audios/");
             
             if (clip == null) return null;
             

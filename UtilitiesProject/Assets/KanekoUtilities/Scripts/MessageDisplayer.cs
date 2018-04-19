@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
-    public class NotificationManager : SingletonMonobehaviour<NotificationManager>
+    public class MessageDisplayer : SingletonMonobehaviour<MessageDisplayer>
     {
         [Serializable]
         public struct FontSettings
@@ -21,7 +21,7 @@ namespace KanekoUtilities
             }
         }
 
-        ObjectPooler textPooler = null;
+        ObjectPool<MessageText> textPooler = null;
 
         public FontSettings DefaultFontSettings { get; private set; }
 
@@ -32,8 +32,8 @@ namespace KanekoUtilities
         {
             base.Awake();
 
-            textPooler = GetComponent<ObjectPooler>();
-            Text text = ((NotificationMessageText)textPooler.GetInstance()).Message;
+            textPooler = GetComponent<ObjectPool<MessageText>>();
+            Text text = textPooler.GetInstance().Message;
             DefaultFontSettings = new FontSettings(text);
             text.gameObject.SetActive(false);
             if (uiCamera == null) uiCamera = Camera.main;
@@ -62,7 +62,7 @@ namespace KanekoUtilities
 
         public void ShowMessage(string text, Vector3 position, FontSettings settings, float limitLife = 2.0f)
         {
-            Text message = ((NotificationMessageText)textPooler.GetInstance()).Message;
+            Text message = textPooler.GetInstance().Message;
             message.text = text;
 
             message.color = settings.color;
@@ -79,7 +79,7 @@ namespace KanekoUtilities
 
         public void ShowMessage(string text, Vector2 position, FontSettings settings, float limitLife = 2.0f)
         {
-            Text message = ((NotificationMessageText)textPooler.GetInstance()).Message;
+            Text message = textPooler.GetInstance().Message;
 
             message.text = text;
 
@@ -98,7 +98,7 @@ namespace KanekoUtilities
 
         public void ShowMessage(string text, Vector2 position, Action<float, Text> onUpdate, FontSettings settings, float limitLife = 2.0f)
         {
-            Text message = ((NotificationMessageText)textPooler.GetInstance()).Message;
+            Text message = textPooler.GetInstance().Message;
 
             message.text = text;
 

@@ -10,7 +10,7 @@ public interface IAdjustmentValue
 public abstract class AbstractAdjustmentValue<T> : IAdjustmentValue
 {
     [SerializeField]
-    AdjustmentValueName name = AdjustmentValueName.aaa;
+    AdjustmentValueName name = 0;
 
     [SerializeField]
     protected T firstValue;

@@ -19,7 +19,7 @@ namespace KanekoUtilities
 
             m_button.onClick.AddListener(() =>
             {
-                LoadSceneManager.I.LoadSceneAsync(loadSceneName, Color.black, null);
+                LoadSceneManager.Instance.LoadSceneAsync(loadSceneName, Color.black, null);
             });
         }
     }

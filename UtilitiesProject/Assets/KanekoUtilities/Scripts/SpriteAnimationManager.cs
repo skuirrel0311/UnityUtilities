@@ -6,11 +6,11 @@ namespace KanekoUtilities
 {
     public class SpriteAnimationManager : SingletonMonobehaviour<SpriteAnimationManager>
     {
-        Dictionary<string, ObjectPooler> spriteAnimationDictionary = new Dictionary<string, ObjectPooler>();
+        Dictionary<string, ObjectPool> spriteAnimationDictionary = new Dictionary<string, ObjectPool>();
 
         public PoolMonoBehaviour Play(string name, Vector3 localPosition, Transform parent)
         {
-            ObjectPooler pooler = GetSpriteAnimationPooler(name);
+            ObjectPool pooler = GetSpriteAnimationPooler(name);
 
             if (pooler == null) return null;
 
@@ -25,7 +25,7 @@ namespace KanekoUtilities
 
         public PoolMonoBehaviour Play(string name, Vector3 position)
         {
-            ObjectPooler pooler = GetSpriteAnimationPooler(name);
+            ObjectPool pooler = GetSpriteAnimationPooler(name);
 
             if (pooler == null) return null;
 
@@ -56,15 +56,15 @@ namespace KanekoUtilities
             return spriteAnimation;
         }
 
-        ObjectPooler GetSpriteAnimationPooler(string name)
+        ObjectPool GetSpriteAnimationPooler(string name)
         {
-            ObjectPooler pooler;
+            ObjectPool pooler;
             if(spriteAnimationDictionary.TryGetValue(name, out pooler))
             {
                 return pooler;
             }
 
-            ObjectPooler poolerPrefab = MyAssetStore.I.GetAsset<ObjectPooler>(name, "SpriteAnimations/");
+            ObjectPool poolerPrefab = MyAssetStore.Instance.GetAsset<ObjectPool>(name, "SpriteAnimations/");
 
             if (poolerPrefab == null) return null;
 

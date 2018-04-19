@@ -18,39 +18,18 @@ public class ScoreManager : Singleton<ScoreManager>
         }
     }
 
-    ScoreText text;
-
-    public Action<int> OnAddScore;
+    public event Action<int> OnAddScore;
 
     public void Init()
     {
         TotalScore = 0;
     }
-
-    public void SetText(ScoreText text)
-    {
-        this.text = text;
-    }
-
-    /// <summary>
-    /// 現在のゲームの状況を考慮してスコアを足す
-    /// </summary>
-    public void AddScore()
-    {
-        int value = 100;
-
-        AddScore(value);
-    }
-
-    /// <summary>
-    /// 現在のゲームの状況を考慮せずスコアを足す
-    /// </summary>
+    
     public void AddScore(int value)
     {
         TotalScore += value;
 
         if (OnAddScore != null) OnAddScore.Invoke(value);
-        if(text != null) text.Value = TotalScore;
     }
 
     public bool UpdateBestScore()

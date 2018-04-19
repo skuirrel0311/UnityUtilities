@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using KanekoUtilities;
 
-public class Fader : SingletonMonobehaviour<Fader>
+public class DisplayFader : SingletonMonobehaviour<DisplayFader>
 {
     [SerializeField]
     Image panel = null;

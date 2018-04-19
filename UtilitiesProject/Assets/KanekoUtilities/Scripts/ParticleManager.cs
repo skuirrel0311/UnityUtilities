@@ -18,7 +18,7 @@ namespace KanekoUtilities
     /// </summary>
     public class ParticleManager : SingletonMonobehaviour<ParticleManager>
     {
-        Dictionary<string, ObjectPooler> particleDictionary = new Dictionary<string, ObjectPooler>();
+        Dictionary<string, ObjectPool> particleDictionary = new Dictionary<string, ObjectPool>();
         Dictionary<string, MomentParticle> momentParticleDictionary = new Dictionary<string, MomentParticle>();
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace KanekoUtilities
         /// </summary>
         public PoolMonoBehaviour Play(string name, Vector3 localPosition, Quaternion localRotation, Transform parent)
         {
-            ObjectPooler pooler = GetParticlePooler(name);
+            ObjectPool pooler = GetParticlePooler(name);
             if (pooler == null) return null;
 
             PoolMonoBehaviour particle = pooler.GetInstance();
@@ -44,7 +44,7 @@ namespace KanekoUtilities
         /// </summary>
         public PoolMonoBehaviour Play(string name, Vector3 position, Quaternion rotation)
         {
-            ObjectPooler pooler = GetParticlePooler(name);
+            ObjectPool pooler = GetParticlePooler(name);
             if (pooler == null) return null;
 
             PoolMonoBehaviour particle = pooler.GetInstance();
@@ -135,15 +135,15 @@ namespace KanekoUtilities
             PlayOneShot(name, position, Quaternion.identity);
         }
 
-        ObjectPooler GetParticlePooler(string name)
+        ObjectPool GetParticlePooler(string name)
         {
-            ObjectPooler pooler;
+            ObjectPool pooler;
             if (particleDictionary.TryGetValue(name, out pooler))
             {
                 return pooler;
             }
 
-            ObjectPooler poolerPrefab = MyAssetStore.I.GetAsset<ObjectPooler>(name, "Particles/");
+            ObjectPool poolerPrefab = MyAssetStore.Instance.GetAsset<ObjectPool>(name, "Particles/");
 
             if (poolerPrefab == null) return null;
 
@@ -164,7 +164,7 @@ namespace KanekoUtilities
                 return particle;
             }
 
-            MomentParticle particlePrefab = MyAssetStore.I.GetAsset<MomentParticle>(name, "Particles/");
+            MomentParticle particlePrefab = MyAssetStore.Instance.GetAsset<MomentParticle>(name, "Particles/");
 
             if (particlePrefab == null) return null;
 

@@ -205,7 +205,7 @@ namespace KanekoUtilities
     {
         private static readonly T instance = new T();
 
-        public static T I
+        public static T Instance
         {
             get
             {

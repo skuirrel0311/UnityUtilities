@@ -1,32 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
+    [RequireComponent(typeof(Text))]
     public class ScoreText : MonoBehaviour
     {
-        [SerializeField]
-        Text score = null;
-
         //何桁まで表示するか？
         [SerializeField]
         int maxDigit = 7;
+        Text score;
+
+        void Awake()
+        {
+            score = GetComponent<Text>();
+        }
 
         int value;
-        public int Value
+        public int GetValue()
         {
-            get
-            {
-                return value;
-            }
-            set
-            {
-                this.value = value;
+            return value;
+        }
 
-                score.text = this.value.ToString().PadLeft(maxDigit, '0');
-            }
+        public void SetValue(int value)
+        {
+            this.value = value;
+
+            score.text = this.value.ToString().PadLeft(maxDigit, '0');
         }
     }
 }

@@ -6,22 +6,29 @@ namespace KanekoUtilities
     [RequireComponent(typeof(Text))]
     public class NumberText : MonoBehaviour
     {
-        Text text;
-        int value;
-
-        public void SetValue(int value)
-        {
-            this.value = value;
-        }
-
-        public int GetValue()
-        {
-            return value;
-        }
+        protected Text text;
+        protected int value;
 
         void Awake()
         {
             text = GetComponent<Text>();
+        }
+
+        public void SetValue(int value, bool isUpdate = false)
+        {
+            if (!isUpdate && this.value == value) return;
+            this.value = value;
+            SetText(value);
+        }
+
+        protected virtual void SetText(int value)
+        {
+            text.text = value.ToString();
+        }
+
+        public virtual int GetValue()
+        {
+            return value;
         }
     }
 }

@@ -24,23 +24,23 @@ namespace KanekoUtilities
         //プレハブを入れなかったら子を使用する
         [SerializeField]
         protected T original = null;
-        
+
         public List<T> InstanceList { get; protected set; }
         public List<T> ActiveInstanceList { get; protected set; }
-        Queue<T> deactiveInstanceQueue = new Queue<T>();
+        public List<T> deactiveInstanceList = new List<T>();
 
-        void Awake()
+        protected virtual void Awake()
         {
             InstanceList = new List<T>();
             ActiveInstanceList = new List<T>();
         }
 
-        void OnEnable()
+        protected virtual void OnEnable()
         {
             StartCoroutine(RemoveChecker());
         }
 
-        void OnDisable()
+        protected virtual void OnDisable()
         {
             StopAllCoroutines();
         }
@@ -58,37 +58,57 @@ namespace KanekoUtilities
         //MaxCountを超えてオブジェクトが生成されている場合は使用していないオブジェクトを破棄する
         void RemoveCheck()
         {
+            CheckInstanceAvailable();
             T removeInstance;
-            while(0 < deactiveInstanceQueue.Count)
+            while (0 < deactiveInstanceList.Count)
             {
-                removeInstance = deactiveInstanceQueue.Dequeue();
+                removeInstance = deactiveInstanceList[0];
+                deactiveInstanceList.Remove(removeInstance);
                 InstanceList.Remove(removeInstance);
-                Destroy(removeInstance);
+                Destroy(removeInstance.gameObject);
 
                 if (InstanceList.Count <= maxCount) break;
             }
         }
-        
-        public T GetInstance()
+
+        //インスタンスが利用可能かをチェックする
+        void CheckInstanceAvailable()
         {
-            T instance;
-            if (deactiveInstanceQueue.Count >= 1)
+            for (int i = deactiveInstanceList.Count - 1; i >= 0; i--)
             {
-                instance = deactiveInstanceQueue.Dequeue();
+                if (deactiveInstanceList[i] != null) continue;
+
+                T removeInstance = deactiveInstanceList[i];
+                deactiveInstanceList.Remove(removeInstance);
+                InstanceList.Remove(removeInstance);
+            }
+        }
+
+        public virtual T GetInstance()
+        {
+            CheckInstanceAvailable();
+            T instance;
+            if (deactiveInstanceList.Count >= 1)
+            {
+                instance = deactiveInstanceList[0];
+                deactiveInstanceList.Remove(instance);
                 ActiveInstanceList.Add(instance);
+                instance.gameObject.SetActive(true);
                 return instance;
             }
 
             //足りない場合は生成する
             instance = Instantiate(GetOriginal, transform);
             InstanceList.Add(instance);
+            ActiveInstanceList.Add(instance);
+            instance.gameObject.SetActive(true);
             return instance;
         }
 
-        public void ReturnInstance(T instance)
+        public virtual void ReturnInstance(T instance)
         {
             instance.gameObject.SetActive(false);
-            deactiveInstanceQueue.Enqueue(instance);
+            deactiveInstanceList.Add(instance);
             ActiveInstanceList.Remove(instance);
         }
 
@@ -101,6 +121,21 @@ namespace KanekoUtilities
 
                 return original;
             }
+        }
+
+        public virtual void SetOriginal(T original)
+        {
+            if (original.Equals(this.original)) return;
+            this.original = original;
+
+            for (int i = 0; i < InstanceList.Count; i++)
+            {
+                Destroy(InstanceList[i].gameObject);
+            }
+
+            InstanceList.Clear();
+            ActiveInstanceList.Clear();
+            deactiveInstanceList.Clear();
         }
     }
 

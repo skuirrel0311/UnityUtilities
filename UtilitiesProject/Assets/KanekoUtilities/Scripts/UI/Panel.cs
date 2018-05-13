@@ -3,32 +3,69 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//画面いっぱいに出るUI
-[RequireComponent(typeof(Image))]
-public class Panel : MonoBehaviour
+namespace KanekoUtilities
 {
-    [SerializeField]
-    bool activeOnAwake = false;
+    //画面いっぱいに出るUI
+    [RequireComponent(typeof(Image), typeof(CanvasGroup))]
+    public class Panel : MonoBehaviour
+    {
+        [SerializeField]
+        bool activeOnAwake = false;
 
-    Image panel;
-    GameObject root;
-    
-    protected virtual void Awake()
-    {
-        panel = GetComponent<Image>();
-        panel.enabled = activeOnAwake;
-        root = transform.GetChild(0).gameObject;
-        root.SetActive(activeOnAwake);
-    }
+        [SerializeField]
+        float activateDuration = 0.2f;
 
-    public virtual void Activate()
-    {
-        panel.enabled = true;
-        root.SetActive(true);
-    }
-    public virtual void Deactivate()
-    {
-        panel.enabled = false;
-        root.SetActive(false);
+        [SerializeField]
+        float deactivateDuration = 0.5f;
+
+        protected Image panelImage;
+        protected CanvasGroup group;
+        GameObject rootObject;
+
+        Coroutine alphaControlCoroutine;
+
+        protected virtual void Awake()
+        {
+            panelImage = GetComponent<Image>();
+            group = GetComponent<CanvasGroup>();
+            panelImage.enabled = activeOnAwake;
+            rootObject = transform.GetChild(0).gameObject;
+            rootObject.SetActive(true);
+
+            group.alpha = activeOnAwake ? 1.0f : 0.0f;
+        }
+
+        public virtual void Activate()
+        {
+            panelImage.enabled = true;
+            rootObject.SetActive(true);
+            group.interactable = true;
+            group.blocksRaycasts = true;
+            PlayAlphaControlAnimation(0.0f, 1.0f, activateDuration);
+        }
+
+        public virtual void Deactivate()
+        {
+            panelImage.enabled = false;
+            group.interactable = false;
+            group.blocksRaycasts = false;
+            PlayAlphaControlAnimation(1.0f, 0.0f, deactivateDuration);
+        }
+
+        void PlayAlphaControlAnimation(float startAlpha, float endAlpha, float duration)
+        {
+            if (alphaControlCoroutine != null)
+            {
+                StopCoroutine(alphaControlCoroutine);
+            }
+
+            alphaControlCoroutine = StartCoroutine(KKUtilities.FloatLerp(duration, (t) =>
+            {
+                group.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            }).OnCompleted(() =>
+            {
+                alphaControlCoroutine = null;
+            }));
+        }
     }
 }

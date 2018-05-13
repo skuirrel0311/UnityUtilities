@@ -13,12 +13,14 @@ public class RegularIntervalObjectGenerator<T> : ObjectPool<T>
     public Vector3 ObjectDistance { get { return objectDistance; } }
     [SerializeField]
     protected int startGenerateNum = 10;
+    public int StartGenerateNum { get { return startGenerateNum; } }
     protected Vector3 startPosition;
     protected int totalObjectCount;
     public int TotalObjectCount { get { return totalObjectCount; } }
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         startPosition = transform.position;
     }
 
@@ -34,21 +36,49 @@ public class RegularIntervalObjectGenerator<T> : ObjectPool<T>
             ReturnInstance(ActiveInstanceList[i]);
         }
 
+        ActiveInstanceList.Clear();
         totalObjectCount = 0;
 
         for (int i = 0; i < startGenerateNum; i++)
         {
-            Generate();
+            GenerateAtLast();
         }
     }
 
-    public T Generate()
+    /// <summary>
+    /// 後尾に追加
+    /// </summary>
+    public virtual T GenerateAtLast()
     {
         T obj = GetInstance();
 
         obj.transform.position = startPosition + objectDistance * totalObjectCount;
 
         totalObjectCount++;
+        return obj;
+    }
+
+    /// <summary>
+    /// 先頭に追加
+    /// </summary>
+    public virtual T GenerateAtFirst()
+    {
+        T obj = GetInstance();
+
+        //座標
+        Vector3 generatePosition = startPosition;
+
+        if (ActiveInstanceList.Count > 0)
+        {
+            generatePosition.z = ActiveInstanceList[0].transform.position.z - ObjectDistance.z;
+        }
+
+        obj.transform.position = generatePosition;
+
+        //登録
+        ActiveInstanceList.Remove(obj);
+        ActiveInstanceList.Insert(0, obj);
+
         return obj;
     }
 }

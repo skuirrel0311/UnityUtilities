@@ -91,6 +91,7 @@ public class MainSceneManager : SingletonMonobehaviour<MainSceneManager>
     IEnumerator SuggestContinue()
     {
         yield return null;
+        isContinueRequested = true;
     }
 
     public bool IsGameOver()

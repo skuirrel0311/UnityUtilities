@@ -23,7 +23,7 @@ namespace KanekoUtilities
 
         void OnWillRenderObject()
         {
-            if (Camera.current.tag == mainCamera.tag)
+            if (Camera.current.Equals(mainCamera))
             {
                 isRendered = true;
             }

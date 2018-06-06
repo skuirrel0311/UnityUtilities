@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KanekoUtilities
 {
@@ -133,7 +134,55 @@ namespace KanekoUtilities
 
             return clampValue;
         }
+        /// <summary>
+        /// アクションが呼ばれるまで待機する
+        /// </summary>
+        public static IEnumerator WaitAction(MyUnityEvent action)
+        {
+            bool isCalled = false;
+            UnityAction act = () => isCalled = true;
+
+            action.AddListener(act);
+
+            yield return new WaitUntil(() => isCalled);
+
+            action.RemoveListener(act);
+        }
+
+        /// <summary>
+        /// アクションが呼ばれるまで待機する
+        /// </summary>
+        public static IEnumerator WaitAction<T>(MyUnityEvent<T> action)
+        {
+            bool isCalled = false;
+            UnityAction<T> act = ((arg) => isCalled = true);
+
+            action.AddListener(act);
+
+            yield return new WaitUntil(() => isCalled);
+
+            action.RemoveListener(act);
+        }
+
+        /// <summary>
+        /// アクションが呼ばれるまで待機する
+        /// </summary>
+        public static IEnumerator WaitAction<T1, T2>(MyUnityEvent<T1, T2> action)
+        {
+            bool isCalled = false;
+            UnityAction<T1, T2> act = ((arg1, arg2) => isCalled = true);
+
+            action.AddListener(act);
+
+            yield return new WaitUntil(() => isCalled);
+
+            action.RemoveListener(act);
+        }
     }
+
+    public class MyUnityEvent : UnityEvent { }
+    public class MyUnityEvent<T> : UnityEvent<T> { }
+    public class MyUnityEvent<T1, T2> : UnityEvent<T1, T2> { }
 
     public class MyCoroutine : IEnumerator
     {

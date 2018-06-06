@@ -18,7 +18,7 @@ public class ScoreManager : Singleton<ScoreManager>
         }
     }
 
-    public event Action<int> OnAddScore;
+    public MyUnityEvent<int> OnAddScore;
 
     public void Init()
     {

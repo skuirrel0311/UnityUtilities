@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ namespace KanekoUtilities
             group = GetComponent<CanvasGroup>();
             panelImage.enabled = activeOnAwake;
             rootObject = transform.GetChild(0).gameObject;
-            rootObject.SetActive(true);
+            rootObject.SetActive(activeOnAwake);
 
             group.alpha = activeOnAwake ? 1.0f : 0.0f;
         }
@@ -49,10 +50,10 @@ namespace KanekoUtilities
             panelImage.enabled = false;
             group.interactable = false;
             group.blocksRaycasts = false;
-            PlayAlphaControlAnimation(1.0f, 0.0f, deactivateDuration);
+            PlayAlphaControlAnimation(1.0f, 0.0f, deactivateDuration, ()=> rootObject.SetActive(false));
         }
 
-        void PlayAlphaControlAnimation(float startAlpha, float endAlpha, float duration)
+        void PlayAlphaControlAnimation(float startAlpha, float endAlpha, float duration, Action callback = null)
         {
             if (alphaControlCoroutine != null)
             {
@@ -64,6 +65,7 @@ namespace KanekoUtilities
                 group.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
             }).OnCompleted(() =>
             {
+                if (callback != null) callback();
                 alphaControlCoroutine = null;
             }));
         }

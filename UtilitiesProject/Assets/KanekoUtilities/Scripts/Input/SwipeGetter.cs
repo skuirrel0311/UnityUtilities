@@ -26,19 +26,19 @@ namespace KanekoUtilities
         /// <summary>
         /// 画面がタップされた時（座標）
         /// </summary>
-        public Action<Vector2> onTap;
+        public MyUnityEvent<Vector2> onTap;
         /// <summary>
         /// スワイプを検出したとき（移動量）
         /// </summary>
-        public Action<Vector2> onSwipe;
+        public MyUnityEvent<Vector2> onSwipe;
         /// <summary>
         /// 画面に指が触れたとき（座標）
         /// </summary>
-        public Action<Vector2> onTouchStart;
+        public MyUnityEvent<Vector2> onTouchStart;
         /// <summary>
         /// 画面から指が離れたとき（座標）
         /// </summary>
-        public Action<Vector2> onTouchEnd;
+        public MyUnityEvent<Vector2> onTouchEnd;
 
         protected override void Start()
         {

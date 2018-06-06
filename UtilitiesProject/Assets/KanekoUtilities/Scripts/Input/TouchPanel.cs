@@ -6,20 +6,20 @@ using UnityEngine.EventSystems;
 namespace KanekoUtilities
 {
     [RequireComponent(typeof(Image))]
-    public class TouchPanel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler , IPointerClickHandler
+    public class TouchPanel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         /// <summary>
         /// 画面に指が触れたとき（座標）
         /// </summary>
-        public event Action<Vector2> OnTouchStart;
+        public MyUnityEvent<Vector2> OnTouchStart = new MyUnityEvent<Vector2>();
         /// <summary>
         /// 画面に指が触れているとき（座標）
         /// </summary>
-        public event Action<Vector2> OnTouching;
+        public MyUnityEvent<Vector2> OnTouching = new MyUnityEvent<Vector2>();
         /// <summary>
         /// 画面から指が離れたとき（座標）
         /// </summary>
-        public event Action<Vector2> OnTouchEnd;
+        public MyUnityEvent<Vector2> OnTouchEnd = new MyUnityEvent<Vector2>();
         /// <summary>
         /// 画面に指が触れているか
         /// </summary>
@@ -28,13 +28,13 @@ namespace KanekoUtilities
         public void OnPointerDown(PointerEventData eventData)
         {
             IsTouching = true;
-            if (OnTouchStart != null) OnTouchStart(TouchGetter.GetTouchPositon());
+            OnTouchStart.Invoke(TouchGetter.GetTouchPositon());
         }
 
         void Update()
         {
             if (!IsTouching) return;
-            if (OnTouching != null) OnTouching(TouchGetter.GetTouchPositon());
+            OnTouching.Invoke(TouchGetter.GetTouchPositon());
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -42,11 +42,7 @@ namespace KanekoUtilities
             if (!IsTouching) return;
             
             IsTouching = false;
-            if (OnTouchEnd != null) OnTouchEnd(TouchGetter.GetTouchPositon());
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
+            OnTouchEnd.Invoke(TouchGetter.GetTouchPositon());
         }
     }
 }

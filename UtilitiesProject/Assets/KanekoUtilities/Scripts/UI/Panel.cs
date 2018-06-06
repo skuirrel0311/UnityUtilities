@@ -7,8 +7,8 @@ using UnityEngine.UI;
 namespace KanekoUtilities
 {
     //画面いっぱいに出るUI
-    [RequireComponent(typeof(Image), typeof(CanvasGroup))]
-    public class Panel : MonoBehaviour
+    [RequireComponent(typeof(CanvasGroup))]
+    public class Panel : UGUIImage
     {
         [SerializeField]
         bool activeOnAwake = false;
@@ -18,8 +18,7 @@ namespace KanekoUtilities
 
         [SerializeField]
         float deactivateDuration = 0.5f;
-
-        protected Image panelImage;
+        
         protected CanvasGroup group;
         GameObject rootObject;
 
@@ -27,9 +26,8 @@ namespace KanekoUtilities
 
         protected virtual void Awake()
         {
-            panelImage = GetComponent<Image>();
             group = GetComponent<CanvasGroup>();
-            panelImage.enabled = activeOnAwake;
+            Image.enabled = activeOnAwake;
             rootObject = transform.GetChild(0).gameObject;
             rootObject.SetActive(activeOnAwake);
 
@@ -38,7 +36,7 @@ namespace KanekoUtilities
 
         public virtual void Activate()
         {
-            panelImage.enabled = true;
+            Image.enabled = true;
             rootObject.SetActive(true);
             group.interactable = true;
             group.blocksRaycasts = true;
@@ -47,7 +45,7 @@ namespace KanekoUtilities
 
         public virtual void Deactivate()
         {
-            panelImage.enabled = false;
+            Image.enabled = false;
             group.interactable = false;
             group.blocksRaycasts = false;
             PlayAlphaControlAnimation(1.0f, 0.0f, deactivateDuration, ()=> rootObject.SetActive(false));

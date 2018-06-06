@@ -93,5 +93,4 @@ namespace KanekoUtilities
             if (onTouchEnd != null) onTouchEnd.Invoke(oldTouchPosition);
         }
     }
-
 }

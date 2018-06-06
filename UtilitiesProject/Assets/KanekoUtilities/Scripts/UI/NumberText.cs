@@ -3,15 +3,16 @@ using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
-    [RequireComponent(typeof(Text))]
-    public class NumberText : MonoBehaviour
+    public class NumberText : UGUIText
     {
-        protected Text text;
         protected int value;
 
-        void Awake()
+        public int Value { get; set; }
+
+        bool TryGetValue(ref int value)
         {
-            text = GetComponent<Text>();
+            value = 2;
+            return true;
         }
 
         public void SetValue(int value, bool isUpdate = false)
@@ -23,7 +24,12 @@ namespace KanekoUtilities
 
         protected virtual void SetText(int value)
         {
-            text.text = value.ToString();
+            this.value = value;
+            Text = value.ToString();
+
+            Vector3 pos = transform.position;
+            pos.x = 2;
+            transform.position = pos;
         }
 
         public virtual int GetValue()

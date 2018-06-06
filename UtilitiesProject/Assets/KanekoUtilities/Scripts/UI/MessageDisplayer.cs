@@ -22,7 +22,7 @@ namespace KanekoUtilities
             }
         }
 
-        ObjectPool<MessageText> textPooler = null;
+        ObjectPool<UGUIText> textPooler = null;
 
         public FontSettings DefaultFontSettings { get; private set; }
 
@@ -33,7 +33,7 @@ namespace KanekoUtilities
         {
             base.Awake();
 
-            textPooler = GetComponent<ObjectPool<MessageText>>();
+            textPooler = GetComponent<ObjectPool<UGUIText>>();
             Text text = textPooler.GetInstance().Message;
             DefaultFontSettings = new FontSettings(text);
             text.gameObject.SetActive(false);

@@ -178,6 +178,14 @@ namespace KanekoUtilities
 
             action.RemoveListener(act);
         }
+
+        /// <summary>
+        /// 指定された確率でtrueを返す
+        /// </summary>
+        public static bool GetRandomBool(int probability)
+        {
+            return UnityEngine.Random.Range(0, 100) < probability;
+        }
     }
 
     public class MyUnityEvent : UnityEvent { }

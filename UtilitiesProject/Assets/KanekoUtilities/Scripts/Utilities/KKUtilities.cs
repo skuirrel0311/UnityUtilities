@@ -60,6 +60,8 @@ namespace KanekoUtilities
                 if (t > duration) break;
                 yield return null;
             }
+
+            action.Invoke(1.0f);
         }
         
         /// <summary>
@@ -191,83 +193,4 @@ namespace KanekoUtilities
     public class MyUnityEvent : UnityEvent { }
     public class MyUnityEvent<T> : UnityEvent<T> { }
     public class MyUnityEvent<T1, T2> : UnityEvent<T1, T2> { }
-
-    public class MyCoroutine : IEnumerator
-    {
-        IEnumerator logic;
-        Action onCompleted;
-        Action onStart;
-        Action onUpdate;
-
-        public MyCoroutine(IEnumerator logic)
-        {
-            this.logic = logic;
-        }
-
-        public bool MoveNext()
-        {
-            return Start().MoveNext();
-        }
-        public void Reset()
-        {
-            Start().Reset();
-        }
-        public object Current
-        {
-            get
-            {
-                return Start().Current;
-            }
-        }
-
-        IEnumerator Start()
-        {
-            if (onStart != null) onStart.Invoke();
-            while (logic.MoveNext())
-            {
-                if (onUpdate != null) onUpdate.Invoke();
-                yield return null;
-            }
-
-            if (onCompleted != null)
-            {
-                onCompleted.Invoke();
-                onCompleted = null;
-            }
-        }
-
-        public MyCoroutine OnCompleted(Action onCompleted)
-        {
-            this.onCompleted += onCompleted;
-            return this;
-        }
-        public MyCoroutine OnStart(Action onStart)
-        {
-            this.onStart += onStart;
-            return this;
-        }
-        public MyCoroutine OnUpdate(Action onUpdate)
-        {
-            this.onUpdate += onUpdate;
-            return this;
-        }
-
-        public void CallCompletedSelf()
-        {
-            if (onCompleted != null) onCompleted.Invoke();
-        }
-    }
-
-    public class Singleton<T> where T : class, new()
-    {
-        private static readonly T instance = new T();
-
-        public static T Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
-    }
 }

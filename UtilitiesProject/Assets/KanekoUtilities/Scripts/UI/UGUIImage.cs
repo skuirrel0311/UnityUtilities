@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace KanekoUtilities
 {
     [RequireComponent(typeof(Image))]
-    public class UGUIImage : PoolMonoBehaviour
+    public class UGUIImage : UGUIParts
     {
         Image image;
         public Image Image
@@ -30,10 +30,11 @@ namespace KanekoUtilities
             }
             set
             {
+                if (Sprite == value) return;
                 Image.sprite = value;
             }
         }
-        public Color Color
+        public override Color Color
         {
             get
             {
@@ -41,7 +42,23 @@ namespace KanekoUtilities
             }
             set
             {
+                if (Image.color == value) return;
                 Image.color = value;
+            }
+        }
+        public override float Alpha
+        {
+            get
+            {
+                return Color.a;
+            }
+
+            set
+            {
+                if (Alpha == value) return;
+                Color col = Color;
+                col.a = value;
+                Color = col;
             }
         }
     }

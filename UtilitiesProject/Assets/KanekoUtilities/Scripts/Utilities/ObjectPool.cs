@@ -25,16 +25,33 @@ namespace KanekoUtilities
         [SerializeField]
         protected T original = null;
 
-        public List<T> InstanceList { get; protected set; }
-        public List<T> ActiveInstanceList { get; protected set; }
-        public List<T> deactiveInstanceList = new List<T>();
-
-        protected virtual void Awake()
+        List<T> instanceList;
+        public List<T> InstanceList
         {
-            InstanceList = new List<T>();
-            ActiveInstanceList = new List<T>();
+            get
+            {
+                if(instanceList == null)
+                {
+                    instanceList = new List<T>();
+                }
+                return instanceList;
+            }
+        }
+        List<T> activeInstanceList;
+        public List<T> ActiveInstanceList
+        {
+            get
+            {
+                if (activeInstanceList == null)
+                {
+                    activeInstanceList = new List<T>();
+                }
+                return activeInstanceList;
+            }
         }
 
+        public List<T> deactiveInstanceList = new List<T>();
+        
         protected virtual void OnEnable()
         {
             StartCoroutine(RemoveChecker());

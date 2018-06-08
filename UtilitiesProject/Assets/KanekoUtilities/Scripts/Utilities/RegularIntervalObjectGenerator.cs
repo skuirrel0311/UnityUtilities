@@ -18,9 +18,8 @@ public class RegularIntervalObjectGenerator<T> : ObjectPool<T>
     protected int totalObjectCount;
     public int TotalObjectCount { get { return totalObjectCount; } }
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         startPosition = transform.position;
     }
 

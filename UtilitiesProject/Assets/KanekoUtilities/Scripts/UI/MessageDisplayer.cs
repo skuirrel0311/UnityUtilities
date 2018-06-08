@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -116,6 +117,46 @@ namespace KanekoUtilities
         public void ShowMessage(string text, Vector2 position, Action<float, Text> onUpdate, float limitLife = 2.0f)
         {
             ShowMessage(text, position, onUpdate, DefaultFontSettings, limitLife);
+        }
+
+        public void ShowMessage(string text, Vector2 position, float showAnimationTime, float hideAnimationTime)
+        {
+            ShowMessage(text, position,DefaultFontSettings, showAnimationTime, hideAnimationTime);
+        }
+
+        public void ShowMessage(string text, Vector2 position, FontSettings settings, float showAnimationTime, float hideAnimationTime)
+        {
+            UGUIText message = textPooler.GetInstance();
+            message.Text = text;
+
+            message.Color = settings.color;
+            message.FontSize = settings.fontSize;
+            message.Alignment = settings.anchor;
+            message.RectTransform.anchoredPosition = position;
+            message.gameObject.SetActive(true);
+
+            StartCoroutine(KKUtilities.FloatLerp(showAnimationTime, (t) =>
+            {
+                DefaultShowLogic(message, t);
+            }).OnCompleted(()=>
+            {
+                StartCoroutine(KKUtilities.FloatLerp(hideAnimationTime, (t) =>
+                {
+                    DefaultHideLogic(message, t);
+                }));
+
+            }));
+        }
+
+        readonly Vector3 TextStartScale = Vector3.one * 0.3f;
+        readonly Vector3 OneVector = Vector3.one;
+        public void DefaultShowLogic(UGUIText text, float t)
+        {
+            text.transform.localScale = Vector3.Lerp(TextStartScale, OneVector, Easing.OutQuad(t));
+        }
+        public void DefaultHideLogic(UGUIText text, float t)
+        {
+            text.Alpha = Mathf.Lerp(1.0f, 0.0f, Easing.InQuad(t));
         }
     }
 }

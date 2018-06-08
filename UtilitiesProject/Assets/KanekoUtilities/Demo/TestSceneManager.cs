@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
 
-public class TestSceneManager : MainSceneManager
+public class TestSceneManager : MonoBehaviour
 {
     [SerializeField]
-    Transform trans = null;
+    NumberText proText = null;
+    [SerializeField]
+    NumberText unityText = null;
 
-    void Update()
+    void Start()
     {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            MessageDisplayer.Instance.ShowMessage("good!", Vector2.zero, 0.3f, 0.7f);
-        }
+        proText.SetValue(10);
+        unityText.SetValue(50);
     }
 }

@@ -3,33 +3,17 @@ using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
-    public class NumberText : UGUIText
+    public class NumberText : MonoBehaviour
     {
+        [SerializeField]
+        protected UGUIText text = null;
         protected int value;
 
-        public int Value { get; set; }
-
-        bool TryGetValue(ref int value)
-        {
-            value = 2;
-            return true;
-        }
-
-        public void SetValue(int value, bool isUpdate = false)
+        public virtual void SetValue(int value, bool isUpdate = false)
         {
             if (!isUpdate && this.value == value) return;
             this.value = value;
-            SetText(value);
-        }
-
-        protected virtual void SetText(int value)
-        {
-            this.value = value;
-            Text = value.ToString();
-
-            Vector3 pos = transform.position;
-            pos.x = 2;
-            transform.position = pos;
+            text.Text = value.ToString();
         }
 
         public virtual int GetValue()

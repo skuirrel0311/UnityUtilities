@@ -5,8 +5,15 @@ using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
+    public abstract class UGUIText : UGUIParts
+    {
+        public abstract string Text { get; set; }
+        public abstract int FontSize { get; set; }
+        public abstract TextAnchor Alignment { get; set; }
+    }
+    
     [RequireComponent(typeof(Text))]
-    public class UGUIText : UGUIParts
+    public class UGUITextUnity : UGUIText
     {
         Text message;
         public Text Message
@@ -23,7 +30,7 @@ namespace KanekoUtilities
         }
 
         //よく使うやつはプロパティを用意しておく
-        public string Text
+        public override string Text
         {
             get
             {
@@ -33,6 +40,30 @@ namespace KanekoUtilities
             {
                 if (Message.text == value) return;
                 Message.text = value;
+            }
+        }
+        public override int FontSize
+        {
+            get
+            {
+                return Message.fontSize;
+            }
+            set
+            {
+                if (FontSize == value) return;
+                Message.fontSize = value;
+            }
+        }
+        public override TextAnchor Alignment
+        {
+            get
+            {
+                return Message.alignment;
+            }
+            set
+            {
+                if (Alignment == value) return;
+                Message.alignment = value;
             }
         }
         public override Color Color
@@ -59,30 +90,6 @@ namespace KanekoUtilities
                 Color col = Color;
                 col.a = value;
                 Color = col;
-            }
-        }
-        public int FontSize
-        {
-            get
-            {
-                return Message.fontSize;
-            }
-            set
-            {
-                if (FontSize == value) return;
-                Message.fontSize = value;
-            }
-        }
-        public TextAnchor Alignment
-        {
-            get
-            {
-                return Message.alignment;
-            }
-            set
-            {
-                if (Alignment == value) return;
-                Message.alignment = value;
             }
         }
     }

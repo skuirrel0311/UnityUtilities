@@ -9,10 +9,11 @@ namespace KanekoUtilities
         [SerializeField]
         int maxDigit = 7;
 
-        protected override void SetText(int value)
+        public override void SetValue(int value, bool isUpdate = false)
         {
+            if (!isUpdate && this.value == value) return;
             this.value = value;
-            Text = value.ToString().PadLeft(maxDigit, '0');
+            text.Text = value.ToString().PadLeft(maxDigit, '0');
         }
     }
 }

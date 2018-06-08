@@ -20,8 +20,7 @@ public class MainSceneManager : SingletonMonobehaviour<MainSceneManager>
     public event Action OnGameStart;
     public event Action OnContinue;
     public event Action OnGameOver;
-
-    Coroutine gameLoopCoroutine;
+    
     bool isContinueRequested;
 
     protected override void Start()
@@ -41,7 +40,8 @@ public class MainSceneManager : SingletonMonobehaviour<MainSceneManager>
     IEnumerator OneGame()
     {
         Init();
-        
+
+        yield return StartCoroutine(SuggestStart());
         GameStart();
 
         while (true)
@@ -59,7 +59,9 @@ public class MainSceneManager : SingletonMonobehaviour<MainSceneManager>
 
             Continue();
         }
+
         GameOver();
+        yield return StartCoroutine(SuggestRestart());
     }
 
     void Init()
@@ -74,11 +76,21 @@ public class MainSceneManager : SingletonMonobehaviour<MainSceneManager>
         if(OnGameStart != null) OnGameStart();
     }
 
+    IEnumerator SuggestStart()
+    {
+        yield return null;
+    }
+
     void GameOver()
     {
         CurrentState = GameState.Result;
 
         if (OnGameOver != null) OnGameOver();
+    }
+
+    IEnumerator SuggestRestart()
+    {
+        yield return null;
     }
 
     void Continue()

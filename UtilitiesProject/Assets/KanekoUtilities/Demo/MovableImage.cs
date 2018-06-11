@@ -9,8 +9,6 @@ public class MovableImage : UGUIImage
     float endX = 360.0f;
 
     public Ease ease = Ease.InQuad;
-
-
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.A))
@@ -18,6 +16,7 @@ public class MovableImage : UGUIImage
             Vector2 startPosition = Image.rectTransform.anchoredPosition;
             Vector2 targetPosition = startPosition;
             targetPosition.x = endX;
+            
             StartCoroutine(KKUtilities.FloatLerp(1.0f, (t) =>
             {
                 Image.rectTransform.anchoredPosition = Vector2.LerpUnclamped(startPosition, targetPosition, GetEase(t));

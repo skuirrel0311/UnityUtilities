@@ -46,20 +46,5 @@ namespace KanekoUtilities
                 Image.color = value;
             }
         }
-        public override float Alpha
-        {
-            get
-            {
-                return Color.a;
-            }
-
-            set
-            {
-                if (Alpha == value) return;
-                Color col = Color;
-                col.a = value;
-                Color = col;
-            }
-        }
     }
 }

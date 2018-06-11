@@ -8,7 +8,7 @@ namespace KanekoUtilities
         {
             get
             {
-                if(rectTransform == null)
+                if (rectTransform == null)
                 {
                     rectTransform = transform as RectTransform;
                 }
@@ -16,6 +16,20 @@ namespace KanekoUtilities
             }
         }
         public abstract Color Color { get; set; }
-        public abstract float Alpha { get; set; }
+        public virtual float Alpha
+        {
+            get
+            {
+                return Color.a;
+            }
+
+            set
+            {
+                if (Color.a == value) return;
+                Color col = Color;
+                col.a = value;
+                Color = col;
+            }
+        }
     }
 }

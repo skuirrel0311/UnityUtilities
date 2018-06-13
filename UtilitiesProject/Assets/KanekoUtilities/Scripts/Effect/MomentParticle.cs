@@ -43,7 +43,7 @@ namespace KanekoUtilities
 
         public void Play()
         {
-            for(int i = 0;i< Particles.Length;i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
                 Particles[i].ParticleSystem.Emit(Particles[i].BurstCount);
             }

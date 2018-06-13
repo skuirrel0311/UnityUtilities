@@ -6,7 +6,7 @@ using TMPro;
 namespace KanekoUtilities
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class UGUITextPro : UGUIText
+    public class UGUITextPro : AbstractUGUIText
     {
         TextMeshProUGUI message;
         public TextMeshProUGUI Message
@@ -51,12 +51,12 @@ namespace KanekoUtilities
         {
             get
             {
-                return TextOptionToAnchor(Message.alignment);
+                return TextUtil.TextOptionToTextAnchor(Message.alignment);
             }
             set
             {
                 if (Alignment == value) return;
-                Message.alignment = TextAnchorToOption(value);
+                Message.alignment = TextUtil.TextAnchorToTextOption(value);
             }
         }
         public override Color Color
@@ -70,41 +70,6 @@ namespace KanekoUtilities
                 if (Color == value) return;
                 Message.color = value;
             }
-        }
-
-        TextAnchor TextOptionToAnchor(TextAlignmentOptions options)
-        {
-            switch (options)
-            {
-                case TextAlignmentOptions.TopLeft: return TextAnchor.UpperLeft;
-                case TextAlignmentOptions.Top: return TextAnchor.UpperCenter;
-                case TextAlignmentOptions.TopRight: return TextAnchor.UpperRight;
-                case TextAlignmentOptions.MidlineLeft: return TextAnchor.MiddleLeft;
-                case TextAlignmentOptions.Midline: return TextAnchor.MiddleCenter;
-                case TextAlignmentOptions.MidlineRight: return TextAnchor.MiddleRight;
-                case TextAlignmentOptions.BaselineLeft: return TextAnchor.LowerLeft;
-                case TextAlignmentOptions.Baseline: return TextAnchor.LowerCenter;
-                case TextAlignmentOptions.BaselineRight: return TextAnchor.LowerRight;
-            }
-
-            return 0;
-        }
-        TextAlignmentOptions TextAnchorToOption(TextAnchor anchor)
-        {
-            switch (anchor)
-            {
-                case TextAnchor.UpperLeft: return TextAlignmentOptions.TopLeft;
-                case TextAnchor.UpperCenter: return TextAlignmentOptions.Top;
-                case TextAnchor.UpperRight: return TextAlignmentOptions.TopRight;
-                case TextAnchor.MiddleLeft: return TextAlignmentOptions.MidlineLeft;
-                case TextAnchor.MiddleCenter: return TextAlignmentOptions.Midline;
-                case TextAnchor.MiddleRight: return TextAlignmentOptions.MidlineRight;
-                case TextAnchor.LowerLeft: return TextAlignmentOptions.BaselineLeft;
-                case TextAnchor.LowerCenter: return TextAlignmentOptions.Baseline;
-                case TextAnchor.LowerRight: return TextAlignmentOptions.BaselineRight;
-            }
-
-            return 0;
         }
     }
 }

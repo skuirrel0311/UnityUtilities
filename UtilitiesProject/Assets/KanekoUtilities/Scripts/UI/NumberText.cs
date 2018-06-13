@@ -6,7 +6,7 @@ namespace KanekoUtilities
     public class NumberText : MonoBehaviour
     {
         [SerializeField]
-        protected UGUIText text = null;
+        protected AbstractUGUIText text = null;
         protected int value;
 
         public virtual void SetValue(int value, bool isUpdate = false)

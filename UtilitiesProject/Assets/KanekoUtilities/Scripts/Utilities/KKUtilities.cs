@@ -83,6 +83,23 @@ namespace KanekoUtilities
         }
 
         /// <summary>
+        /// predicateが真を返すまで待機し、その後actionを実行する
+        /// </summary>
+        public static IEnumerator WaitUntil(Func<bool> predicate, Action action)
+        {
+            while (!predicate()) yield return null;
+            action.Invoke();
+        }
+
+        /// <summary>
+        /// predicateが真を返すまで待機し、その後actionを実行する
+        /// </summary>
+        public static void WiatUntil(Func<bool> predicate, Action action, MonoBehaviour mono)
+        {
+            mono.StartCoroutine(WaitUntil(predicate, action));
+        }
+
+        /// <summary>
         /// ２点間の(Y成分に限定した)角度を返す
         /// </summary>
         public static float GetAngleY(Vector3 vec1, Vector3 vec2)

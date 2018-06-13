@@ -36,7 +36,7 @@ namespace KanekoUtilities
         }
         public void ShowPositiveWord(Vector3 position, Quaternion rotation, float showAnimationTime = 0.3f, float hideAnimationTime = 0.5f)
         {
-            UGUIText text = textPool.GetInstance();
+            AbstractUGUIText text = textPool.GetInstance();
             text.Text = PositiveWord.GetWord();
             text.transform.SetPositionAndRotation(position, rotation);
 
@@ -53,7 +53,7 @@ namespace KanekoUtilities
         }
         public void ShowPositiveWord(Vector2 position, Quaternion rotation, float showAnimationTime = 0.3f, float hideAnimationTime = 0.5f)
         {
-            UGUIText text = textPool.GetInstance();
+            AbstractUGUIText text = textPool.GetInstance();
             text.Text = PositiveWord.GetWord();
             text.RectTransform.anchoredPosition = position;
             text.RectTransform.rotation = rotation;

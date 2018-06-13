@@ -5,7 +5,7 @@ namespace KanekoUtilities
 {
     public class MyCoroutine : IEnumerator
     {
-        IEnumerator logic;
+        protected IEnumerator logic;
         Action onCompleted;
         Action onStart;
         Action onUpdate;

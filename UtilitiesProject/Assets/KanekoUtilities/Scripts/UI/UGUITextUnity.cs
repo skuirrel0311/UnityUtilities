@@ -4,16 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace KanekoUtilities
-{
-    public abstract class UGUIText : UGUIParts
-    {
-        public abstract string Text { get; set; }
-        public abstract int FontSize { get; set; }
-        public abstract TextAnchor Alignment { get; set; }
-    }
-    
+{    
     [RequireComponent(typeof(Text))]
-    public class UGUITextUnity : UGUIText
+    public class UGUITextUnity : AbstractUGUIText
     {
         Text message;
         public Text Message

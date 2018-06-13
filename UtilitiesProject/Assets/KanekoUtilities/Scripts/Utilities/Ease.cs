@@ -4,12 +4,18 @@ namespace KanekoUtilities
 {
     public enum Ease
     {
+        Linear,
         InQuad, InCubic, InQuart, InQuint, InExpo, InBack,
         OutQuad, OutCubic, OutQuart, OutQuint, OutExpo, OutBack,
         InOutQuad, InOutCubic, InOutQuart, InOutQuint, InOutExpo, InOutBack
     }
     public static class Easing
     {
+        public static float Linear(float x)
+        {
+            return x;
+        }
+
         public static float InQuad(float x)
         {
             return x * x;
@@ -100,6 +106,37 @@ namespace KanekoUtilities
         {
             return t < 0.5f ? InBack(t * 2.0f, s) * 0.5f :
                 OutBack(t * 2.0f - 1.0f, s) * 0.5f + 0.5f;
+        }
+
+        public static float GetEase(float t, Ease ease)
+        {
+            switch (ease)
+            {
+                case Ease.Linear: return Linear(t);
+
+                case Ease.InQuad: return InQuad(t);
+                case Ease.InCubic: return InCubic(t);
+                case Ease.InQuart: return InQuart(t);
+                case Ease.InQuint: return InQuint(t);
+                case Ease.InExpo: return InExpo(t);
+                case Ease.InBack: return InBack(t);
+
+                case Ease.OutQuad: return OutQuad(t);
+                case Ease.OutCubic: return OutCubic(t);
+                case Ease.OutQuart: return OutQuart(t);
+                case Ease.OutQuint: return OutQuint(t);
+                case Ease.OutExpo: return OutExpo(t);
+                case Ease.OutBack: return OutBack(t);
+
+                case Ease.InOutQuad: return InOutQuad(t);
+                case Ease.InOutCubic: return InOutCubic(t);
+                case Ease.InOutQuart: return InOutQuart(t);
+                case Ease.InOutQuint: return InOutQuint(t);
+                case Ease.InOutExpo: return InOutExpo(t);
+                case Ease.InOutBack: return InOutBack(t);
+            }
+
+            return t;
         }
     }
 }

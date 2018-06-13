@@ -3,4 +3,4 @@ using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
 
-public class UGUITextPool : ObjectPool<UGUIText> { }
+public class UGUITextPool : ObjectPool<AbstractUGUIText> { }

@@ -113,6 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCount: 5
   removeIntervalTime: 15
+  original: {fileID: 114267115406524516}
+  deactiveInstanceList: []
 --- !u!212 &212850000231578262
 SpriteRenderer:
   m_ObjectHideFlags: 1

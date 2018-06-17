@@ -156,7 +156,7 @@ namespace KanekoUtilities
         /// <summary>
         /// アクションが呼ばれるまで待機する
         /// </summary>
-        public static IEnumerator WaitAction(MyUnityEvent action)
+        public static IEnumerator WaitAction(UnityEvent action)
         {
             bool isCalled = false;
             UnityAction act = () => isCalled = true;

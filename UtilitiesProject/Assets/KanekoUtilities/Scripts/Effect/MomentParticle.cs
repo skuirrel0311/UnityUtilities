@@ -13,7 +13,8 @@ namespace KanekoUtilities
 
         public int BurstCount { get { return burstCount; } }
 
-        ParticleSystem m_particleSystem;
+        [SerializeField]
+        ParticleSystem m_particleSystem = null;
 
         public ParticleSystem ParticleSystem
         {

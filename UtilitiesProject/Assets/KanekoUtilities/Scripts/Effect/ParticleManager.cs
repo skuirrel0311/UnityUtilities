@@ -6,11 +6,12 @@ namespace KanekoUtilities
 {
     //PlayOneShotで呼べるパーティクルの条件
     /*
-     ・瞬間的なエフェクトであること（爆発など）
-     ・空のオブジェクトの子にParticleSystemを配置する
-     ・ParticleSystemのSimulationSpaceをWorldにする
-     ・ParticleSystemのLoopingをfalseにする
-     ・ParticleSystemのPlayOnAwakeをfalseにする
+     大前提
+        ・瞬間的なエフェクトであること（爆発など）
+     Unityでの設定
+        ・ParticleSystemのEmissionのチェックを外す(外さなかった場合は初回のみ２倍の量が放出される)
+        ・ParticleSystemのPlayOnAwakeをtrueにする(trueにしなかった場合はパーティクルにスケールや回転がかかっていても無視される)
+
     */
 
     /// <summary>

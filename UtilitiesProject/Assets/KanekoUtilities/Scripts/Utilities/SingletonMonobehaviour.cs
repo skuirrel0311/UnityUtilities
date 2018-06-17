@@ -15,6 +15,18 @@ namespace KanekoUtilities
                 if (instance == null)
                 {
                     instance = (T)FindObjectOfType(typeof(T));
+
+                    if (instance == null)
+                    {
+                        GameObject prefab = Resources.Load<GameObject>("SingletonMonobehaviour/" + typeof(T).Name);
+
+                        if(prefab == null)
+                        {
+                            Debug.Log("not load prefab");
+                        }
+
+                        Instantiate(Instantiate(prefab));
+                    }
                 }
                 return instance;
             }

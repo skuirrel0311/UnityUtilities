@@ -13,12 +13,22 @@ namespace KanekoUtilities
             public Color color;
             public int fontSize;
             public TextAnchor anchor;
+            public UIAnimation showAnimation;
+            public UIAnimation hideAnimation;
+            public float showAnimationTime;
+            public float hideAnimationTime;
+            public float limitLife;
 
             public FontSettings(IUIText text)
             {
                 color = text.Color;
                 fontSize = text.FontSize;
                 anchor = text.Alignment;
+                showAnimation = UIAnimationUtil.DefaultShowAnimation;
+                hideAnimation = UIAnimationUtil.DefaultHideAnimation;
+                showAnimationTime = 0.4f;
+                hideAnimationTime = 0.3f;
+                limitLife = 0.2f;
             }
         }
 
@@ -36,118 +46,172 @@ namespace KanekoUtilities
         protected override void Awake()
         {
             base.Awake();
-            
+
             DefaultUGUIFontSettings = new FontSettings(textPool.GetOriginal);
             Default3DFontSettings = new FontSettings(textMeshPool.GetOriginal);
 
             if (uiCamera == null) uiCamera = Camera.main;
         }
 
-        #region 引数違い
-        public void ShowMessage(string message, Vector2 position, float limitLife = 2.0f)
+        #region ShowMessage引数違い
+
+        /// <summary>
+        /// 指定された場所にデフォルトの設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector2 position)
         {
-            ShowMessage(message, position, DefaultUGUIFontSettings, limitLife);
+            ShowMessage(message, position, Quaternion.identity, DefaultUGUIFontSettings);
+        }
+        /// <summary>
+        /// 指定された場所にデフォルトの設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector2 position, Quaternion rotation)
+        {
+            ShowMessage(message, position, rotation, DefaultUGUIFontSettings);
+        }
+        /// <summary>
+        /// 指定された場所にデフォルトの設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector2 position, Vector3 eulerAngle)
+        {
+            ShowMessage(message, position, Quaternion.Euler(eulerAngle), DefaultUGUIFontSettings);
         }
 
-        public void ShowMessage(string message, Vector3 position, float limitLife = 2.0f)
+        /// <summary>
+        /// 指定された場所に指定された設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector2 position, FontSettings settings)
         {
-            ShowMessage(message, position, DefaultUGUIFontSettings, limitLife);
+            ShowMessage(message, position, Quaternion.identity, settings);
+        }
+        /// <summary>
+        /// 指定された場所に指定された設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector2 position, Vector3 eulerAngle, FontSettings settings)
+        {
+            ShowMessage(message, position, Quaternion.Euler(eulerAngle), settings);
+        }
+        /// <summary>
+        /// 指定された場所に指定された設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector2 position, Quaternion rotation, FontSettings settings)
+        {
+            ShowMessage(message, position, rotation, transform, settings);
         }
 
-        public void PlayMessage(string message, Vector2 position, float showAnimationTime = 0.3f, float hideAnimationTime = 0.3f, float limitLife = 1.0f)
+        /// <summary>
+        /// 指定された場所にデフォルトの設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector3 position)
         {
-            PlayMessage(message, position, DefaultUGUIFontSettings, showAnimationTime, hideAnimationTime, limitLife);
+            ShowMessage(message, position, DefaultUGUIFontSettings);
         }
-        public void PlayMessage(string message, Vector2 position, FontSettings settings, float showAnimationTime = 0.3f, float hideAnimationTime = 0.3f, float limitLife = 1.0f)
+        /// <summary>
+        /// 指定された場所にデフォルトの設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector3 position, Vector3 eulerAngle)
         {
-            PlayMessage(message, position, settings, UIAnimationUtil.DefaultShowAnimation, UIAnimationUtil.DefaultHideAnimation, showAnimationTime, hideAnimationTime, limitLife);
+            ShowMessage(message, position, Quaternion.Euler(eulerAngle), DefaultUGUIFontSettings);
         }
-        public void PlayMessage(string message, Vector2 position, UIAnimation showAnimation, UIAnimation hideAnimation, float showAnimationTime, float hideAnimationTime, float limitLife = 1.0f)
+        /// <summary>
+        /// 指定された場所にデフォルトの設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector3 position, Quaternion rotation)
         {
-            PlayMessage(message, position, DefaultUGUIFontSettings, showAnimation, hideAnimation, showAnimationTime, hideAnimationTime, limitLife);
-        }
-
-        public void PlayMessage(string message, Vector3 position, float showAnimationTime = 0.3f, float hideAnimationTime = 0.3f, float limitLife = 1.0f)
-        {
-            PlayMessage(message, position, DefaultUGUIFontSettings, showAnimationTime, hideAnimationTime, limitLife);
-        }
-        public void PlayMessage(string message, Vector3 position, FontSettings settings, float showAnimationTime = 0.3f, float hideAnimationTime = 0.3f, float limitLife = 1.0f)
-        {
-            PlayMessage(message, position, settings, UIAnimationUtil.DefaultShowAnimation, UIAnimationUtil.DefaultHideAnimation, showAnimationTime, hideAnimationTime, limitLife);
-        }
-        public void PlayMessage(string message, Vector3 position, UIAnimation showAnimation, UIAnimation hideAnimation, float showAnimationTime, float hideAnimationTime, float limitLife = 1.0f)
-        {
-            PlayMessage(message, position, DefaultUGUIFontSettings, showAnimation, hideAnimation, showAnimationTime, hideAnimationTime, limitLife);
+            ShowMessage(message, position, rotation, DefaultUGUIFontSettings);
         }
 
-        public void ShowMessage3D(string message, Vector3 position, float limitLife = 2.0f)
+        /// <summary>
+        /// 指定された場所に指定された設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector3 position, FontSettings settings)
         {
-            ShowMessage3D(message, position, Default3DFontSettings, limitLife);
+            ShowMessage(message, position, settings);
         }
-
-        public void PlayMessage3D(string message, Vector3 position, float showAnimationTime = 0.3f, float hideAnimationTime = 0.3f, float limitLife = 1.0f)
+        /// <summary>
+        /// 指定された場所に指定された設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector3 position, Vector3 eulerAngle, FontSettings settings)
         {
-            PlayMessage3D(message, position, Default3DFontSettings, showAnimationTime, hideAnimationTime, limitLife);
-        }
-        public void PlayMessage3D(string message, Vector3 position, FontSettings settings, float showAnimationTime = 0.3f, float hideAnimationTime = 0.3f, float limitLife = 1.0f)
-        {
-            PlayMessage3D(message, position, settings, UIAnimationUtil.DefaultShowAnimation, UIAnimationUtil.DefaultHideAnimation, showAnimationTime, hideAnimationTime, limitLife);
-        }
-        public void PlayMessage3D(string message, Vector3 position, UIAnimation showAnimation, UIAnimation hideAnimation, float showAnimationTime, float hideAnimationTime, float limitLife = 1.0f)
-        {
-            PlayMessage3D(message, position, Default3DFontSettings, showAnimation, hideAnimation, showAnimationTime, hideAnimationTime, limitLife);
+            ShowMessage(message, position, Quaternion.Euler(eulerAngle), settings);
         }
 
         #endregion
 
-        public void ShowMessage(string message, Vector2 position, FontSettings settings, float limitLife = 2.0f)
+        #region ShowMessage3D引数違い
+
+        /// <summary>
+        /// 指定された場所にデフォルトの設定で３Dのメッセージを表示する
+        /// </summary>
+        public void ShowMessage3D(string message, Vector3 position)
         {
-            AbstractUGUIText text = textPool.GetInstance();
-            text.RectTransform.anchoredPosition = position;
-
-            InitializeUGUIText(text, message, settings);
-
-            if (limitLife <= 0.0f) return;
-            KKUtilities.Delay(limitLife, () =>
-            {
-                textPool.ReturnInstance(text);
-            }, this);
+            ShowMessage3D(message, position, Default3DFontSettings);
         }
-        public void ShowMessage(string message, Vector3 position, FontSettings settings, float limitLife = 2.0f)
+        /// <summary>
+        /// 指定された場所にデフォルトの設定で３Dのメッセージを表示する
+        /// </summary>
+        public void ShowMessage3D(string message, Vector3 position, Vector3 eulerAngle)
         {
-            AbstractUGUIText text = textPool.GetInstance();
-            text.transform.position = uiCamera.WorldToScreenPoint(position);
-
-            InitializeUGUIText(text, message, settings);
-            text.gameObject.SetActive(true);
-
-            KKUtilities.Delay(limitLife, () =>
-            {
-                textPool.ReturnInstance(text);
-            }, this);
+            ShowMessage3D(message, position, Quaternion.Euler(eulerAngle), Default3DFontSettings);
+        }
+        /// <summary>
+        /// 指定された場所にデフォルトの設定で３Dのメッセージを表示する
+        /// </summary>
+        public void ShowMessage3D(string message, Vector3 position, Quaternion rotation)
+        {
+            ShowMessage3D(message, position, rotation, Default3DFontSettings);
         }
 
-        public void PlayMessage(string message, Vector2 position, FontSettings settings, UIAnimation showAnimation, UIAnimation hideAnimation, float showAnimationTime, float hideAnimationTime, float limitLife = 1.0f)
+        /// <summary>
+        /// 指定された場所に指定された設定で３Dのメッセージを表示する
+        /// </summary>
+        public void ShowMessage3D(string message, Vector3 position, FontSettings settings)
+        {
+            ShowMessage3D(message, position, Quaternion.identity, settings);
+        }
+        /// <summary>
+        /// 指定された場所に指定された設定で３Dのメッセージを表示する
+        /// </summary>
+        public void ShowMessage3D(string message, Vector3 position, Vector3 eulerAngle, FontSettings settings)
+        {
+            ShowMessage3D(message, position, Quaternion.Euler(eulerAngle), settings);
+        }
+        /// <summary>
+        /// 指定された場所に指定された設定で３Dのメッセージを表示する
+        /// </summary>
+        public void ShowMessage3D(string message, Vector3 position, Quaternion rotation, FontSettings settings)
+        {
+            ShowMessage3D(message, position, rotation, transform, settings);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 指定された場所に指定された設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector2 localPosition, Quaternion localRotation, Transform parent, FontSettings settings)
         {
             AbstractUGUIText text = textPool.GetInstance();
-            text.RectTransform.anchoredPosition = position;
-
             InitializeUGUIText(text, message, settings);
+            text.RectTransform.SetParent(parent);
+            text.RectTransform.anchoredPosition = localPosition;
+            text.RectTransform.localRotation = localRotation;
 
-            StartCoroutine(showAnimation.GetAnimation(text, showAnimationTime).OnCompleted(() =>
+
+            StartCoroutine(settings.showAnimation.GetAnimation(text, settings.showAnimationTime).OnCompleted(() =>
             {
-                if (limitLife <= 0.0f)
+                if (settings.limitLife <= 0.0f)
                 {
-                    StartCoroutine(hideAnimation.GetAnimation(text, hideAnimationTime).OnCompleted(() =>
+                    StartCoroutine(settings.hideAnimation.GetAnimation(text, settings.hideAnimationTime).OnCompleted(() =>
                     {
                         textPool.ReturnInstance(text);
                     }));
                 }
                 else
                 {
-                    KKUtilities.Delay(limitLife, () =>
+                    KKUtilities.Delay(settings.limitLife, () =>
                     {
-                        StartCoroutine(hideAnimation.GetAnimation(text, hideAnimationTime).OnCompleted(() =>
+                        StartCoroutine(settings.hideAnimation.GetAnimation(text, settings.hideAnimationTime).OnCompleted(() =>
                         {
                             textPool.ReturnInstance(text);
                         }));
@@ -155,27 +219,32 @@ namespace KanekoUtilities
                 }
             }));
         }
-        public void PlayMessage(string message, Vector3 position, FontSettings settings, UIAnimation showAnimation, UIAnimation hideAnimation, float showAnimationTime, float hideAnimationTime, float limitLife = 1.0f)
+
+        //3D座標を指定するUGUIの場合は親を設定するメリットがないので用意しない
+        /// <summary>
+        /// 指定された場所に指定された設定でUGUIのメッセージを表示する
+        /// </summary>
+        public void ShowMessage(string message, Vector3 position, Quaternion rotation, FontSettings settings)
         {
             AbstractUGUIText text = textPool.GetInstance();
-            text.transform.position = uiCamera.WorldToScreenPoint(position);
+            text.transform.SetPositionAndRotation(uiCamera.WorldToScreenPoint(position), rotation);
 
             InitializeUGUIText(text, message, settings);
 
-            StartCoroutine(showAnimation.GetAnimation(text, showAnimationTime).OnCompleted(() =>
+            StartCoroutine(settings.showAnimation.GetAnimation(text, settings.showAnimationTime).OnCompleted(() =>
             {
-                if (limitLife <= 0.0f)
+                if (settings.limitLife <= 0.0f)
                 {
-                    StartCoroutine(hideAnimation.GetAnimation(text, hideAnimationTime).OnCompleted(() =>
+                    StartCoroutine(settings.hideAnimation.GetAnimation(text, settings.hideAnimationTime).OnCompleted(() =>
                     {
                         textPool.ReturnInstance(text);
                     }));
                 }
                 else
                 {
-                    KKUtilities.Delay(limitLife, () =>
+                    KKUtilities.Delay(settings.limitLife, () =>
                     {
-                        StartCoroutine(hideAnimation.GetAnimation(text, hideAnimationTime).OnCompleted(() =>
+                        StartCoroutine(settings.hideAnimation.GetAnimation(text, settings.hideAnimationTime).OnCompleted(() =>
                         {
                             textPool.ReturnInstance(text);
                         }));
@@ -184,37 +253,32 @@ namespace KanekoUtilities
             }));
         }
 
-        public void ShowMessage3D(string message, Vector3 position, FontSettings settings, float limitLife = 2.0f)
+        /// <summary>
+        /// 指定された場所に指定された設定で３Dのメッセージを表示する
+        /// </summary>
+        public void ShowMessage3D(string message, Vector3 position, Quaternion rotation, Transform parent, FontSettings settings)
         {
             AbstractTextMesh text = textMeshPool.GetInstance();
-            text.transform.position = position;
+
             InitializeTextMesh(text, message, settings);
 
-            KKUtilities.Delay(limitLife, () =>
-            {
-                textMeshPool.ReturnInstance(text);
-            }, this);
-        }
-        public void PlayMessage3D(string message, Vector3 position, FontSettings settings, UIAnimation showAnimation, UIAnimation hideAnimation, float showAnimationTime, float hideAnimationTime, float limitLife = 1.0f)
-        {
-            AbstractTextMesh text = textMeshPool.GetInstance();
-            text.transform.position = position;
-            InitializeTextMesh(text, message, settings);
+            text.transform.SetParent(parent);
+            text.transform.SetPositionAndRotation(position, rotation);
 
-            StartCoroutine(showAnimation.GetAnimation(text, showAnimationTime).OnCompleted(() =>
+            StartCoroutine(settings.showAnimation.GetAnimation(text, settings.showAnimationTime).OnCompleted(() =>
             {
-                if (limitLife <= 0.0f)
+                if (settings.limitLife <= 0.0f)
                 {
-                    StartCoroutine(hideAnimation.GetAnimation(text, hideAnimationTime).OnCompleted(() =>
+                    StartCoroutine(settings.hideAnimation.GetAnimation(text, settings.hideAnimationTime).OnCompleted(() =>
                     {
                         textMeshPool.ReturnInstance(text);
                     }));
                 }
                 else
                 {
-                    KKUtilities.Delay(limitLife, () =>
+                    KKUtilities.Delay(settings.limitLife, () =>
                     {
-                        StartCoroutine(hideAnimation.GetAnimation(text, hideAnimationTime).OnCompleted(() =>
+                        StartCoroutine(settings.hideAnimation.GetAnimation(text, settings.hideAnimationTime).OnCompleted(() =>
                         {
                             textMeshPool.ReturnInstance(text);
                         }));
@@ -222,7 +286,7 @@ namespace KanekoUtilities
                 }
             }));
         }
-        
+
         void InitializeUIText(IUIText text, string message, FontSettings settings)
         {
             text.Text = message;

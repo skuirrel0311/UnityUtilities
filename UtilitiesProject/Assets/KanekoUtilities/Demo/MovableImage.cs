@@ -8,7 +8,7 @@ public class MovableImage : UGUIImage
     [SerializeField]
     float endX = 360.0f;
 
-    public Ease ease = Ease.InQuad;
+    public EaseType ease = EaseType.InQuad;
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.A))
@@ -28,26 +28,26 @@ public class MovableImage : UGUIImage
     {
         switch (ease)
         {
-            case Ease.InQuad: return Easing.InQuad(t);
-            case Ease.InCubic: return Easing.InCubic(t);
-            case Ease.InQuart: return Easing.InQuart(t);
-            case Ease.InQuint: return Easing.InQuint(t);
-            case Ease.InExpo: return Easing.InExpo(t);
-            case Ease.InBack: return Easing.InBack(t);
+            case EaseType.InQuad: return Easing.InQuad(t);
+            case EaseType.InCubic: return Easing.InCubic(t);
+            case EaseType.InQuart: return Easing.InQuart(t);
+            case EaseType.InQuint: return Easing.InQuint(t);
+            case EaseType.InExpo: return Easing.InExpo(t);
+            case EaseType.InBack: return Easing.InBack(t);
 
-            case Ease.OutQuad: return Easing.OutQuad(t);
-            case Ease.OutCubic: return Easing.OutCubic(t);
-            case Ease.OutQuart: return Easing.OutQuart(t);
-            case Ease.OutQuint: return Easing.OutQuint(t);
-            case Ease.OutExpo: return Easing.OutExpo(t);
-            case Ease.OutBack: return Easing.OutBack(t);
+            case EaseType.OutQuad: return Easing.OutQuad(t);
+            case EaseType.OutCubic: return Easing.OutCubic(t);
+            case EaseType.OutQuart: return Easing.OutQuart(t);
+            case EaseType.OutQuint: return Easing.OutQuint(t);
+            case EaseType.OutExpo: return Easing.OutExpo(t);
+            case EaseType.OutBack: return Easing.OutBack(t);
 
-            case Ease.InOutQuad: return Easing.InOutQuad(t);
-            case Ease.InOutCubic: return Easing.InOutCubic(t);
-            case Ease.InOutQuart: return Easing.InOutQuart(t);
-            case Ease.InOutQuint: return Easing.InOutQuint(t);
-            case Ease.InOutExpo: return Easing.InOutExpo(t);
-            case Ease.InOutBack: return Easing.InOutBack(t);
+            case EaseType.InOutQuad: return Easing.InOutQuad(t);
+            case EaseType.InOutCubic: return Easing.InOutCubic(t);
+            case EaseType.InOutQuart: return Easing.InOutQuart(t);
+            case EaseType.InOutQuint: return Easing.InOutQuint(t);
+            case EaseType.InOutExpo: return Easing.InOutExpo(t);
+            case EaseType.InOutBack: return Easing.InOutBack(t);
         }
 
         return 1.0f;

@@ -40,8 +40,7 @@ namespace KanekoUtilities
         public MyUnityEvent<Vector2> onTouchEnd = new MyUnityEvent<Vector2>();
 
         float screenSizeRate = 1.0f;
-
-        Vector2 touchPosition;
+        
         Vector2 oldTouchPosition;
         Vector2 swipeValue;
         float swipePower = 0.0f;

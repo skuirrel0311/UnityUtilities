@@ -12,8 +12,8 @@ public class EasingSetter : MonoBehaviour
 
         for(int i = 0;i< images.Length;i++)
         {
-            images[i].gameObject.name = ((Ease)i).ToString();
-            images[i].ease = (Ease)i;
+            images[i].gameObject.name = ((EaseType)i).ToString();
+            images[i].ease = (EaseType)i;
         }
     }
 

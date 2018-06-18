@@ -55,7 +55,7 @@ namespace KanekoUtilities
             }
         }
 
-        public static UIAnimation AlphaControlAnimation(float startAlpha, float endAlpha, Ease ease = Ease.Linear)
+        public static UIAnimation AlphaControlAnimation(float startAlpha, float endAlpha, EaseType ease = EaseType.Linear)
         {
             return new UIAnimation((parts, t) =>
             {

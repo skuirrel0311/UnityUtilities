@@ -2,7 +2,7 @@
 
 namespace KanekoUtilities
 {
-    public enum Ease
+    public enum EaseType
     {
         Linear,
         InQuad, InCubic, InQuart, InQuint, InExpo, InBack,
@@ -108,32 +108,32 @@ namespace KanekoUtilities
                 OutBack(t * 2.0f - 1.0f, s) * 0.5f + 0.5f;
         }
 
-        public static float GetEase(float t, Ease ease)
+        public static float GetEase(float t, EaseType ease)
         {
             switch (ease)
             {
-                case Ease.Linear: return Linear(t);
+                case EaseType.Linear: return Linear(t);
 
-                case Ease.InQuad: return InQuad(t);
-                case Ease.InCubic: return InCubic(t);
-                case Ease.InQuart: return InQuart(t);
-                case Ease.InQuint: return InQuint(t);
-                case Ease.InExpo: return InExpo(t);
-                case Ease.InBack: return InBack(t);
+                case EaseType.InQuad: return InQuad(t);
+                case EaseType.InCubic: return InCubic(t);
+                case EaseType.InQuart: return InQuart(t);
+                case EaseType.InQuint: return InQuint(t);
+                case EaseType.InExpo: return InExpo(t);
+                case EaseType.InBack: return InBack(t);
 
-                case Ease.OutQuad: return OutQuad(t);
-                case Ease.OutCubic: return OutCubic(t);
-                case Ease.OutQuart: return OutQuart(t);
-                case Ease.OutQuint: return OutQuint(t);
-                case Ease.OutExpo: return OutExpo(t);
-                case Ease.OutBack: return OutBack(t);
+                case EaseType.OutQuad: return OutQuad(t);
+                case EaseType.OutCubic: return OutCubic(t);
+                case EaseType.OutQuart: return OutQuart(t);
+                case EaseType.OutQuint: return OutQuint(t);
+                case EaseType.OutExpo: return OutExpo(t);
+                case EaseType.OutBack: return OutBack(t);
 
-                case Ease.InOutQuad: return InOutQuad(t);
-                case Ease.InOutCubic: return InOutCubic(t);
-                case Ease.InOutQuart: return InOutQuart(t);
-                case Ease.InOutQuint: return InOutQuint(t);
-                case Ease.InOutExpo: return InOutExpo(t);
-                case Ease.InOutBack: return InOutBack(t);
+                case EaseType.InOutQuad: return InOutQuad(t);
+                case EaseType.InOutCubic: return InOutCubic(t);
+                case EaseType.InOutQuart: return InOutQuart(t);
+                case EaseType.InOutQuint: return InOutQuint(t);
+                case EaseType.InOutExpo: return InOutExpo(t);
+                case EaseType.InOutBack: return InOutBack(t);
             }
 
             return t;

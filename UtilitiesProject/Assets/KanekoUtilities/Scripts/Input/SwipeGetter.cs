@@ -8,20 +8,19 @@ namespace KanekoUtilities
     public class SwipeGetter : SingletonMonobehaviour<SwipeGetter>
     {
         [SerializeField]
+        TouchPanel touchPanel = null;
+        [SerializeField]
         float swipePowerBoder = 10.0f;
 
-        float screenSizeRate = 1.0f;
-
-        Vector2 oldTouchPosition;
+        /// <summary>
+        /// タッチ操作を受け付けるか？
+        /// </summary>
+        public bool CanTouch;
 
         /// <summary>
         /// 指の移動量
         /// </summary>
         public Vector2 DeltaPosition { get; private set; }
-
-        Vector2 swipeValue;
-        float swipePower = 0.0f;
-        float touchTime = 0.0f;
 
         /// <summary>
         /// 画面がタップされた時（座標）
@@ -40,29 +39,56 @@ namespace KanekoUtilities
         /// </summary>
         public MyUnityEvent<Vector2> onTouchEnd = new MyUnityEvent<Vector2>();
 
+        float screenSizeRate = 1.0f;
+
+        Vector2 touchPosition;
+        Vector2 oldTouchPosition;
+        Vector2 swipeValue;
+        float swipePower = 0.0f;
+        float touchTime = 0.0f;
+        bool isStartTouch = false;
+
         protected override void Start()
         {
             base.Start();
 
             screenSizeRate = 1.0f / ((float)Screen.width / 1080);
+
+            touchPanel.OnTouchStart.AddListener(OnTouchStart);
+            touchPanel.OnTouchEnd.AddListener(OnTouchEnd);
+            touchPanel.OnTouching.AddListener(OnTouching);
         }
 
-        void Update()
+        void OnTouchStart(Vector2 touchPosition)
         {
-            Vector2 touchPosition = TouchGetter.GetTouchPositon();
-            TouchInfo touchInfo = TouchGetter.GetTouch();
+            isStartTouch = CanTouch;
+            if (!isStartTouch) return;
 
+            DeltaPosition = Vector2.zero;
+            swipePower = 0.0f;
+            swipeValue = Vector2.zero;
+            touchTime = 0.0f;
+            oldTouchPosition = TouchGetter.GetTouchPositon();
+
+            if (onTouchStart != null) onTouchStart.Invoke(touchPosition);
+        }
+        void OnTouching(Vector2 touchPosition)
+        {
+            //移動量の計算
+            touchPosition = TouchGetter.GetTouchPositon();
             DeltaPosition = (touchPosition - oldTouchPosition) * screenSizeRate;
-
-            if (touchInfo == TouchInfo.Touching) OnTouchUpdate();
-            else if (touchInfo == TouchInfo.Began) OnTouchStart();
-            else if (touchInfo == TouchInfo.Ended) OnTouchEnd();
-
             oldTouchPosition = touchPosition;
-        }
 
-        void OnTouchUpdate()
-        {
+            //スワイプ中にCanTouchがfalseになった
+            if (isStartTouch && !CanTouch)
+            {
+                isStartTouch = false;
+                if (onTouchEnd != null) onTouchEnd.Invoke(oldTouchPosition);
+            }
+
+            //操作受け中ではなかった
+            if (!isStartTouch || !CanTouch) return;
+
             if (swipePower < swipePowerBoder)
             {
                 touchTime += Time.deltaTime;
@@ -74,23 +100,15 @@ namespace KanekoUtilities
                 if (onSwipe != null) onSwipe.Invoke(DeltaPosition);
             }
         }
-        void OnTouchStart()
+        void OnTouchEnd(Vector2 touchPosition)
         {
-            DeltaPosition = Vector2.zero;
-            swipePower = 0.0f;
-            swipeValue = Vector2.zero;
-            touchTime = 0.0f;
-
-            if (onTouchStart != null) onTouchStart.Invoke(TouchGetter.GetTouchPositon());
-        }
-        void OnTouchEnd()
-        {
+            if (!isStartTouch || !CanTouch) return;
             if (swipePower < swipePowerBoder)
             {
-                if (onTap != null) onTap.Invoke(oldTouchPosition);
+                if (onTap != null) onTap.Invoke(touchPosition);
             }
 
-            if (onTouchEnd != null) onTouchEnd.Invoke(oldTouchPosition);
+            if (onTouchEnd != null) onTouchEnd.Invoke(touchPosition);
         }
     }
 }

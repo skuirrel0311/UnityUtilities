@@ -1,107 +1,109 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using KanekoUtilities;
 
-public enum AdjustmentValueName
+namespace KanekoUtilities
 {
-    //todo:ここに調整要素の名前を定義していく
-}
-
-//難易度を調整してくれる人
-public class LevelAdjuster : SingletonMonobehaviour<LevelAdjuster>
-{
-    [SerializeField]
-    AdjustmentValueByGameTime[] adjustmentValuesByGameTime = null;
-
-    [SerializeField]
-    AdjustmentValueByTrigger[] adjustmentValuesByTrigger = null;
-
-    [SerializeField]
-    IntAdjustmentValueByScore[] intAdjustmentValuesByScore = null;
-
-    [SerializeField]
-    FloatAdjustmentValueByScore[] floatAdjustmentValuesByScore = null;
-
-    Dictionary<AdjustmentValueName, IAdjustmentValue> AdjustmentValueDic = new Dictionary<AdjustmentValueName, IAdjustmentValue>();
-
-    protected override void Awake()
+    public enum AdjustmentValueName
     {
-        base.Awake();
-
-        AddDictionary(adjustmentValuesByGameTime);
-        AddDictionary(adjustmentValuesByTrigger);
-        AddDictionary(intAdjustmentValuesByScore);
-        AddDictionary(floatAdjustmentValuesByScore);
+        //todo:ここに調整要素の名前を定義していく
     }
 
-    void AddDictionary(IAdjustmentValue[] adjustmentValues)
+    //難易度を調整してくれる人
+    public class LevelAdjuster : SingletonMonobehaviour<LevelAdjuster>
     {
-        for (int i = 0; i < adjustmentValues.Length; i++)
+        [SerializeField]
+        AdjustmentValueByGameTime[] adjustmentValuesByGameTime = null;
+
+        [SerializeField]
+        AdjustmentValueByTrigger[] adjustmentValuesByTrigger = null;
+
+        [SerializeField]
+        IntAdjustmentValueByScore[] intAdjustmentValuesByScore = null;
+
+        [SerializeField]
+        FloatAdjustmentValueByScore[] floatAdjustmentValuesByScore = null;
+
+        Dictionary<AdjustmentValueName, IAdjustmentValue> AdjustmentValueDic = new Dictionary<AdjustmentValueName, IAdjustmentValue>();
+
+        protected override void Awake()
         {
-            IAdjustmentValue value = adjustmentValues[i];
-            AdjustmentValueDic[value.Name] = value;
-        }
-    }
+            base.Awake();
 
-    public void Init()
-    {
-        foreach (var key in AdjustmentValueDic.Keys)
+            AddDictionary(adjustmentValuesByGameTime);
+            AddDictionary(adjustmentValuesByTrigger);
+            AddDictionary(intAdjustmentValuesByScore);
+            AddDictionary(floatAdjustmentValuesByScore);
+        }
+
+        void AddDictionary(IAdjustmentValue[] adjustmentValues)
         {
-            AdjustmentValueDic[key].Init();
+            for (int i = 0; i < adjustmentValues.Length; i++)
+            {
+                IAdjustmentValue value = adjustmentValues[i];
+                AdjustmentValueDic[value.Name] = value;
+            }
         }
-    }
 
-    public void StartAdjustment()
-    {
-        for (int i = 0; i < adjustmentValuesByGameTime.Length; i++)
+        public void Init()
         {
-            adjustmentValuesByGameTime[i].Start();
+            foreach (var key in AdjustmentValueDic.Keys)
+            {
+                AdjustmentValueDic[key].Init();
+            }
         }
-    }
-    void Update()
-    {
-        for (int i = 0; i < adjustmentValuesByGameTime.Length; i++)
+
+        public void StartAdjustment()
         {
-            adjustmentValuesByGameTime[i].Update();
+            for (int i = 0; i < adjustmentValuesByGameTime.Length; i++)
+            {
+                adjustmentValuesByGameTime[i].Start();
+            }
         }
-    }
-
-    public BaseAdjustmentValue<T> GetAdjustmentValue<T>(AdjustmentValueName name)
-    {
-        IAdjustmentValue value;
-
-        if (!AdjustmentValueDic.TryGetValue(name, out value)) return null;
-
-        return (BaseAdjustmentValue<T>)value;
-    }
-
-    public void SetScore(int totalScore)
-    {
-        for (int i = 0; i < intAdjustmentValuesByScore.Length; i++)
+        void Update()
         {
-            intAdjustmentValuesByScore[i].UpdateAdjustmentValue(totalScore);
+            for (int i = 0; i < adjustmentValuesByGameTime.Length; i++)
+            {
+                adjustmentValuesByGameTime[i].Update();
+            }
         }
-        for (int i = 0; i < floatAdjustmentValuesByScore.Length; i++)
+
+        public BaseAdjustmentValue<T> GetAdjustmentValue<T>(AdjustmentValueName name)
         {
-            floatAdjustmentValuesByScore[i].UpdateAdjustmentValue(totalScore);
+            IAdjustmentValue value;
+
+            if (!AdjustmentValueDic.TryGetValue(name, out value)) return null;
+
+            return (BaseAdjustmentValue<T>)value;
         }
-    }
 
-    public float GetFloat(AdjustmentValueName name)
-    {
-        return GetValue<float>(name);
-    }
+        public void SetScore(int totalScore)
+        {
+            for (int i = 0; i < intAdjustmentValuesByScore.Length; i++)
+            {
+                intAdjustmentValuesByScore[i].UpdateAdjustmentValue(totalScore);
+            }
+            for (int i = 0; i < floatAdjustmentValuesByScore.Length; i++)
+            {
+                floatAdjustmentValuesByScore[i].UpdateAdjustmentValue(totalScore);
+            }
+        }
 
-    public int GetInt(AdjustmentValueName name)
-    {
-        return GetValue<int>(name);
-    }
+        public float GetFloat(AdjustmentValueName name)
+        {
+            return GetValue<float>(name);
+        }
 
-    T GetValue<T>(AdjustmentValueName name)
-    {
-        BaseAdjustmentValue<T> value = GetAdjustmentValue<T>(name);
+        public int GetInt(AdjustmentValueName name)
+        {
+            return GetValue<int>(name);
+        }
 
-        if (value == null) return default(T);
-        else return value.CurrentValue;
+        T GetValue<T>(AdjustmentValueName name)
+        {
+            BaseAdjustmentValue<T> value = GetAdjustmentValue<T>(name);
+
+            if (value == null) return default(T);
+            else return value.CurrentValue;
+        }
     }
 }

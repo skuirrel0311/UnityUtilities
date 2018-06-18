@@ -205,6 +205,14 @@ namespace KanekoUtilities
         {
             return UnityEngine.Random.Range(0, 100) < probability;
         }
+
+        /// <summary>
+        /// 渡された配列の中からランダムで1つを返す
+        /// </summary>
+        public static T GetRandomValue<T>(T[] values)
+        {
+            return values[UnityEngine.Random.Range(0, values.Length)];
+        }
     }
 
     public class MyUnityEvent : UnityEvent { }

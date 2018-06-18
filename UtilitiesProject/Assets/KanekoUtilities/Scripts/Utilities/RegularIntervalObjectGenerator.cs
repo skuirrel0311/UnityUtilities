@@ -1,83 +1,85 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using KanekoUtilities;
 
-//オブジェクトを一定間隔に生成する人
-//使うときは空のクラスを定義して明示的に生成するオブジェクトの型を指定してください
-public class RegularIntervalObjectGenerator<T> : ObjectPool<T>
-    where T : PoolMonoBehaviour
+namespace KanekoUtilities
 {
-    [SerializeField]
-    protected Vector3 objectDistance = Vector3.zero;
-    public Vector3 ObjectDistance { get { return objectDistance; } }
-    [SerializeField]
-    protected int startGenerateNum = 10;
-    public int StartGenerateNum { get { return startGenerateNum; } }
-    protected Vector3 startPosition;
-    protected int totalObjectCount;
-    public int TotalObjectCount { get { return totalObjectCount; } }
-
-    protected void Awake()
+    //オブジェクトを一定間隔に生成する人
+    //使うときは空のクラスを定義して明示的に生成するオブジェクトの型を指定してください
+    public class RegularIntervalObjectGenerator<T> : ObjectPool<T>
+        where T : PoolMonoBehaviour
     {
-        startPosition = transform.position;
-    }
+        [SerializeField]
+        protected Vector3 objectDistance = Vector3.zero;
+        public Vector3 ObjectDistance { get { return objectDistance; } }
+        [SerializeField]
+        protected int startGenerateNum = 10;
+        public int StartGenerateNum { get { return startGenerateNum; } }
+        protected Vector3 startPosition;
+        protected int totalObjectCount;
+        public int TotalObjectCount { get { return totalObjectCount; } }
 
-    protected virtual void Start()
-    {
-        Init();
-    }
-
-    public virtual void Init()
-    {
-        for (int i = 0; i < ActiveInstanceList.Count; i++)
+        protected void Awake()
         {
-            ReturnInstance(ActiveInstanceList[i]);
+            startPosition = transform.position;
         }
 
-        ActiveInstanceList.Clear();
-        totalObjectCount = 0;
-
-        for (int i = 0; i < startGenerateNum; i++)
+        protected virtual void Start()
         {
-            GenerateAtLast();
-        }
-    }
-
-    /// <summary>
-    /// 後尾に追加
-    /// </summary>
-    public virtual T GenerateAtLast()
-    {
-        T obj = GetInstance();
-
-        obj.transform.position = startPosition + objectDistance * totalObjectCount;
-
-        totalObjectCount++;
-        return obj;
-    }
-
-    /// <summary>
-    /// 先頭に追加
-    /// </summary>
-    public virtual T GenerateAtFirst()
-    {
-        T obj = GetInstance();
-
-        //座標
-        Vector3 generatePosition = startPosition;
-
-        if (ActiveInstanceList.Count > 0)
-        {
-            generatePosition.z = ActiveInstanceList[0].transform.position.z - ObjectDistance.z;
+            Init();
         }
 
-        obj.transform.position = generatePosition;
+        public virtual void Init()
+        {
+            for (int i = 0; i < ActiveInstanceList.Count; i++)
+            {
+                ReturnInstance(ActiveInstanceList[i]);
+            }
 
-        //登録
-        ActiveInstanceList.Remove(obj);
-        ActiveInstanceList.Insert(0, obj);
+            ActiveInstanceList.Clear();
+            totalObjectCount = 0;
 
-        return obj;
+            for (int i = 0; i < startGenerateNum; i++)
+            {
+                GenerateAtLast();
+            }
+        }
+
+        /// <summary>
+        /// 後尾に追加
+        /// </summary>
+        public virtual T GenerateAtLast()
+        {
+            T obj = GetInstance();
+
+            obj.transform.position = startPosition + objectDistance * totalObjectCount;
+
+            totalObjectCount++;
+            return obj;
+        }
+
+        /// <summary>
+        /// 先頭に追加
+        /// </summary>
+        public virtual T GenerateAtFirst()
+        {
+            T obj = GetInstance();
+
+            //座標
+            Vector3 generatePosition = startPosition;
+
+            if (ActiveInstanceList.Count > 0)
+            {
+                generatePosition.z = ActiveInstanceList[0].transform.position.z - ObjectDistance.z;
+            }
+
+            obj.transform.position = generatePosition;
+
+            //登録
+            ActiveInstanceList.Remove(obj);
+            ActiveInstanceList.Insert(0, obj);
+
+            return obj;
+        }
     }
 }

@@ -2,34 +2,37 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public class ConfigButton : MonoBehaviour
+namespace KanekoUtilities
 {
-    Button button;
-
-    [SerializeField]
-    GameObject enableVisual = null;
-    [SerializeField]
-    GameObject disableVisual = null;
-
-    public event Action OnClick;
-    
-    bool currentEnable = true;
-
-    void Awake()
+    [RequireComponent(typeof(Button))]
+    public class ConfigButton : MonoBehaviour
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(() =>
+        Button button;
+
+        [SerializeField]
+        GameObject enableVisual = null;
+        [SerializeField]
+        GameObject disableVisual = null;
+
+        public event Action OnClick;
+
+        bool currentEnable = true;
+
+        void Awake()
         {
-            SetEnable(!currentEnable);
-            if(OnClick != null) OnClick();
-        });
-    }
-    
-    public void SetEnable(bool enable)
-    {
-        currentEnable = enable;
-        enableVisual.SetActive(enable);
-        disableVisual.SetActive(!enable);
+            button = GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                SetEnable(!currentEnable);
+                if (OnClick != null) OnClick();
+            });
+        }
+
+        public void SetEnable(bool enable)
+        {
+            currentEnable = enable;
+            enableVisual.SetActive(enable);
+            disableVisual.SetActive(!enable);
+        }
     }
 }

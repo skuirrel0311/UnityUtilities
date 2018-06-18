@@ -4,8 +4,5 @@ using UnityEngine;
 
 namespace KanekoUtilities
 {
-    public abstract class UIParts3D : UIParts
-    {
-
-    }
+    public abstract class UIParts3D : UIParts { }
 }

@@ -1,179 +1,182 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IAdjustmentValue
+namespace KanekoUtilities
 {
-    AdjustmentValueName Name { get; }
-    void Init();
-    void LevelUp();
-}
 
-public class BaseAdjustmentValue<T> : IAdjustmentValue
-{
-    [SerializeField]
-    AdjustmentValueName name = 0;
-
-    [SerializeField]
-    protected T firstValue;
-    [SerializeField]
-    protected T limitValue;
-
-    //レベルアップするたびにどれだけ変化するかの倍率
-    [SerializeField]
-    protected float magnification = 1.1f;
-
-    protected enum MagnificationType { multiply, addition }
-
-    [SerializeField]
-    protected MagnificationType magnificationType = 0;
-
-    public AdjustmentValueName Name { get { return name; } }
-    public T CurrentValue { get; protected set; }
-    public event Action<T> OnLevelUp;
-
-    public virtual void Init()
+    public interface IAdjustmentValue
     {
-        CurrentValue = firstValue;
+        AdjustmentValueName Name { get; }
+        void Init();
+        void LevelUp();
     }
 
-    public virtual void LevelUp()
+    public class BaseAdjustmentValue<T> : IAdjustmentValue
     {
-        if (OnLevelUp != null) OnLevelUp.Invoke(CurrentValue);
-    }
-}
+        [SerializeField]
+        AdjustmentValueName name = 0;
 
-//トリガーが発生した時にレベルアップする調整要素
-[Serializable]
-public class AdjustmentValueByTrigger : BaseAdjustmentValue<int>
-{
-    public override void LevelUp()
-    {
-        CurrentValue = (int)(CurrentValue * magnification);
+        [SerializeField]
+        protected T firstValue;
+        [SerializeField]
+        protected T limitValue;
 
-        //上限値を超えていたら
-        if (magnification > 1 == CurrentValue >= limitValue)
+        //レベルアップするたびにどれだけ変化するかの倍率
+        [SerializeField]
+        protected float magnification = 1.1f;
+
+        protected enum MagnificationType { multiply, addition }
+
+        [SerializeField]
+        protected MagnificationType magnificationType = 0;
+
+        public AdjustmentValueName Name { get { return name; } }
+        public T CurrentValue { get; protected set; }
+        public event Action<T> OnLevelUp;
+
+        public virtual void Init()
         {
-            CurrentValue = limitValue;
+            CurrentValue = firstValue;
         }
 
-        base.LevelUp();
-    }
-}
-
-//ゲームの時間によってレベルアップする調整要素
-[Serializable]
-public class AdjustmentValueByGameTime : BaseAdjustmentValue<float>
-{
-    [SerializeField]
-    bool autoStart = true;
-
-    [SerializeField]
-    float levelupIntervalTime = 1.0f;
-
-    float elapsedTime = 0.0f;
-    bool canLevelUp = false;
-
-    public override void Init()
-    {
-        base.Init();
-        canLevelUp = false;
-        if (autoStart) Start();
-    }
-
-    public void Start()
-    {
-        canLevelUp = true;
-    }
-
-    public void Update()
-    {
-        if (!canLevelUp) return;
-
-        elapsedTime += Time.deltaTime;
-
-        if (elapsedTime > levelupIntervalTime)
+        public virtual void LevelUp()
         {
-            elapsedTime = 0.0f;
-            LevelUp();
+            if (OnLevelUp != null) OnLevelUp.Invoke(CurrentValue);
         }
     }
 
-    public override void LevelUp()
+    //トリガーが発生した時にレベルアップする調整要素
+    [Serializable]
+    public class AdjustmentValueByTrigger : BaseAdjustmentValue<int>
     {
-        if (magnificationType == MagnificationType.multiply)
-            CurrentValue *= magnification;
-        else if (magnificationType == MagnificationType.addition)
-            CurrentValue += magnification;
-
-        //上限値を超えていたら
-        if (limitValue > firstValue == CurrentValue >= limitValue)
+        public override void LevelUp()
         {
-            Stop();
-        }
-
-        base.LevelUp();
-    }
-
-    void Stop()
-    {
-        canLevelUp = false;
-        CurrentValue = limitValue;
-    }
-}
-
-public class BaseAdjustmentValueByScore<T> : BaseAdjustmentValue<T>
-{
-    [SerializeField]
-    int intervalScore = 10;
-
-    public void UpdateAdjustmentValue(int totalScore)
-    {
-        int levelUpNum = totalScore / intervalScore;
-
-        CurrentValue = firstValue;
-
-        for (int i = 0; i < levelUpNum; i++)
-        {
-            LevelUp();
-        }
-    }
-}
-[Serializable]
-public class IntAdjustmentValueByScore : BaseAdjustmentValueByScore<int>
-{
-    public override void LevelUp()
-    {
-        if (magnificationType == MagnificationType.multiply)
             CurrentValue = (int)(CurrentValue * magnification);
-        else if (magnificationType == MagnificationType.addition)
-            CurrentValue += (int)magnification;
 
-        //上限値を超えていたら
-        if (limitValue > firstValue == CurrentValue >= limitValue)
-        {
-            CurrentValue = limitValue;
+            //上限値を超えていたら
+            if (magnification > 1 == CurrentValue >= limitValue)
+            {
+                CurrentValue = limitValue;
+            }
+
+            base.LevelUp();
         }
-
-        base.LevelUp();
     }
-}
-[Serializable]
-public class FloatAdjustmentValueByScore : BaseAdjustmentValueByScore<float>
-{
-    public override void LevelUp()
+
+    //ゲームの時間によってレベルアップする調整要素
+    [Serializable]
+    public class AdjustmentValueByGameTime : BaseAdjustmentValue<float>
     {
-        if (magnificationType == MagnificationType.multiply)
-            CurrentValue = CurrentValue * magnification;
-        else if (magnificationType == MagnificationType.addition)
-            CurrentValue += magnification;
+        [SerializeField]
+        bool autoStart = true;
 
-        //上限値を超えていたら
-        if (limitValue > firstValue == CurrentValue >= limitValue)
+        [SerializeField]
+        float levelupIntervalTime = 1.0f;
+
+        float elapsedTime = 0.0f;
+        bool canLevelUp = false;
+
+        public override void Init()
         {
-            CurrentValue = limitValue;
+            base.Init();
+            canLevelUp = false;
+            if (autoStart) Start();
         }
 
-        base.LevelUp();
+        public void Start()
+        {
+            canLevelUp = true;
+        }
+
+        public void Update()
+        {
+            if (!canLevelUp) return;
+
+            elapsedTime += Time.deltaTime;
+
+            if (elapsedTime > levelupIntervalTime)
+            {
+                elapsedTime = 0.0f;
+                LevelUp();
+            }
+        }
+
+        public override void LevelUp()
+        {
+            if (magnificationType == MagnificationType.multiply)
+                CurrentValue *= magnification;
+            else if (magnificationType == MagnificationType.addition)
+                CurrentValue += magnification;
+
+            //上限値を超えていたら
+            if (limitValue > firstValue == CurrentValue >= limitValue)
+            {
+                Stop();
+            }
+
+            base.LevelUp();
+        }
+
+        void Stop()
+        {
+            canLevelUp = false;
+            CurrentValue = limitValue;
+        }
+    }
+
+    public class BaseAdjustmentValueByScore<T> : BaseAdjustmentValue<T>
+    {
+        [SerializeField]
+        int intervalScore = 10;
+
+        public void UpdateAdjustmentValue(int totalScore)
+        {
+            int levelUpNum = totalScore / intervalScore;
+
+            CurrentValue = firstValue;
+
+            for (int i = 0; i < levelUpNum; i++)
+            {
+                LevelUp();
+            }
+        }
+    }
+    [Serializable]
+    public class IntAdjustmentValueByScore : BaseAdjustmentValueByScore<int>
+    {
+        public override void LevelUp()
+        {
+            if (magnificationType == MagnificationType.multiply)
+                CurrentValue = (int)(CurrentValue * magnification);
+            else if (magnificationType == MagnificationType.addition)
+                CurrentValue += (int)magnification;
+
+            //上限値を超えていたら
+            if (limitValue > firstValue == CurrentValue >= limitValue)
+            {
+                CurrentValue = limitValue;
+            }
+
+            base.LevelUp();
+        }
+    }
+    [Serializable]
+    public class FloatAdjustmentValueByScore : BaseAdjustmentValueByScore<float>
+    {
+        public override void LevelUp()
+        {
+            if (magnificationType == MagnificationType.multiply)
+                CurrentValue = CurrentValue * magnification;
+            else if (magnificationType == MagnificationType.addition)
+                CurrentValue += magnification;
+
+            //上限値を超えていたら
+            if (limitValue > firstValue == CurrentValue >= limitValue)
+            {
+                CurrentValue = limitValue;
+            }
+
+            base.LevelUp();
+        }
     }
 }
-

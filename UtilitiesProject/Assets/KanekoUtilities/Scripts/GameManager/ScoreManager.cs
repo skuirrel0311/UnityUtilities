@@ -1,43 +1,45 @@
 ﻿using System;
 using UnityEngine;
-using KanekoUtilities;
 
-public class ScoreManager : Singleton<ScoreManager>
+namespace KanekoUtilities
 {
-    const string bestScoreSaveKey = "bestScore";
-    public int TotalScore { get; private set; }
-    public int BestScore
+    public class ScoreManager : Singleton<ScoreManager>
     {
-        get
+        const string bestScoreSaveKey = "bestScore";
+        public int TotalScore { get; private set; }
+        public int BestScore
         {
-            return PlayerPrefs.GetInt(bestScoreSaveKey, 0);
+            get
+            {
+                return PlayerPrefs.GetInt(bestScoreSaveKey, 0);
+            }
+            set
+            {
+                PlayerPrefs.SetInt(bestScoreSaveKey, value);
+            }
         }
-        set
+
+        public MyUnityEvent<int> OnAddScore;
+
+        public void Init()
         {
-            PlayerPrefs.SetInt(bestScoreSaveKey, value);
+            TotalScore = 0;
         }
-    }
 
-    public MyUnityEvent<int> OnAddScore;
+        public void AddScore(int value)
+        {
+            TotalScore += value;
 
-    public void Init()
-    {
-        TotalScore = 0;
-    }
-    
-    public void AddScore(int value)
-    {
-        TotalScore += value;
+            if (OnAddScore != null) OnAddScore.Invoke(value);
+        }
 
-        if (OnAddScore != null) OnAddScore.Invoke(value);
-    }
+        public bool UpdateBestScore()
+        {
+            if (TotalScore <= BestScore) return false;
 
-    public bool UpdateBestScore()
-    {
-        if (TotalScore <= BestScore) return false;
+            BestScore = TotalScore;
 
-        BestScore = TotalScore;
-
-        return true;
+            return true;
+        }
     }
 }

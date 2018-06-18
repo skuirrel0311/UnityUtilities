@@ -123,9 +123,32 @@ namespace KanekoUtilities
 
             if (particle == null) return;
 
-            particle.transform.position = position;
-            particle.transform.rotation = rotation;
+            particle.transform.SetPositionAndRotation(position, rotation);
             particle.Play();
+        }
+
+        /// <summary>
+        /// 指定された地点に瞬間的なパーティクルを再生する
+        /// </summary>
+        public void PlayOneShot(string name, Vector3 position, Transform parent)
+        {
+            PlayOneShot(name, position, Quaternion.identity, parent);
+        }
+
+        /// <summary>
+        /// 指定された地点に瞬間的なパーティクルを再生する
+        /// </summary>
+        public void PlayOneShot(string name, Vector3 position, Quaternion rotation, Transform parent)
+        {
+            MomentParticle particle = GetMomentParticle(name);
+
+            if (particle == null) return;
+
+            particle.transform.SetPositionAndRotation(position, rotation);
+            particle.transform.SetParent(parent);
+            particle.Play();
+
+            KKUtilities.Delay(0.1f, () => particle.transform.SetParent(transform), this);
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace KanekoUtilities
             panel.gameObject.SetActive(activeOnAwake);
             window.gameObject.SetActive(activeOnAwake);
 
-            Vector3 startScale = Vector3.one * 0.3f;
+            Vector3 startScale = Vector3.one * 0.5f;
             Vector3 endScale = Vector3.one;
 
             showAnimation = new UIAnimation((parts, t) =>

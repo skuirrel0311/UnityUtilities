@@ -16,6 +16,19 @@ namespace KanekoUtilities
 
     public class MyAchievementManager : SingletonMonobehaviour<MyAchievementManager>
     {
+        [SerializeField]
+        UGUIImage gemImage = null;
 
+        public UGUIImage GetItemImage(ItemType type, string id)
+        {
+            if(type == ItemType.VirtualCoin)
+            {
+                return gemImage;
+            }
+
+            return null;
+        }
     }
+
+
 }

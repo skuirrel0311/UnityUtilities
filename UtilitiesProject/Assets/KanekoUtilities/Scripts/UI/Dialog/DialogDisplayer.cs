@@ -17,19 +17,19 @@ namespace KanekoUtilities
             return dialog;
         }
 
-        public OKDialog ShowOKDialog(string dialogName)
+        public T ShowDialog<T>(string dialogName) where T : Dialog
         {
-            Dialog dialog = ShowDialog(dialogName);
-            if (dialog == null) return null;
+            Dialog temp = ShowDialog(dialogName);
+            if (temp == null) return null;
 
-            OKDialog oKDialog = (OKDialog)dialog;
-            if (oKDialog == null)
+            T dialog = (T)temp;
+            if (dialog == null)
             {
-                Debug.LogError(dialogName + " does not match the type " + '"' + "OkDialog" + '"' + ".");
+                Debug.LogError(dialogName + " does not match the type " + '"' + typeof(T).Name + '"' + ".");
                 return null;
             }
 
-            return oKDialog;
+            return dialog;
         }
 
         Dialog GetDialog(string dialogName)

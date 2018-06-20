@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace KanekoUtilities
 {
-    public enum SaveKeyName { TotalLoginDays, LastLoginDate }
+    public enum SaveKeyName { TotalLoginDays, LastLoginDate, CanGetLoginBonus }
 
     /// <summary>
     /// PlayerPrefsのラッパー(のちにHyperCommonのIOUtilies.PlayerPrefsと差し替えるため)
@@ -29,23 +29,32 @@ namespace KanekoUtilities
             PlayerPrefs.SetInt(key.ToString(), value ? 1 : 0);
         }
 
-        public static int LoadInt(SaveKeyName key, int defaultValue)
+        public static int LoadInt(SaveKeyName key, int defaultValue = 0)
         {
             return PlayerPrefs.GetInt(key.ToString(), defaultValue);
         }
-        public static string LoadString(SaveKeyName key, string defaultValue)
+        public static string LoadString(SaveKeyName key, string defaultValue = "")
         {
             return PlayerPrefs.GetString(key.ToString(), defaultValue);
         }
-        public static float LoadFloat(SaveKeyName key, float defaultValue)
+        public static float LoadFloat(SaveKeyName key, float defaultValue = 0.0f)
         {
             return PlayerPrefs.GetFloat(key.ToString(), defaultValue);
         }
-        public static bool LoadBool(SaveKeyName key, bool defaultValue)
+        public static bool LoadBool(SaveKeyName key, bool defaultValue = false)
         {
             return PlayerPrefs.GetInt(key.ToString(), defaultValue ? 1 : 0) == 1;
         }
 
+        public static void Delete(SaveKeyName key)
+        {
+            PlayerPrefs.DeleteKey(key.ToString());
+        }
+        public static void DeleteAll()
+        {
+            PlayerPrefs.DeleteAll();
+        }
+        
         /*// HyperCommonを導入したらこちらをコメントアウトして使う
         public static void SaveInt(SaveKeyName key, int value)
         {
@@ -63,19 +72,19 @@ namespace KanekoUtilities
         {
             IOUtility.PlayerPrefs.SaveEncryptedBool(key.ToString(), value);
         }
-        public static int LoadInt(SaveKeyName key, int defaultValue)
+        public static int LoadInt(SaveKeyName key, int defaultValue = 1)
         {
             return IOUtility.PlayerPrefs.LoadEncryptedInt(key.ToString(), defaultValue);
         }
-        public static string LoadString(SaveKeyName key, string defaultValue)
+        public static string LoadString(SaveKeyName key, string defaultValue = "")
         {
             return IOUtility.PlayerPrefs.LoadEncryptedString(key.ToString(), defaultValue);
         }
-        public static float LoadFloat(SaveKeyName key, float defaultValue)
+        public static float LoadFloat(SaveKeyName key, float defaultValue = 0.0f)
         {
             return IOUtility.PlayerPrefs.LoadEncryptedFloat(key.ToString(), defaultValue);
         }
-        public static bool LoadBool(SaveKeyName key, bool defaultValue)
+        public static bool LoadBool(SaveKeyName key, bool defaultValue = false)
         {
             return IOUtility.PlayerPrefs.LoadEncryptedBool(key.ToString(), defaultValue);
         }

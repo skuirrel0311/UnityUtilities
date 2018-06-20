@@ -19,18 +19,17 @@ namespace KanekoUtilities
                 return okButton.OnClick;
             }
         }
-        
-        protected override void Start()
-        {
-            base.Start();
 
-            if (autoHide)
-            {
-                OnClick.AddListener(() =>
-                {
-                    Hide();
-                });
-            }
+        protected override void Awake()
+        {
+            base.Awake();
+
+            OnClick.AddListener(OnOK);
+        }
+
+        protected virtual void OnOK()
+        {
+            if (autoHide) Hide();
         }
     }
 }

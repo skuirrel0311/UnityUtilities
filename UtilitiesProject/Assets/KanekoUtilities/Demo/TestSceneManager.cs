@@ -1,24 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using KanekoUtilities;
 
 public class TestSceneManager : MonoBehaviour
 {
-    bool active;
-
-    [SerializeField]
-    Dialog dialog = null;
-
-    void Update()
+    void Start()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        if(LoginBonus.Instance.CanGetLoginBonus)
         {
-            if (!active) dialog.Show();
-            else dialog.Hide();
-
-            active = !active;
+            KKUtilities.Delay(1.0f, () => LoginBonus.Instance.ShowLoginBonusDialog(), this);
         }
     }
 
+    [ContextMenu("DataReset")]
+    public void ResetData()
+    {
+        MyPlayerPrefs.DeleteAll();
+    }
 }

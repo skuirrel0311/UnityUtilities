@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KanekoUtilities {
+namespace KanekoUtilities
+{
     public class LoginBonusDialogElement : UGUIParts
     {
         [SerializeField]
@@ -14,10 +15,27 @@ namespace KanekoUtilities {
         [SerializeField]
         UGUIImage[] backGrounds = null;
 
-        public void Init(int day, int value)
+        [SerializeField]
+        UGUIImage checkImage = null;
+
+        [SerializeField]
+        UGUIImage[] itemImages = null;
+
+        [SerializeField]
+        Sprite willGetImage = null;
+        [SerializeField]
+        Sprite alreadyGetImage = null;
+
+        public void Init(int day, ItemType itemType, string itemID, int value, bool isCompleted)
         {
             this.day.SetValue(day);
-            this.value.Text = "+" + value;
+            if (itemType == ItemType.VirtualCoin)
+            {
+                this.value.Text = "+" + value;
+            }
+            
+            if (isCompleted) checkImage.Sprite = alreadyGetImage;
+            else checkImage.Sprite = willGetImage;
         }
 
         public override Color Color
@@ -29,7 +47,7 @@ namespace KanekoUtilities {
 
             set
             {
-                for(int i = 0;i< backGrounds.Length;i++)
+                for (int i = 0; i < backGrounds.Length; i++)
                 {
                     backGrounds[i].Color = value;
                 }

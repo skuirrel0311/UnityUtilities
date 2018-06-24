@@ -7,7 +7,20 @@ using KanekoUtilities;
 public class Window : UGUIParts
 {
     [SerializeField]
-    UGUIImage limImage = null;
+    UGUIImage image = null;
+
+    Transform container;
+    public Transform Container
+    {
+        get
+        {
+            if(container == null)
+            {
+                container = transform.GetChild(0);
+            }
+            return container;
+        }
+    }
 
     CanvasGroup group;
     public CanvasGroup Group
@@ -26,12 +39,12 @@ public class Window : UGUIParts
     {
         get
         {
-            return limImage.Color;
+            return image.Color;
         }
 
         set
         {
-            limImage.Color = value;
+            image.Color = value;
         }
     }
     public override float Alpha

@@ -156,7 +156,7 @@ namespace KanekoUtilities
         /// <summary>
         /// アクションが呼ばれるまで待機する
         /// </summary>
-        public static IEnumerator WaitAction(UnityEvent action)
+        public static IEnumerator WaitAction(UnityEvent action, Action callback = null)
         {
             bool isCalled = false;
             UnityAction act = () => isCalled = true;
@@ -166,12 +166,13 @@ namespace KanekoUtilities
             yield return new WaitUntil(() => isCalled);
 
             action.RemoveListener(act);
+            if (callback != null) callback.Invoke();
         }
 
         /// <summary>
         /// アクションが呼ばれるまで待機する
         /// </summary>
-        public static IEnumerator WaitAction<T>(MyUnityEvent<T> action)
+        public static IEnumerator WaitAction<T>(MyUnityEvent<T> action, Action callback = null)
         {
             bool isCalled = false;
             UnityAction<T> act = ((arg) => isCalled = true);
@@ -181,12 +182,13 @@ namespace KanekoUtilities
             yield return new WaitUntil(() => isCalled);
 
             action.RemoveListener(act);
+            if(callback != null) callback.Invoke();
         }
 
         /// <summary>
         /// アクションが呼ばれるまで待機する
         /// </summary>
-        public static IEnumerator WaitAction<T1, T2>(MyUnityEvent<T1, T2> action)
+        public static IEnumerator WaitAction<T1, T2>(MyUnityEvent<T1, T2> action, Action callback = null)
         {
             bool isCalled = false;
             UnityAction<T1, T2> act = ((arg1, arg2) => isCalled = true);
@@ -196,8 +198,9 @@ namespace KanekoUtilities
             yield return new WaitUntil(() => isCalled);
 
             action.RemoveListener(act);
+            if (callback != null) callback.Invoke();
         }
-
+        
         /// <summary>
         /// 指定された確率でtrueを返す
         /// </summary>

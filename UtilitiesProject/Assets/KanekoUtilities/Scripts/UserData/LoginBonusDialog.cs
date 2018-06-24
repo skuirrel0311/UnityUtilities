@@ -8,14 +8,7 @@ namespace KanekoUtilities
     {
         [SerializeField]
         LoginBonusDialogElement[] elements = null;
-        [SerializeField]
-        UGUIImage itemImage = null;
-
-        [SerializeField]
-        NumberText gemCount = null;
-        public NumberText GemCount { get { return gemCount; } }
-
-
+        
         [SerializeField]
         Color alreadyGetElementColor = Color.Lerp(Color.yellow, Color.blue, 0.5f);
         [SerializeField]

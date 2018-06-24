@@ -8,10 +8,14 @@ public class TestSceneManager : MonoBehaviour
 {
     void Start()
     {
-        if(LoginBonus.Instance.CanGetLoginBonus)
-        {
-            KKUtilities.Delay(1.0f, () => LoginBonus.Instance.ShowLoginBonusDialog(), this);
-        }
+
+    }
+
+    IEnumerator Hoge()
+    {
+        yield return KKUtilities.WaitAction(SwipeGetter.Instance.onTap);
+
+        Debug.Log("on tap");
     }
 
     [ContextMenu("DataReset")]

@@ -6,20 +6,33 @@ namespace KanekoUtilities
 {
     public class DialogDisplayer : SingletonMonobehaviour<DialogDisplayer>
     {
+        [SerializeField]
+        UGUIImage panel = null;
+
+        //ゆくゆくは複数出すのにも対応したい
+        //List<Dialog> currentViewDialog = new List<Dialog>();
+        
         Dictionary<string, Dialog> dialogDictionary = new Dictionary<string, Dialog>();
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            panel.gameObject.SetActive(false);
+        }
 
         public Dialog ShowDialog(string dialogName)
         {
             Dialog dialog = GetDialog(dialogName);
 
-            dialog.Show();
+            ShowDialog(dialog);
 
             return dialog;
         }
 
         public T ShowDialog<T>(string dialogName) where T : Dialog
         {
-            Dialog temp = ShowDialog(dialogName);
+            Dialog temp = GetDialog(dialogName);
             if (temp == null) return null;
 
             T dialog = (T)temp;
@@ -29,9 +42,23 @@ namespace KanekoUtilities
                 return null;
             }
 
+            ShowDialog(dialog);
+
             return dialog;
         }
 
+        public void ShowDialog(Dialog dialog)
+        {
+            panel.gameObject.SetActive(true);
+
+            dialog.Show();
+            
+            StartCoroutine(KKUtilities.WaitAction(dialog.OnHideAnimationEnd,() =>
+            {
+                panel.gameObject.SetActive(false);
+            }));
+        }
+        
         Dialog GetDialog(string dialogName)
         {
             Dialog dialog = null;

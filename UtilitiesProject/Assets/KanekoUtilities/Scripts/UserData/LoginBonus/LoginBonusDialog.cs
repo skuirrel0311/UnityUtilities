@@ -15,8 +15,6 @@ namespace KanekoUtilities
         Color currentDayColor = Color.Lerp(Color.yellow, Color.red, 0.5f);
         [SerializeField]
         Color willGetElementColor = Color.Lerp(Color.black, Color.white, 0.3f);
-        
-        LoginBonusDialogElement currentElement;
 
         protected override void Start()
         {
@@ -26,10 +24,9 @@ namespace KanekoUtilities
             if (totalLoginDays <= 0) totalLoginDays = 1;
 
             int weeklyCount = (totalLoginDays / elements.Length);
-            int currentElementIndex = (totalLoginDays-1) % elements.Length;
-            currentElement = elements[currentElementIndex];
-            
-            for(int i = 0;i< elements.Length;i++)
+            int currentElementIndex = (totalLoginDays - 1) % elements.Length;
+
+            for (int i = 0; i < elements.Length; i++)
             {
                 int day = (weeklyCount * elements.Length) + i + 1;
                 IGameItem item = LoginBonus.Instance.GetBonusItem(day);
@@ -38,7 +35,7 @@ namespace KanekoUtilities
                 //色変更
                 if (i < currentElementIndex) elements[i].Color = alreadyGetElementColor;
                 else if (i == currentElementIndex) elements[i].Color = currentDayColor;
-                else if (i > currentElementIndex && i != elements.Length - 1) elements[i].Color = willGetElementColor;
+                else if (i > currentElementIndex) elements[i].Color = willGetElementColor;
             }
         }
     }

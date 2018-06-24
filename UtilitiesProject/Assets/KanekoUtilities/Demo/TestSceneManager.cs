@@ -10,17 +10,4 @@ public class TestSceneManager : MonoBehaviour
     {
 
     }
-
-    IEnumerator Hoge()
-    {
-        yield return KKUtilities.WaitAction(SwipeGetter.Instance.onTap);
-
-        Debug.Log("on tap");
-    }
-
-    [ContextMenu("DataReset")]
-    public void ResetData()
-    {
-        MyPlayerPrefs.DeleteAll();
-    }
 }

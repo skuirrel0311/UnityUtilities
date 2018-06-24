@@ -6,7 +6,38 @@ namespace KanekoUtilities
 {
     public class LoginBonus : Singleton<LoginBonus>
     {
+        class LoginBonusItem
+        {
+            IGameItem[] gameItems;
+
+            public LoginBonusItem(IGameItem item)
+            {
+                gameItems = new IGameItem[1];
+                gameItems[0] = item;
+            }
+
+            public LoginBonusItem(IGameItem[] items)
+            {
+                gameItems = items;
+            }
+
+            public IGameItem GetItem(int day, int weeklyLength)
+            {
+                int index = 0;
+                if (day != 1)
+                {
+                    index = (day - 1) / weeklyLength;
+                }
+                //最期の週に設定したアイテムを以降繰り返す
+                if (index >= gameItems.Length) index = gameItems.Length - 1;
+
+                return gameItems[index];
+            }
+        }
+
         const string DateFormat = "yyyyMMdd";
+        public const int WeeklyLength = 5;
+        List<LoginBonusItem> loginBonusItemList = new List<LoginBonusItem>();
 
         DateTime LastDate
         {
@@ -47,10 +78,10 @@ namespace KanekoUtilities
 
         public LoginBonus()
         {
-            if(IsNextDay())
+            if (IsNextDay())
             {
                 CanGetLoginBonus = true;
-            //2日またいでも１しか増やさない
+                //2日またいでも１しか増やさない
                 TotalLoginDay++;
             }
         }
@@ -58,6 +89,9 @@ namespace KanekoUtilities
         public LoginBonusDialog ShowLoginBonusDialog()
         {
             LoginBonusDialog dialog = DialogDisplayer.Instance.ShowDialog<LoginBonusDialog>("LoginBonusDialog");
+
+            //todo:このタイミングで値の増加をする
+            IGameItem loginBonusItem = GetBonusItem(TotalLoginDay);
             
             dialog.OnClick.AddListener(OnClick);
 
@@ -80,33 +114,15 @@ namespace KanekoUtilities
         void OnClick()
         {
             CanGetLoginBonus = false;
+
+            
         }
 
         public IGameItem GetBonusItem(int day)
         {
-            Gem gem = new Gem();
-            gem.Earn(day * 50);
-            return gem;
-        }
-    }
+            int index = (day - 1) % WeeklyLength;
 
-    public class Gem : IGameItem
-    {
-        public ItemType Type { get { return ItemType.VirtualCoin; } }
-        public string ID { get { return "0"; } }
-        int count = 0;
-        public int Count { get { return count; } }
-
-        public void Earn(int value)
-        {
-            count += value;
-        }
-
-        public bool Spend(int value)
-        {
-            if (value > count) return false;
-            
-            return true;
+            return loginBonusItemList[index].GetItem(day, WeeklyLength);
         }
     }
 }

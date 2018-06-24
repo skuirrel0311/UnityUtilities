@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using HyperCommon;
+//using HyperCasual;
 
 namespace KanekoUtilities
 {
@@ -72,7 +72,7 @@ namespace KanekoUtilities
         {
             IOUtility.PlayerPrefs.SaveEncryptedBool(key.ToString(), value);
         }
-        public static int LoadInt(SaveKeyName key, int defaultValue = 1)
+        public static int LoadInt(SaveKeyName key, int defaultValue = 0)
         {
             return IOUtility.PlayerPrefs.LoadEncryptedInt(key.ToString(), defaultValue);
         }

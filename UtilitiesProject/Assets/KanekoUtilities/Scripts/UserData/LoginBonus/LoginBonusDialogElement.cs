@@ -13,44 +13,46 @@ namespace KanekoUtilities
         UGUITextUnity value = null;
 
         [SerializeField]
-        UGUIImage[] backGrounds = null;
+        UGUITextUnity[] texts = null;
+
+        [SerializeField]
+        UGUIImage image = null;
 
         [SerializeField]
         UGUIImage checkImage = null;
 
         [SerializeField]
-        UGUIImage[] itemImages = null;
-
-        [SerializeField]
-        Sprite willGetImage = null;
-        [SerializeField]
         Sprite alreadyGetImage = null;
 
-        public void Init(int day, ItemType itemType, string itemID, int value, bool isCompleted)
+        public void Init(int day, ItemType itemType, string itemID, int count, bool isCompleted)
         {
             this.day.SetValue(day);
+            SetRewordImage(itemType, itemID, count);
+            checkImage.gameObject.SetActive(isCompleted);
+        }
+
+        void SetRewordImage(ItemType itemType, string itemID, int count)
+        {
             if (itemType == ItemType.VirtualCoin)
             {
-                this.value.Text = "+" + value;
+                this.value.Text = "+" + count;
             }
-            
-            if (isCompleted) checkImage.Sprite = alreadyGetImage;
-            else checkImage.Sprite = willGetImage;
         }
 
         public override Color Color
         {
             get
             {
-                return backGrounds[0].Color;
+                return texts[0].Color;
             }
 
             set
             {
-                for (int i = 0; i < backGrounds.Length; i++)
+                for (int i = 0; i < texts.Length; i++)
                 {
-                    backGrounds[i].Color = value;
+                    texts[i].Color = value;
                 }
+                image.Color = value;
             }
         }
     }

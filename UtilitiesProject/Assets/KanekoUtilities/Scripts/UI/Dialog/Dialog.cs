@@ -48,7 +48,6 @@ namespace KanekoUtilities
         }
         public virtual void Hide()
         {
-            Debug.Log("hide dialog");
             StartCoroutine(hideAnimation.GetAnimation(this, hideAnimationTime).OnCompleted(() =>
             {
                 Container.gameObject.SetActive(false);

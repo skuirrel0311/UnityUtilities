@@ -29,7 +29,10 @@ namespace KanekoUtilities
 
         protected virtual void OnOK()
         {
-            if (autoHide) Hide();
+            if (autoHide)
+            {
+                DialogDisplayer.Instance.HideDialog();
+            }
         }
     }
 }

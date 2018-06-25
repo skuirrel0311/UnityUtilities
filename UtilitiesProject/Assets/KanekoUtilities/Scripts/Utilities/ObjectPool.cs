@@ -129,6 +129,17 @@ namespace KanekoUtilities
             ActiveInstanceList.Remove(instance);
         }
 
+        /// <summary>
+        /// すべてのインスタンスを返す（使うときは注意）
+        /// </summary>
+        public virtual void ReturnAllInstance()
+        {
+            for(int i = ActiveInstanceList.Count - 1;i >= 0;i--)
+            {
+                ReturnInstance(ActiveInstanceList[i]);
+            }
+        }
+
         public virtual T GetOriginal
         {
             get

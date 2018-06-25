@@ -3,24 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
 
-[RequireComponent(typeof(CanvasGroup))]
 public class Window : UGUIParts
 {
     [SerializeField]
     UGUIImage image = null;
+    [SerializeField]
+    Transform container = null;
 
-    Transform container;
-    public Transform Container
-    {
-        get
-        {
-            if(container == null)
-            {
-                container = transform.GetChild(0);
-            }
-            return container;
-        }
-    }
+    public Transform Container { get { return container; } }
 
     CanvasGroup group;
     public CanvasGroup Group
@@ -29,7 +19,7 @@ public class Window : UGUIParts
         {
             if (group == null)
             {
-                group = GetComponent<CanvasGroup>();
+                group = Container.GetComponent<CanvasGroup>();
             }
             return group;
         }

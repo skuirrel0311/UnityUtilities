@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,20 +6,9 @@ namespace KanekoUtilities
 {
     public class DialogDisplayer : SingletonMonobehaviour<DialogDisplayer>
     {
-        [SerializeField]
-        UGUIImage panel = null;
+        Queue<Dialog> currentViewDialog = new Queue<Dialog>();
 
-        //ゆくゆくは複数出すのにも対応したい
-        //List<Dialog> currentViewDialog = new List<Dialog>();
-        
-        Dictionary<string, Dialog> dialogDictionary = new Dictionary<string, Dialog>();
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            panel.gameObject.SetActive(false);
-        }
+        Dictionary<string, DialogPool> dialogDictionary = new Dictionary<string, DialogPool>();
 
         public Dialog ShowDialog(string dialogName)
         {
@@ -32,6 +21,46 @@ namespace KanekoUtilities
 
         public T ShowDialog<T>(string dialogName) where T : Dialog
         {
+            T dialog = GetDialog<T>(dialogName);
+
+            ShowDialog(dialog);
+
+            return dialog;
+        }
+
+        public void ShowDialog(Dialog dialog)
+        {
+            dialog.Show();
+            currentViewDialog.Enqueue(dialog);
+        }
+
+        Dialog GetDialog(string dialogName)
+        {
+            Dialog dialog;
+            DialogPool dialogPool;
+
+            if (dialogDictionary.TryGetValue(dialogName, out dialogPool))
+            {
+                return dialogPool.GetInstance();
+            }
+
+            Dialog dialogPrefab = MyAssetStore.Instance.GetAsset<Dialog>(dialogName, "Dialogs/");
+
+            if (dialogPrefab == null) return null;
+
+            dialog = Instantiate(dialogPrefab, transform);
+            dialog.DialogName = dialogName;
+            dialog.gameObject.SetActive(false);
+            dialogPool = gameObject.AddComponent<DialogPool>();
+            dialogPool.SetOriginal(dialog);
+            
+            dialogDictionary.Add(dialogName, dialogPool);
+
+            return dialogPool.GetInstance();
+        }
+
+        T GetDialog<T>(string dialogName) where T : Dialog
+        {
             Dialog temp = GetDialog(dialogName);
             if (temp == null) return null;
 
@@ -42,39 +71,51 @@ namespace KanekoUtilities
                 return null;
             }
 
+            return dialog;
+        }
+
+        public void HideDialog()
+        {
+            if (currentViewDialog.Count <= 0) return;
+            Dialog dialog = currentViewDialog.Dequeue();
+            DialogPool dialogPool;
+
+            if (!dialogDictionary.TryGetValue(dialog.DialogName, out dialogPool)) return;
+            
+            StartCoroutine(KKUtilities.WaitAction(dialog.OnHideAnimationEnd, () =>
+            {
+                dialogPool.ReturnInstance(dialog);
+            }));
+
+            dialog.Hide();
+        }
+
+        public void HideAllDialog()
+        {
+            while (currentViewDialog.Count > 0)
+            {
+                HideDialog();
+            }
+        }
+        
+        public MessageDialog ShowMessageDialog(string title, string message)
+        {
+            MessageDialog dialog = GetDialog<MessageDialog>("MessageDialog");
+
+            dialog.Init(title, message);
+
             ShowDialog(dialog);
 
             return dialog;
         }
 
-        public void ShowDialog(Dialog dialog)
+        public OkCancelDialog ShowOkCancelDialog(Action onOk, Action onCancel)
         {
-            panel.gameObject.SetActive(true);
+            OkCancelDialog dialog = GetDialog<OkCancelDialog>("OkCancelDialog");
 
-            dialog.Show();
-            
-            StartCoroutine(KKUtilities.WaitAction(dialog.OnHideAnimationEnd,() =>
-            {
-                panel.gameObject.SetActive(false);
-            }));
-        }
-        
-        Dialog GetDialog(string dialogName)
-        {
-            Dialog dialog = null;
+            dialog.Init(onOk, onCancel);
 
-            if(dialogDictionary.TryGetValue(dialogName,out dialog))
-            {
-                return dialog;
-            }
-
-            Dialog dialogPrefab = MyAssetStore.Instance.GetAsset<Dialog>(dialogName, "Dialogs/");
-
-            if (dialogPrefab == null) return null;
-
-            dialog = Instantiate(dialogPrefab, transform);
-
-            dialogDictionary.Add(dialogName, dialog);
+            ShowDialog(dialog);
 
             return dialog;
         }

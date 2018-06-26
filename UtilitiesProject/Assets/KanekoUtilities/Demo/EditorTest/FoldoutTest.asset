@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Name: FoldoutTest
   m_EditorClassIdentifier: 
   sampleClass:
-    hoge: 
-    fuga: 0
+    hoge: 12
+    fuga: 11

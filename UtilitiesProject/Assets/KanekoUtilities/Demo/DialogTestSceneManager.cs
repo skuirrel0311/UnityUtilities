@@ -5,6 +5,9 @@ using KanekoUtilities;
 
 public class DialogTestSceneManager : MonoBehaviour
 {
+    [SerializeField]
+    MonsterContainer container = null;
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.A))
@@ -18,6 +21,11 @@ public class DialogTestSceneManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             DialogDisplayer.Instance.HideDialog();
+        }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            container.ShowName();
         }
     }
 }

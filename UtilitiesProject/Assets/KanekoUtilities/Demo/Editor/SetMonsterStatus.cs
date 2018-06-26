@@ -6,14 +6,11 @@ public class FoldoutTestEditor : Editor
 {
     SerializedProperty script;
     SerializedProperty sampleClass;
-    SerializedProperty hoge, fuga;
 
     void OnEnable()
     {
         script = serializedObject.FindProperty("m_Script");
         sampleClass = serializedObject.FindProperty("sampleClass");
-        hoge = sampleClass.FindPropertyRelative("hoge");
-        fuga = sampleClass.FindPropertyRelative("fuga");
     }
 
     public override void OnInspectorGUI()
@@ -23,14 +20,8 @@ public class FoldoutTestEditor : Editor
         EditorGUILayout.PropertyField(script);
         EditorGUI.EndDisabledGroup();
 
-        EditorGUILayout.PropertyField(sampleClass);
+        EditorGUILayout.PropertyField(sampleClass, true);
 
-        if (sampleClass.isExpanded)
-        {
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(hoge);
-            EditorGUILayout.PropertyField(fuga);
-            EditorGUI.indentLevel--;
-        }
+        serializedObject.ApplyModifiedProperties();
     }
 }

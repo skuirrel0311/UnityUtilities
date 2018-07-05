@@ -108,6 +108,8 @@ namespace KanekoUtilities
             }
 
             if (onTouchEnd != null) onTouchEnd.Invoke(touchPosition);
+
+            DeltaPosition = Vector2.zero;
         }
     }
 }

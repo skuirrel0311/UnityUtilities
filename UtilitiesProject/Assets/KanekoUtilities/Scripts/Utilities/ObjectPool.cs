@@ -21,6 +21,9 @@ namespace KanekoUtilities
         int maxCount = 0;
         [SerializeField]
         float removeIntervalTime = 10.0f;
+        [SerializeField]
+        bool isAwakeInstance = false;
+
         //プレハブを入れなかったら子を使用する
         [SerializeField]
         protected T original = null;
@@ -51,6 +54,18 @@ namespace KanekoUtilities
         }
 
         public List<T> deactiveInstanceList = new List<T>();
+
+        protected virtual void Awake()
+        {
+            if (!isAwakeInstance) return;
+
+            for(int i = 0;i< maxCount;i++)
+            {
+                GetInstance();
+            }
+
+            ReturnAllInstance();
+        }
         
         protected virtual void OnEnable()
         {

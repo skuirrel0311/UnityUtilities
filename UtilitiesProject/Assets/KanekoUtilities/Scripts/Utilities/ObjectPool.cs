@@ -18,7 +18,9 @@ namespace KanekoUtilities
         where T : PoolMonoBehaviour
     {
         [SerializeField]
-        int maxCount = 0;
+        int maxCount = 3;
+        public int MaxCount { get { return maxCount; } set { maxCount = value; } }
+
         [SerializeField]
         float removeIntervalTime = 10.0f;
         [SerializeField]
@@ -33,7 +35,7 @@ namespace KanekoUtilities
         {
             get
             {
-                if(instanceList == null)
+                if (instanceList == null)
                 {
                     instanceList = new List<T>();
                 }
@@ -59,14 +61,14 @@ namespace KanekoUtilities
         {
             if (!isAwakeInstance) return;
 
-            for(int i = 0;i< maxCount;i++)
+            for (int i = 0; i < maxCount; i++)
             {
                 GetInstance();
             }
 
             ReturnAllInstance();
         }
-        
+
         protected virtual void OnEnable()
         {
             StartCoroutine(RemoveChecker());
@@ -94,12 +96,12 @@ namespace KanekoUtilities
             T removeInstance;
             while (0 < deactiveInstanceList.Count)
             {
+                if (InstanceList.Count <= maxCount) break;
                 removeInstance = deactiveInstanceList[0];
                 deactiveInstanceList.Remove(removeInstance);
                 InstanceList.Remove(removeInstance);
                 Destroy(removeInstance.gameObject);
 
-                if (InstanceList.Count <= maxCount) break;
             }
         }
 
@@ -139,6 +141,7 @@ namespace KanekoUtilities
 
         public virtual void ReturnInstance(T instance)
         {
+            instance.transform.SetParent(transform);
             instance.gameObject.SetActive(false);
             deactiveInstanceList.Add(instance);
             ActiveInstanceList.Remove(instance);
@@ -149,7 +152,7 @@ namespace KanekoUtilities
         /// </summary>
         public virtual void ReturnAllInstance()
         {
-            for(int i = ActiveInstanceList.Count - 1;i >= 0;i--)
+            for (int i = ActiveInstanceList.Count - 1; i >= 0; i--)
             {
                 ReturnInstance(ActiveInstanceList[i]);
             }

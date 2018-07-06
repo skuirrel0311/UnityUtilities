@@ -31,6 +31,7 @@ namespace KanekoUtilities
         public void ShowDialog(Dialog dialog)
         {
             dialog.Show();
+            dialog.transform.SetAsLastSibling();
             currentViewDialog.Enqueue(dialog);
         }
 

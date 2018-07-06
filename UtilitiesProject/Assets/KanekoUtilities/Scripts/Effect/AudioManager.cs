@@ -11,7 +11,22 @@ namespace KanekoUtilities
         [SerializeField]
         AudioSource loopAudioSource = null;
 
+        public RegisterBoolParameter AudioEnable = new RegisterBoolParameter(SaveKeyName.EnableSound, true);
+
+        public RegisterFloatParameter MasterVolume = new RegisterFloatParameter("MasterVolume", 1.0f);
+        public RegisterFloatParameter MasterSEVolume = new RegisterFloatParameter("MasterSEVolume", 1.0f);
+        public RegisterFloatParameter MasterBGMVolume = new RegisterFloatParameter("MasterBGMVolume", 1.0f);
+        
         Dictionary<string, AudioClip> clipDictionary = new Dictionary<string, AudioClip>();
+
+        protected override void Awake()
+        {
+            base.Awake();
+            MasterBGMVolume.OnValueChanged.AddListener((volume) =>
+            {
+                loopAudioSource.volume = volume;
+            });
+        }
 
         protected override void OnDestroy()
         {
@@ -32,6 +47,8 @@ namespace KanekoUtilities
             AudioClip clip = GetAudioClip(name);
 
             if (clip == null) return;
+
+            volume = volume * MasterSEVolume.GetValue() * (AudioEnable.GetValue() ? 1.0f : 0.0f);
             audioSource.PlayOneShot(clip, volume);
         }
 
@@ -40,12 +57,19 @@ namespace KanekoUtilities
             AudioClip clip = GetAudioClip(name);
 
             if (clip == null) return;
-            AudioSource.PlayClipAtPoint(clip, position, volume);
+
+            volume = volume * MasterSEVolume.GetValue() * (AudioEnable.GetValue() ? 1.0f : 0.0f);
+            AudioSource.PlayClipAtPoint(clip, position, volume );
         }
 
-        public void SetBGMVolume(float volume)
+        /// <summary>
+        /// 一気に設定したい場合
+        /// </summary>
+        public void UpdateVolume(float masterVolume = 1.0f, float seVolume = 1.0f, float bgmVolume = 1.0f)
         {
-            loopAudioSource.volume = volume;
+            MasterVolume.SetValue(masterVolume);
+            MasterSEVolume.SetValue(seVolume);
+            MasterBGMVolume.SetValue(bgmVolume);
         }
 
         AudioClip GetAudioClip(string name)
@@ -55,9 +79,9 @@ namespace KanekoUtilities
             if (clipDictionary.TryGetValue(name, out clip)) return clip;
 
             clip = MyAssetStore.Instance.GetAsset<AudioClip>(name, "Audios/");
-            
+
             if (clip == null) return null;
-            
+
             clipDictionary.Add(name, clip);
             return clip;
         }

@@ -8,6 +8,7 @@ namespace KanekoUtilities
     {
         protected string key;
         protected T value;
+        public MyUnityEvent<T> OnValueChanged = new MyUnityEvent<T>();
 
         public RegisterParameter(string key, T defaultValue)
         {
@@ -37,6 +38,9 @@ namespace KanekoUtilities
 
         public override void SetValue(int value)
         {
+            if (GetValue() == value) return;
+
+            OnValueChanged.Invoke(value);
             MyPlayerPrefs.SaveInt(key, value);
         }
     }
@@ -53,6 +57,9 @@ namespace KanekoUtilities
 
         public override void SetValue(float value)
         {
+            if (GetValue() == value) return;
+
+            OnValueChanged.Invoke(value);
             MyPlayerPrefs.SaveFloat(key, value);
         }
     }
@@ -69,6 +76,9 @@ namespace KanekoUtilities
 
         public override void SetValue(string value)
         {
+            if (GetValue() == value) return;
+
+            OnValueChanged.Invoke(value);
             MyPlayerPrefs.SaveString(key, value);
         }
     }
@@ -85,6 +95,9 @@ namespace KanekoUtilities
 
         public override void SetValue(bool value)
         {
+            if (GetValue() == value) return;
+
+            OnValueChanged.Invoke(value);
             MyPlayerPrefs.SaveBool(key, value);
         }
     }

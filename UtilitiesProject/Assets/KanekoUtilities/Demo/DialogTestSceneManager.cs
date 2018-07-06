@@ -9,7 +9,7 @@ public class DialogTestSceneManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.A))
         {
-            DialogDisplayer.Instance.ShowDialog("OkCancelDialog");
+            DialogDisplayer.Instance.ShowOkCancelDialog(null, null);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {

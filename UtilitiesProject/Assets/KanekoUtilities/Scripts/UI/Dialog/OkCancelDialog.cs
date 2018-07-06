@@ -32,6 +32,7 @@ namespace KanekoUtilities
             okButton.OnClick.AddListener(()=>
             {
                 if(onOk != null) onOk.Invoke();
+                if (autoHide) DialogDisplayer.Instance.HideDialog();
             });
             cancelButton.OnClick.AddListener(() =>
             {

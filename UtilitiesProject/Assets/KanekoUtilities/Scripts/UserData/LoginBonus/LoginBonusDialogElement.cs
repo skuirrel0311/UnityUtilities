@@ -21,9 +21,6 @@ namespace KanekoUtilities
         [SerializeField]
         UGUIImage checkImage = null;
 
-        [SerializeField]
-        Sprite alreadyGetImage = null;
-
         public void Init(int day, ItemType itemType, string itemID, int count, bool isCompleted)
         {
             this.day.SetValue(day);
@@ -35,7 +32,7 @@ namespace KanekoUtilities
         {
             if (itemType == ItemType.VirtualCoin)
             {
-                this.value.Text = "+" + count;
+                value.Text = "+" + count;
             }
         }
 

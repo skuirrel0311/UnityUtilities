@@ -7,8 +7,8 @@ namespace KanekoUtilities
     //アイテムを受け取った時の挙動を管理する
     public class ItemPresenter : SingletonMonobehaviour<ItemPresenter>
     {
-        [SerializeField]
-        Panel panel = null;
+        //[SerializeField]
+        //Panel panel = null;
 
         public void PresentItem(IGameItem item)
         {

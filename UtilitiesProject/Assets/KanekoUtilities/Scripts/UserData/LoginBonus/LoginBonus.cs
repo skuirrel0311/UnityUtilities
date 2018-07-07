@@ -91,7 +91,7 @@ namespace KanekoUtilities
             LoginBonusDialog dialog = DialogDisplayer.Instance.ShowDialog<LoginBonusDialog>("LoginBonusDialog");
 
             //todo:このタイミングで値の増加をする
-            IGameItem loginBonusItem = GetBonusItem(TotalLoginDay);
+            //IGameItem loginBonusItem = GetBonusItem(TotalLoginDay);
             
             dialog.Init(OnClick);
 

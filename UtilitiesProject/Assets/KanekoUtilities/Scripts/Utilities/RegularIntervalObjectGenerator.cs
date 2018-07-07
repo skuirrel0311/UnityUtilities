@@ -19,8 +19,9 @@ namespace KanekoUtilities
         protected int totalObjectCount;
         public int TotalObjectCount { get { return totalObjectCount; } }
 
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             startPosition = transform.position;
         }
 

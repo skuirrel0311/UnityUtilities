@@ -15,10 +15,10 @@ namespace KanekoUtilities
 
     public class MissionData
     {
-        MissionType type;
+        MissionType type = 0;
         public MissionType Type { get { return type; } }
 
-        MissionState state;
+        MissionState state = 0;
         public MissionState MissionState { get { return state; } }
 
         int targetValue;
@@ -34,8 +34,8 @@ namespace KanekoUtilities
         {
             this.type = type;
             this.targetValue = targetValue;
+            this.skipCost = skipCost;
             currentValue = 0;
-
         }
 
         public string GetDescription()

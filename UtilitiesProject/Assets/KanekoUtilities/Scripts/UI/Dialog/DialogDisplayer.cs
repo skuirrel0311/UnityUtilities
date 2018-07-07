@@ -110,6 +110,17 @@ namespace KanekoUtilities
             return dialog;
         }
 
+        public OKDialog ShowOkDialog(Action onOK)
+        {
+            OKDialog dialog = GetDialog<OKDialog>("OkDialog");
+
+            dialog.Init(onOK);
+
+            ShowDialog(dialog);
+
+            return dialog;
+        }
+
         public OkCancelDialog ShowOkCancelDialog(Action onOk, Action onCancel)
         {
             OkCancelDialog dialog = GetDialog<OkCancelDialog>("OkCancelDialog");

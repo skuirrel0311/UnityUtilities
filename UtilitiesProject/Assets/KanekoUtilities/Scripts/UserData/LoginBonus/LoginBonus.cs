@@ -93,7 +93,7 @@ namespace KanekoUtilities
             //todo:このタイミングで値の増加をする
             IGameItem loginBonusItem = GetBonusItem(TotalLoginDay);
             
-            dialog.OnClick.AddListener(OnClick);
+            dialog.Init(OnClick);
 
             return dialog;
         }

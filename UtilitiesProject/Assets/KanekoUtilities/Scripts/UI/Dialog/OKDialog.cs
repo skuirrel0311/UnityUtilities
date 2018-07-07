@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,20 +10,14 @@ namespace KanekoUtilities
         UGUIButton okButton = null;
         [SerializeField]
         bool autoHide = true;
-
-        public UnityEvent OnClick
+        
+        public void Init(Action onOK)
         {
-            get
+            okButton.OnClick.AddListener(()=>
             {
-                return okButton.OnClick;
-            }
-        }
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            OnClick.AddListener(OnOK);
+                if(onOK != null) onOK();
+                if (autoHide) DialogDisplayer.Instance.HideDialog();
+            });
         }
 
         protected virtual void OnOK()

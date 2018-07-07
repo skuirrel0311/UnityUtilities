@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace KanekoUtilities
 {
-    public class Text3DUnity : AbstractTextMesh
+    public class Text3D : AbstractTextMesh
     {
         [SerializeField]
         TextMesh textMesh = null;

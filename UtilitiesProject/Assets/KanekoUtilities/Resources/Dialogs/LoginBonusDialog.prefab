@@ -1681,12 +1681,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   day: {fileID: 114103470765212252}
   value: {fileID: 114908675681660942}
-  backGrounds:
-  - {fileID: 114826223116397868}
-  - {fileID: 114893871416597156}
+  texts: []
+  image: {fileID: 0}
   checkImage: {fileID: 114730722569638844}
-  itemImages: []
-  willGetImage: {fileID: 21300000, guid: cf6edc486b373f24887507054b9c0fb9, type: 3}
   alreadyGetImage: {fileID: 21300000, guid: fda333e105a15824995bdb81ea17154c, type: 3}
 --- !u!114 &114376356259276360
 MonoBehaviour:
@@ -1772,12 +1769,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   day: {fileID: 114953949711689366}
   value: {fileID: 114470528096979018}
-  backGrounds:
-  - {fileID: 114685560080598356}
-  - {fileID: 114991464892046744}
+  texts: []
+  image: {fileID: 0}
   checkImage: {fileID: 114937596164098084}
-  itemImages: []
-  willGetImage: {fileID: 21300000, guid: cf6edc486b373f24887507054b9c0fb9, type: 3}
   alreadyGetImage: {fileID: 21300000, guid: fda333e105a15824995bdb81ea17154c, type: 3}
 --- !u!114 &114402295558440700
 MonoBehaviour:
@@ -1870,12 +1864,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   day: {fileID: 114657102774138514}
   value: {fileID: 114663641264389714}
-  backGrounds:
-  - {fileID: 114729881546833464}
-  - {fileID: 114227788551598100}
+  texts: []
+  image: {fileID: 0}
   checkImage: {fileID: 114326419982169538}
-  itemImages: []
-  willGetImage: {fileID: 21300000, guid: cf6edc486b373f24887507054b9c0fb9, type: 3}
   alreadyGetImage: {fileID: 21300000, guid: fda333e105a15824995bdb81ea17154c, type: 3}
 --- !u!114 &114442555347454056
 MonoBehaviour:
@@ -2267,8 +2258,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 114442555347454056}
+  container: {fileID: 0}
+  panel: {fileID: 0}
   showAnimationTime: 0.5
   hideAnimationTime: 0.2
+  DialogName: 
   okButton: {fileID: 114822574196994816}
   autoHide: 1
   elements:
@@ -2430,12 +2424,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   day: {fileID: 114670020662720832}
   value: {fileID: 114139962239956262}
-  backGrounds:
-  - {fileID: 114693955093411124}
-  - {fileID: 114725768653948798}
+  texts: []
+  image: {fileID: 0}
   checkImage: {fileID: 114080388185235778}
-  itemImages: []
-  willGetImage: {fileID: 21300000, guid: cf6edc486b373f24887507054b9c0fb9, type: 3}
   alreadyGetImage: {fileID: 21300000, guid: fda333e105a15824995bdb81ea17154c, type: 3}
 --- !u!114 &114822574196994816
 MonoBehaviour:
@@ -2772,12 +2763,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   day: {fileID: 114402295558440700}
   value: {fileID: 114617976505818502}
-  backGrounds:
-  - {fileID: 114426703631610774}
-  - {fileID: 114193397767521658}
+  texts: []
+  image: {fileID: 0}
   checkImage: {fileID: 114688298909037400}
-  itemImages: []
-  willGetImage: {fileID: 21300000, guid: cf6edc486b373f24887507054b9c0fb9, type: 3}
   alreadyGetImage: {fileID: 21300000, guid: fda333e105a15824995bdb81ea17154c, type: 3}
 --- !u!114 &114953949711689366
 MonoBehaviour:

@@ -6,8 +6,4 @@ using KanekoUtilities;
 
 public class TestSceneManager : MonoBehaviour
 {
-    void Start()
-    {
-
-    }
 }

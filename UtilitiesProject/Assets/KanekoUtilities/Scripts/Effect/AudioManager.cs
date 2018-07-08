@@ -48,7 +48,7 @@ namespace KanekoUtilities
 
             if (clip == null) return;
 
-            volume = volume * MasterSEVolume.GetValue() * (AudioEnable.GetValue() ? 1.0f : 0.0f);
+            volume = volume * MasterSEVolume.GetValue() * MasterVolume.GetValue() * (AudioEnable.GetValue() ? 1.0f : 0.0f);
             audioSource.PlayOneShot(clip, volume);
         }
 
@@ -58,7 +58,7 @@ namespace KanekoUtilities
 
             if (clip == null) return;
 
-            volume = volume * MasterSEVolume.GetValue() * (AudioEnable.GetValue() ? 1.0f : 0.0f);
+            volume = volume * MasterSEVolume.GetValue() * MasterVolume.GetValue() * (AudioEnable.GetValue() ? 1.0f : 0.0f);
             AudioSource.PlayClipAtPoint(clip, position, volume );
         }
 

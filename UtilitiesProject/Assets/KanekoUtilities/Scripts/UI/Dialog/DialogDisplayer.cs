@@ -101,7 +101,7 @@ namespace KanekoUtilities
         
         public MessageDialog ShowMessageDialog(string title, string message)
         {
-            MessageDialog dialog = GetDialog<MessageDialog>("MessageDialog");
+            MessageDialog dialog = GetDialog<MessageDialog>("DefaultMessageDialog");
 
             dialog.Init(title, message);
 
@@ -112,7 +112,7 @@ namespace KanekoUtilities
 
         public OKDialog ShowOkDialog(Action onOK)
         {
-            OKDialog dialog = GetDialog<OKDialog>("OkDialog");
+            OKDialog dialog = GetDialog<OKDialog>("DefaultOkDialog");
 
             dialog.Init(onOK);
 
@@ -121,9 +121,9 @@ namespace KanekoUtilities
             return dialog;
         }
 
-        public OkCancelDialog ShowOkCancelDialog(Action onOk, Action onCancel)
+        public OkCancelDialog ShowOkCancelDialog(Action onOk, Action onCancel = null)
         {
-            OkCancelDialog dialog = GetDialog<OkCancelDialog>("OkCancelDialog");
+            OkCancelDialog dialog = GetDialog<OkCancelDialog>("DefaultOkCancelDialog");
 
             dialog.Init(onOk, onCancel);
 

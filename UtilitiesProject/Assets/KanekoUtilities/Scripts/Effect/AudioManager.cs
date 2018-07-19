@@ -11,17 +11,23 @@ namespace KanekoUtilities
         [SerializeField]
         AudioSource loopAudioSource = null;
 
-        public RegisterBoolParameter AudioEnable = new RegisterBoolParameter(SaveKeyName.EnableSound, true);
+        public RegisterBoolParameter AudioEnable;
 
-        public RegisterFloatParameter MasterVolume = new RegisterFloatParameter("MasterVolume", 1.0f);
-        public RegisterFloatParameter MasterSEVolume = new RegisterFloatParameter("MasterSEVolume", 1.0f);
-        public RegisterFloatParameter MasterBGMVolume = new RegisterFloatParameter("MasterBGMVolume", 1.0f);
-        
+        public RegisterFloatParameter MasterVolume;
+        public RegisterFloatParameter MasterSEVolume;
+        public RegisterFloatParameter MasterBGMVolume;
+
         Dictionary<string, AudioClip> clipDictionary = new Dictionary<string, AudioClip>();
 
         protected override void Awake()
         {
             base.Awake();
+
+            AudioEnable = new RegisterBoolParameter(SaveKeyName.EnableSound, true);
+            MasterVolume = new RegisterFloatParameter("MasterVolume", 1.0f);
+            MasterSEVolume = new RegisterFloatParameter("MasterSEVolume", 1.0f);
+            MasterBGMVolume = new RegisterFloatParameter("MasterBGMVolume", 1.0f);
+
             MasterBGMVolume.OnValueChanged.AddListener((volume) =>
             {
                 loopAudioSource.volume = volume;
@@ -59,7 +65,7 @@ namespace KanekoUtilities
             if (clip == null) return;
 
             volume = volume * MasterSEVolume.GetValue() * MasterVolume.GetValue() * (AudioEnable.GetValue() ? 1.0f : 0.0f);
-            AudioSource.PlayClipAtPoint(clip, position, volume );
+            AudioSource.PlayClipAtPoint(clip, position, volume);
         }
 
         /// <summary>

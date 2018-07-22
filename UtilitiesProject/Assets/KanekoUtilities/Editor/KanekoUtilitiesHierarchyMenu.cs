@@ -75,6 +75,12 @@ namespace KanekoUtilities
             CreateObject(UIPrefabDirectory, "Text3DPro");
         }
 
+        [MenuItem("GameObject/KKUtilities/UGUIButton", false, 20)]
+        public static void CreateUGUIButton()
+        {
+            CreateObject(UIPrefabDirectory, "UGUIButton");
+        }
+
         static T LoadPrefab<T>(string path, string name) where T : Object
         {
             return AssetDatabase.LoadAssetAtPath(path + name + ".prefab", typeof(T)) as T;

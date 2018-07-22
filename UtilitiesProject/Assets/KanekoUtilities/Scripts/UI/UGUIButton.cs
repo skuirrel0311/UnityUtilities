@@ -18,7 +18,30 @@ namespace KanekoUtilities
                 {
                     button = GetComponent<Button>();
                 }
+
                 return button;
+            }
+        }
+
+        Dictionary<UGUIParts, Color> defaultColorDictionary = new Dictionary<UGUIParts, Color>();
+
+        public bool Interactable
+        {
+            get
+            {
+                return Button.interactable;
+            }
+            set
+            {
+                Button.interactable = value;
+
+                if (Button.transition != Selectable.Transition.ColorTint) return;
+
+                Color tempColor = value ? Button.colors.normalColor : Button.colors.disabledColor;
+                foreach (var key in defaultColorDictionary.Keys)
+                {
+                    key.Color = defaultColorDictionary[key] * tempColor;
+                }
             }
         }
 
@@ -41,6 +64,19 @@ namespace KanekoUtilities
                 if (Color == value) return;
                 Button.image.color = value;
             }
+        }
+
+        void Awake()
+        {
+            UGUIParts[] childParts = GetComponentsInChildren<UGUIParts>();
+            for (int i = 0; i < childParts.Length; i++)
+            {
+                defaultColorDictionary.Add(childParts[i], childParts[i].Color);
+            }
+
+            Interactable = Button.interactable;
+
+            
         }
     }
 }

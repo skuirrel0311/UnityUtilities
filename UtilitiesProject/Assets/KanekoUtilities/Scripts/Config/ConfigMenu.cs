@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class ConfigMenu : MonoBehaviour
 {
     [SerializeField]
-    GameObject menuRootObject = null;
+    GameObject menuConteinerObject = null;
     [SerializeField]
     Button viewConfigButton = null;
 
@@ -12,7 +12,7 @@ public class ConfigMenu : MonoBehaviour
     {
         viewConfigButton.onClick.AddListener(() =>
         {
-            if (menuRootObject.activeSelf) HideMenu();
+            if (menuConteinerObject.activeSelf) HideMenu();
             else ShowMenu();
         });
         
@@ -26,10 +26,10 @@ public class ConfigMenu : MonoBehaviour
 
     public void ShowMenu()
     {
-        menuRootObject.SetActive(true);
+        menuConteinerObject.SetActive(true);
     }
     public void HideMenu()
     {
-        menuRootObject.SetActive(false);
+        menuConteinerObject.SetActive(false);
     }
 }

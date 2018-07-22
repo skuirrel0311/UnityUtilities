@@ -1,113 +1,78 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
 
-public enum GameState
+public partial class MainSceneManager : SingletonMonobehaviour<MainSceneManager>
 {
-    Ready,
-    InGame,
-    Result
-}
-
-public class MainSceneManager : SingletonMonobehaviour<MainSceneManager>
-{
-    public GameState CurrentState { get; private set; }
-
-    public int ContinueCount { get; private set; }
-    public bool CanContinue { get { return ContinueCount < 1; } }
-
-    public event Action OnGameStart;
-    public event Action OnContinue;
-    public event Action OnGameOver;
-    
-    bool isContinueRequested;
-
-    protected override void Start()
-    {
-        base.Start();
-        StartCoroutine(GameLoop());
-    }
-
-    IEnumerator GameLoop()
-    {
-        while (true)
-        {
-            yield return StartCoroutine(OneGame());
-        }
-    }
-
-    IEnumerator OneGame()
-    {
-        Init();
-
-        yield return StartCoroutine(SuggestStart());
-        GameStart();
-
-        while (true)
-        {
-            while (!IsGameOver())
-            {
-                yield return null;
-            }
-
-            if (!CanContinue) break;
-
-            yield return StartCoroutine(SuggestContinue());
-
-            if (!isContinueRequested) break;
-
-            Continue();
-        }
-
-        GameOver();
-        yield return StartCoroutine(SuggestRestart());
-    }
+    /// <summary>
+    /// コンテニューができる上限回数(マイナスなら無限)
+    /// </summary>
+    [HideInInspector]
+    public int MaxContinueCount = 0;
 
     void Init()
     {
         CurrentState = GameState.Ready;
-    }
+        if (OnInitialize != null) OnInitialize.Invoke();
 
+        //todo:Playerなどの初期化をする
+    }
     void GameStart()
     {
         CurrentState = GameState.InGame;
 
-        if(OnGameStart != null) OnGameStart();
-    }
+        if (OnGameStart != null) OnGameStart();
 
-    IEnumerator SuggestStart()
-    {
-        yield return null;
+        //todo:ゲームスタート時の挙動をここに書く
     }
-
     void GameOver()
     {
         CurrentState = GameState.Result;
 
         if (OnGameOver != null) OnGameOver();
-    }
 
-    IEnumerator SuggestRestart()
-    {
-        yield return null;
+        //todo:ゲームオーバー時の挙動をここに書く
     }
-
     void Continue()
     {
         ContinueCount++;
 
         if (OnContinue != null) OnContinue();
+
+        //todo:コンテニュー時の挙動をここに書く
     }
 
+    IEnumerator SuggestStart()
+    {
+        //このコルーチンが終了するとゲームが開始される
+
+        //仮に３秒待つ
+        //todo:Swipeされたらとかに変える
+        yield return new WaitForSeconds(30.0f);
+    }
+    IEnumerator SuggestRestart()
+    {
+        //このコルーチンが終了するとゲームがリセットされる
+
+        //仮に３秒待つ
+        //todo:（ボタンが押されたらとかに変える）
+        yield return new WaitForSeconds(3.0f);
+    }
     IEnumerator SuggestContinue()
     {
-        yield return null;
+        //このコルーチンが終了したときにisContinueRequestedがtrueならコンテニューされる
+
+        //仮に３秒待つ
+        //todo:（ボタンが押されたらとかに変える）
+        yield return new WaitForSeconds(3.0f);
         isContinueRequested = true;
     }
 
     public bool IsGameOver()
     {
+        //この関数がfalseを返す間はゲームが継続される
+
         return false;
     }
 }

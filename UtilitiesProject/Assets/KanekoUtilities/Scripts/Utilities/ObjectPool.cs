@@ -128,6 +128,7 @@ namespace KanekoUtilities
                 deactiveInstanceList.Remove(instance);
                 ActiveInstanceList.Add(instance);
                 instance.gameObject.SetActive(true);
+                instance.Init();
                 return instance;
             }
 
@@ -136,6 +137,7 @@ namespace KanekoUtilities
             InstanceList.Add(instance);
             ActiveInstanceList.Add(instance);
             instance.gameObject.SetActive(true);
+            instance.Init();
             return instance;
         }
 

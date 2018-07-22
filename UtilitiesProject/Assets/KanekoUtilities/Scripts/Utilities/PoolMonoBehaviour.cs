@@ -8,7 +8,13 @@ namespace KanekoUtilities
     /// Monobehaviourを継承しないクラスにも使えるようにinterfaceで実装
     /// </summary>
     /// <typeparam name="T">poolするクラス</typeparam>
-    public interface IPoolObject { }
+    public interface IPoolObject
+    {
+        void Init();
+    }
 
-    public class PoolMonoBehaviour : MonoBehaviour, IPoolObject { }
+    public class PoolMonoBehaviour : MonoBehaviour, IPoolObject
+    {
+        public virtual void Init() { }
+    }
 }

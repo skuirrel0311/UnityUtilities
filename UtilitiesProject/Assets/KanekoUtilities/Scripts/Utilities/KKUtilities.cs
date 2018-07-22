@@ -10,24 +10,29 @@ namespace KanekoUtilities
         /// <summary>
         /// duration秒後にactionを実行する
         /// </summary>
-        public static IEnumerator Delay(float duration, Action action)
+        public static IEnumerator Delay(float duration, Action action, bool isScalable = true)
         {
-            yield return new WaitForSeconds(duration);
+            if (isScalable)
+                yield return new WaitForSeconds(duration);
+            else
+                yield return new WaitForSecondsRealtime(duration);
+
             action.Invoke();
         }
         /// <summary>
         /// duration秒後にactionを実行する
         /// </summary>
-        public static void Delay(float duration, Action action, MonoBehaviour mono)
+        public static void Delay(float duration, Action action, MonoBehaviour mono, bool isScalable = true)
         {
             mono.StartCoroutine(Delay(duration, action));
         }
+
         /// <summary>
-        /// duration秒後にactionを実行する
+        /// frameCountフレーム後にactionを実行する
         /// </summary>
-        public static IEnumerator Delay(int frameCount, Action action)
+        public static IEnumerator DelayFrame(int frameCount, Action action)
         {
-            for(int i = 0;i< frameCount;i++)
+            for (int i = 0; i < frameCount; i++)
             {
                 yield return null;
             }
@@ -35,21 +40,34 @@ namespace KanekoUtilities
             action.Invoke();
         }
         /// <summary>
-        /// duration秒後にactionを実行する
+        /// frameCountフレーム後にactionを実行する
         /// </summary>
-        public static void Delay(int frameCount, Action action, MonoBehaviour mono)
+        public static void DelayFrame(int frameCount, Action action, MonoBehaviour mono)
         {
-            mono.StartCoroutine(Delay(frameCount, action));
+            mono.StartCoroutine(DelayFrame(frameCount, action));
         }
-        
+
         /// <summary>
         /// 与えられたActionにduration秒かけて０→１になる値を毎フレーム渡す
         /// </summary>
-        public static MyCoroutine FloatLerp(float duration, Action<float> action)
+        public static MyCoroutine FloatLerp(float duration, Action<float> action, bool isScalable = true)
         {
-            return new MyCoroutine(M_FloatLerp(duration, action));
+            if (isScalable)
+                return new MyCoroutine(ScalableFloatLerp(duration, action));
+            else
+                return new MyCoroutine(UnscalableFloatLerp(duration, action));
         }
-        static IEnumerator M_FloatLerp(float duration, Action<float> action)
+        /// <summary>
+        /// 与えられたActionにduration秒かけて０→１になる値を毎フレーム渡す
+        /// </summary>
+        public static void FlaotLerp(float duration, Action<float> action, MonoBehaviour mono, bool isScalable = true)
+        {
+            if (isScalable)
+                mono.StartCoroutine(ScalableFloatLerp(duration, action));
+            else
+                mono.StartCoroutine(UnscalableFloatLerp(duration, action));
+        }
+        static IEnumerator ScalableFloatLerp(float duration, Action<float> action)
         {
             float t = 0.0f;
 
@@ -63,13 +81,27 @@ namespace KanekoUtilities
 
             action.Invoke(1.0f);
         }
-        
+        static IEnumerator UnscalableFloatLerp(float duration, Action<float> action)
+        {
+            float t = 0.0f;
+
+            while (true)
+            {
+                t += Time.unscaledDeltaTime;
+                action.Invoke(t / duration);
+                if (t > duration) break;
+                yield return null;
+            }
+
+            action.Invoke(1.0f);
+        }
+
         /// <summary>
         /// １フレームに１回actionを実行する(updateの戻り値は継続するか？)
         /// </summary>
         public static IEnumerator While(Func<bool> update)
         {
-            while(update.Invoke())
+            while (update.Invoke())
             {
                 yield return null;
             }
@@ -87,16 +119,62 @@ namespace KanekoUtilities
         /// </summary>
         public static IEnumerator WaitUntil(Func<bool> predicate, Action action)
         {
-            while (!predicate()) yield return null;
+            yield return new WaitUntil(predicate);
+
             action.Invoke();
         }
-
         /// <summary>
         /// predicateが真を返すまで待機し、その後actionを実行する
         /// </summary>
         public static void WiatUntil(Func<bool> predicate, Action action, MonoBehaviour mono)
         {
             mono.StartCoroutine(WaitUntil(predicate, action));
+        }
+
+        /// <summary>
+        /// アクションが呼ばれるまで待機する
+        /// </summary>
+        public static IEnumerator WaitAction(UnityEvent action, Action callback = null)
+        {
+            bool isCalled = false;
+            UnityAction act = () => isCalled = true;
+
+            action.AddListener(act);
+
+            yield return new WaitUntil(() => isCalled);
+
+            action.RemoveListener(act);
+            if (callback != null) callback.Invoke();
+        }
+        /// <summary>
+        /// アクションが呼ばれるまで待機する
+        /// </summary>
+        public static IEnumerator WaitAction<T>(MyUnityEvent<T> action, Action callback = null)
+        {
+            bool isCalled = false;
+            UnityAction<T> act = ((arg) => isCalled = true);
+
+            action.AddListener(act);
+
+            yield return new WaitUntil(() => isCalled);
+
+            action.RemoveListener(act);
+            if (callback != null) callback.Invoke();
+        }
+        /// <summary>
+        /// アクションが呼ばれるまで待機する
+        /// </summary>
+        public static IEnumerator WaitAction<T1, T2>(MyUnityEvent<T1, T2> action, Action callback = null)
+        {
+            bool isCalled = false;
+            UnityAction<T1, T2> act = ((arg1, arg2) => isCalled = true);
+
+            action.AddListener(act);
+
+            yield return new WaitUntil(() => isCalled);
+
+            action.RemoveListener(act);
+            if (callback != null) callback.Invoke();
         }
 
         /// <summary>
@@ -153,53 +231,6 @@ namespace KanekoUtilities
 
             return clampValue;
         }
-        /// <summary>
-        /// アクションが呼ばれるまで待機する
-        /// </summary>
-        public static IEnumerator WaitAction(UnityEvent action, Action callback = null)
-        {
-            bool isCalled = false;
-            UnityAction act = () => isCalled = true;
-
-            action.AddListener(act);
-
-            yield return new WaitUntil(() => isCalled);
-
-            action.RemoveListener(act);
-            if (callback != null) callback.Invoke();
-        }
-
-        /// <summary>
-        /// アクションが呼ばれるまで待機する
-        /// </summary>
-        public static IEnumerator WaitAction<T>(MyUnityEvent<T> action, Action callback = null)
-        {
-            bool isCalled = false;
-            UnityAction<T> act = ((arg) => isCalled = true);
-
-            action.AddListener(act);
-
-            yield return new WaitUntil(() => isCalled);
-
-            action.RemoveListener(act);
-            if(callback != null) callback.Invoke();
-        }
-
-        /// <summary>
-        /// アクションが呼ばれるまで待機する
-        /// </summary>
-        public static IEnumerator WaitAction<T1, T2>(MyUnityEvent<T1, T2> action, Action callback = null)
-        {
-            bool isCalled = false;
-            UnityAction<T1, T2> act = ((arg1, arg2) => isCalled = true);
-
-            action.AddListener(act);
-
-            yield return new WaitUntil(() => isCalled);
-
-            action.RemoveListener(act);
-            if (callback != null) callback.Invoke();
-        }
         
         /// <summary>
         /// 指定された確率でtrueを返す
@@ -215,6 +246,31 @@ namespace KanekoUtilities
         public static T GetRandomValue<T>(T[] values)
         {
             return values[UnityEngine.Random.Range(0, values.Length)];
+        }
+
+        /// <summary>
+        /// 配列の要素の重みを考慮して要素のインデックスを返す
+        /// </summary>
+        public static int GetRandomIndexWithWeight(params int[] weightArray)
+        {
+            int totalWeight = 0;
+            for (int i = 0; i < weightArray.Length; i++)
+            {
+                totalWeight += weightArray[i];
+            }
+
+            int randomValue = UnityEngine.Random.Range(1, totalWeight + 1);
+            int index = -1;
+            for (var i = 0; i < weightArray.Length; ++i)
+            {
+                if (weightArray[i] >= randomValue)
+                {
+                    index = i;
+                    break;
+                }
+                randomValue -= weightArray[i];
+            }
+            return index;
         }
     }
 

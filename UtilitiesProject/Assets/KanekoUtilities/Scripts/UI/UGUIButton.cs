@@ -57,7 +57,7 @@ namespace KanekoUtilities
         {
             get
             {
-                return Button.image.color;
+                return Button.targetGraphic.color;
             }
             set
             {

@@ -5,6 +5,6 @@ using KanekoUtilities;
 
 public class InGamePanel : GameStatePanel
 {
-    protected override GameState ActivateState { get { return GameState.InGame; } }
-    protected override GameState DeactivateState { get { return GameState.Ready; } }
+    protected override EventType[] ActivateStates { get { return new[] { EventType.GameStart }; } }
+    protected override EventType[] DeactivateStates { get { return new[] { EventType.Initialize }; } }
 }

@@ -4,31 +4,99 @@ using KanekoUtilities;
 
 public abstract class GameStatePanel : Panel
 {
-    protected abstract GameState ActivateState { get; }
-    protected abstract GameState DeactivateState { get; }
+    public enum EventType
+    {
+        Initialize,
+        GameStart,
+        Continue,
+        GameOver,
+        StageClear
+    }
+
+    protected abstract EventType[] ActivateStates { get; }
+    protected abstract EventType[] DeactivateStates { get; }
+
+    GameMode currentGameMode;
+
+    public void SetGameMode(GameMode mode)
+    {
+        currentGameMode = mode;
+    }
 
     protected virtual void Start()
     {
-        SetStateEvent(ActivateState, true);
-        SetStateEvent(DeactivateState, false);
+        for (int i = 0; i < ActivateStates.Length; i++)
+        {
+            SetEvent(ActivateStates[i], true);
+        }
+        for (int i = 0; i < DeactivateStates.Length; i++)
+        {
+            SetEvent(DeactivateStates[i], false);
+        }
     }
 
-    void SetStateEvent(GameState state, bool activate)
+    void SetEvent(EventType state, bool activate)
     {
-        MainSceneManager sceneManager = MainSceneManager.Instance;
-        switch (state)
+        switch (currentGameMode)
         {
-            case GameState.Ready:
-                if (activate) sceneManager.OnInitialize += Activate;
-                else sceneManager.OnInitialize += Deactivate;
+            case GameMode.Infinite:
+                SetEventToInfiniteModeGameManager(state, activate);
                 break;
-            case GameState.InGame:
-                if (activate) sceneManager.OnGameStart += Activate;
-                else sceneManager.OnGameStart += Deactivate;
+            case GameMode.Stage:
+                SetEventToStageModeGameManager(state, activate);
                 break;
-            case GameState.Result:
-                if (activate) sceneManager.OnGameOver += Activate;
-                else sceneManager.OnGameOver += Deactivate;
+        }
+    }
+
+    void SetEventToInfiniteModeGameManager(EventType type, bool activate)
+    {
+        InfiniteModeGameManager gameManager = InfiniteModeGameManager.Instance;
+        if (gameManager == null) return;
+        switch (type)
+        {
+            case EventType.Initialize:
+                if (activate) gameManager.OnInitialize += Activate;
+                else gameManager.OnInitialize += Deactivate;
+                break;
+            case EventType.GameStart:
+                if (activate) gameManager.OnGameStart += Activate;
+                else gameManager.OnGameStart += Deactivate;
+                break;
+            case EventType.GameOver:
+                if (activate) gameManager.OnGameOver += Activate;
+                else gameManager.OnGameOver += Deactivate;
+                break;
+            case EventType.Continue:
+                if (activate) gameManager.OnContinue += Activate;
+                else gameManager.OnContinue += Deactivate;
+                break;
+        }
+    }
+    void SetEventToStageModeGameManager(EventType type, bool activate)
+    {
+        StageModeGameManager gameManager = StageModeGameManager.Instance;
+        if (gameManager == null) return;
+        switch (type)
+        {
+            case EventType.Initialize:
+                if (activate) gameManager.OnInitialize += Activate;
+                else gameManager.OnInitialize += Deactivate;
+                break;
+            case EventType.GameStart:
+                if (activate) gameManager.OnGameStart += Activate;
+                else gameManager.OnGameStart += Deactivate;
+                break;
+            case EventType.GameOver:
+                if (activate) gameManager.OnGameOver += Activate;
+                else gameManager.OnGameOver += Deactivate;
+                break;
+            case EventType.Continue:
+                if (activate) gameManager.OnContinue += Activate;
+                else gameManager.OnContinue += Deactivate;
+                break;
+            case EventType.StageClear:
+                if (activate) gameManager.OnStageClear += Activate;
+                else gameManager.OnStageClear += Deactivate;
                 break;
         }
     }

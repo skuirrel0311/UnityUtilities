@@ -36,6 +36,7 @@ namespace KanekoUtilities
 
         public virtual void Activate()
         {
+            StopAllCoroutines();
             container.gameObject.SetActive(true);
             image.gameObject.SetActive(true);
             StartCoroutine(showAnimation.GetAnimation(image, showAnimationTime));
@@ -44,6 +45,8 @@ namespace KanekoUtilities
 
         public virtual void Deactivate()
         {
+            StopAllCoroutines();
+
             StartCoroutine(hideAnimation.GetAnimation(image, hideAnimationTime).OnCompleted(()=>
             {
                 image.gameObject.SetActive(false);

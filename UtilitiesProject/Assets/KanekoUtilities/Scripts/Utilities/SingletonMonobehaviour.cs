@@ -7,61 +7,56 @@ namespace KanekoUtilities
 {
     public class SingletonMonobehaviour<T> : MonoBehaviour where T : MonoBehaviour
     {
+        static readonly string findTag = TagName.GameController;
+
         private static T instance;
         public static T Instance
         {
             get
             {
+                if (instance != null) return instance;
+                GameObject[] objs = GameObject.FindGameObjectsWithTag(findTag);
+
+                for (int i = 0; i < objs.Length; i++)
+                {
+                    instance = objs[i].GetComponent<T>();
+                    if (instance != null) return instance;
+                }
+
                 if (instance == null)
                 {
-                    instance = (T)FindObjectOfType(typeof(T));
+                    GameObject prefab = Resources.Load<GameObject>("SingletonMonobehaviour/" + typeof(T).Name);
 
-                    if (instance == null)
+                    if (prefab == null)
                     {
-                        GameObject prefab = Resources.Load<GameObject>("SingletonMonobehaviour/" + typeof(T).Name);
-
-                        if(prefab == null)
-                        {
-                            Debug.Log("not load prefab");
-                        }
-
-                        Instantiate(Instantiate(prefab));
+                        Debug.LogWarning(typeof(T).Name +  "のPrefabがResourcesに存在しない \n" + 
+                            "もしくはTagがGameControllerに設定されていません");
+                    }
+                    else
+                    {
+                        instance = Instantiate(Instantiate(prefab)) as T;
                     }
                 }
                 return instance;
             }
-            protected set
-            {
-                instance = value;
-            }
         }
+
         [SerializeField]
         bool dontDestroyOnLoad = false;
 
         protected virtual void Awake()
         {
-            Inisialize();
-            SceneManager.sceneLoaded += WasLoaded;
+            if (Instance == this) return;
+
+            if (instance == null)
+            {
+                instance = this as T;
+            }
+            else
+            {
+                Destroy(this);
+            }
         }
-
-        protected virtual void WasLoaded(Scene sceneName, LoadSceneMode sceneMode)
-        {
-            Inisialize();
-        }
-
-        void Inisialize()
-        {
-            List<T> instances = new List<T>();
-            instances.AddRange((T[])FindObjectsOfType(typeof(T)));
-
-            if (Instance == null) Instance = instances[0];
-            instances.Remove(Instance);
-
-            if (instances.Count == 0) return;
-            //あぶれ者のinstanceはデストロイ 
-            foreach (T t in instances) Destroy(t.gameObject);
-        }
-
         protected virtual void Start()
         {
             if (dontDestroyOnLoad)
@@ -72,8 +67,7 @@ namespace KanekoUtilities
 
         protected virtual void OnDestroy()
         {
-            SceneManager.sceneLoaded -= WasLoaded;
-            Instance = null;
+            instance = null;
         }
     }
 }

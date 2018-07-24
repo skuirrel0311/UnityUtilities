@@ -1,20 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KanekoUtilities;
 
 public class Test : MonoBehaviour
 {
-    void Start()
+    [SerializeField]
+    UGUITextUnity text = null;
+    void Update()
     {
-        MainSceneManager sceneManager = MainSceneManager.Instance;
-
-        if(sceneManager == null)
-        {
-            Debug.Log("scene manager is null");
-        }
-        else
-        {
-            Debug.Log("scene manager is not null");
-        }
+        text.Text = StageModeGameManager.Instance.CurrentState.ToString();
     }
 }

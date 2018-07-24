@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace KanekoUtilities
 {
-    public class MyAssetStore : SingletonMonobehaviour<MyAssetStore>
+    public class MyAssetStore : Singleton<MyAssetStore>
     {
         Dictionary<string, IMyAsset> assetDictionray = new Dictionary<string, IMyAsset>();
 

@@ -6,6 +6,6 @@ using System;
 
 public class TitlePanel : GameStatePanel
 {
-    protected override GameState ActivateState { get { return GameState.Ready; } }
-    protected override GameState DeactivateState { get { return GameState.InGame; } }
+    protected override EventType[] ActivateStates { get { return new[] { EventType.Initialize }; } }
+    protected override EventType[] DeactivateStates { get { return new[] { EventType.GameStart }; } }
 }

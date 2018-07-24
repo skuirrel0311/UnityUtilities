@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 114183585518251494}
   m_Layer: 5
   m_Name: DialogDisplayer
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,7 +60,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
-  panel: {fileID: 114499437723093242}
 --- !u!114 &114198486892697870
 MonoBehaviour:
   m_ObjectHideFlags: 1

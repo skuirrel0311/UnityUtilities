@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 114468408213565718}
   m_Layer: 0
   m_Name: MessageDisplayer
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -328,6 +328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCount: 10
   removeIntervalTime: 10
+  isAwakeInstance: 0
   original: {fileID: 114930294560372600}
   deactiveInstanceList: []
 --- !u!114 &114251628093595142
@@ -665,6 +666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCount: 10
   removeIntervalTime: 10
+  isAwakeInstance: 0
   original: {fileID: 114027399293183022}
   deactiveInstanceList: []
 --- !u!114 &114930294560372600

@@ -40,6 +40,7 @@ namespace KanekoUtilities
         {
             if (GetValue() == value) return;
 
+            this.value = value;
             OnValueChanged.Invoke(value);
             MyPlayerPrefs.SaveInt(key, value);
         }
@@ -59,6 +60,7 @@ namespace KanekoUtilities
         {
             if (GetValue() == value) return;
 
+            this.value = value;
             OnValueChanged.Invoke(value);
             MyPlayerPrefs.SaveFloat(key, value);
         }
@@ -78,6 +80,7 @@ namespace KanekoUtilities
         {
             if (GetValue() == value) return;
 
+            this.value = value;
             OnValueChanged.Invoke(value);
             MyPlayerPrefs.SaveString(key, value);
         }
@@ -97,6 +100,7 @@ namespace KanekoUtilities
         {
             if (GetValue() == value) return;
 
+            this.value = value;
             OnValueChanged.Invoke(value);
             MyPlayerPrefs.SaveBool(key, value);
         }

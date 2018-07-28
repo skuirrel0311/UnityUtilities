@@ -39,7 +39,7 @@ namespace KanekoUtilities
         
         void Update()
         {
-            Progress = (goalPosition - playerTransform.position).magnitude / stageLength;
+            Progress = 1.0f - (goalPosition - playerTransform.position).magnitude / stageLength;
 
             if(Progress >= 1.0f)
             {

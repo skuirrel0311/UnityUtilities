@@ -9,10 +9,34 @@ namespace KanekoUtilities
     {
         const string UIPrefabDirectory = "Assets/KanekoUtilities/Prefabs/UI/";
 
-        [MenuItem("GameObject/KKUtilities/UGUIImage", false, 20)]
+        [MenuItem("GameObject/KKUtilities/UGUIImage/Image", false, 20)]
         public static void CreateUGUIImage()
         {
             CreateUGUIPartsObj("UGUIImage");
+        }
+
+        [MenuItem("GameObject/KKUtilities/UGUIImage/Triangle", false, 20)]
+        public static void CreateTriangleImage()
+        {
+            CreateUGUIPartsObj("TriangleUGUIImage");
+        }
+
+        [MenuItem("GameObject/KKUtilities/UGUIImage/Square", false, 20)]
+        public static void CreateSquareImage()
+        {
+            CreateUGUIPartsObj("SquareUGUIImage");
+        }
+
+        [MenuItem("GameObject/KKUtilities/UGUIImage/Circle", false, 20)]
+        public static void CreateCircleImage()
+        {
+            CreateUGUIPartsObj("CircleUGUIImage");
+        }
+
+        [MenuItem("GameObject/KKUtilities/UGUIImage/RoundedRectangle", false, 20)]
+        public static void CreateRoundedRectangleImage()
+        {
+            CreateUGUIPartsObj("RoundedRectangleUGUIImage");
         }
 
         [MenuItem("GameObject/KKUtilities/UGUIText/Text", false, 20)]
@@ -85,7 +109,7 @@ namespace KanekoUtilities
         {
             return AssetDatabase.LoadAssetAtPath(path + name + ".prefab", typeof(T)) as T;
         }
-        
+
         static void CreateUGUIPartsObj(string name)
         {
             CreateObject(UIPrefabDirectory, name);

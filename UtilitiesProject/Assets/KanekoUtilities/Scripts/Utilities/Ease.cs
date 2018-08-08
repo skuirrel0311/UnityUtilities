@@ -5,9 +5,9 @@ namespace KanekoUtilities
     public enum EaseType
     {
         Linear,
-        InQuad, InCubic, InQuart, InQuint, InExpo, InBack,
-        OutQuad, OutCubic, OutQuart, OutQuint, OutExpo, OutBack,
-        InOutQuad, InOutCubic, InOutQuart, InOutQuint, InOutExpo, InOutBack
+        InQuad, InCubic, InQuart, InQuint, InExpo, InBack, InBounce,
+        OutQuad, OutCubic, OutQuart, OutQuint, OutExpo, OutBack, OutBounce,
+        InOutQuad, InOutCubic, InOutQuart, InOutQuint, InOutExpo, InOutBack, InOutBounce
     }
     public static class Easing
     {
@@ -107,6 +107,40 @@ namespace KanekoUtilities
             return t < 0.5f ? InBack(t * 2.0f, s) * 0.5f :
                 OutBack(t * 2.0f - 1.0f, s) * 0.5f + 0.5f;
         }
+        
+        public static float InBounce(float t)
+        {
+            return 1.0f - OutBounce(1.0f - t);
+        }
+
+        public static float OutBounce(float t)
+        {
+            float a = 2.75f;
+            float s = 7.5625f;
+
+            if (t < (1.0f / a))
+            {
+                return s * t * t;
+            }
+            else if (t < (2.0f / a))
+            {
+                return s * (t -= (1.5f / a)) * t + 0.75f;
+            }
+            else if (t < (2.5f / a))
+            {
+                return s * (t -= (2.25f / a)) * t + 0.9375f;
+            }
+            else
+            {
+                return s * (t -= (2.625f / a)) * t + 0.984375f;
+            }
+        }
+
+        public static float InOutBounce(float t)
+        {
+            return t < 0.5f ? InBounce(t * 2.0f) * 0.5f :
+             OutBounce(t * 2.0f - 1.0f) * 0.5f + 0.5f;
+        }
 
         public static float GetEase(float t, EaseType ease)
         {
@@ -120,6 +154,7 @@ namespace KanekoUtilities
                 case EaseType.InQuint: return InQuint(t);
                 case EaseType.InExpo: return InExpo(t);
                 case EaseType.InBack: return InBack(t);
+                case EaseType.InBounce: return InBounce(t);
 
                 case EaseType.OutQuad: return OutQuad(t);
                 case EaseType.OutCubic: return OutCubic(t);
@@ -127,6 +162,7 @@ namespace KanekoUtilities
                 case EaseType.OutQuint: return OutQuint(t);
                 case EaseType.OutExpo: return OutExpo(t);
                 case EaseType.OutBack: return OutBack(t);
+                case EaseType.OutBounce: return OutBounce(t);
 
                 case EaseType.InOutQuad: return InOutQuad(t);
                 case EaseType.InOutCubic: return InOutCubic(t);
@@ -134,6 +170,7 @@ namespace KanekoUtilities
                 case EaseType.InOutQuint: return InOutQuint(t);
                 case EaseType.InOutExpo: return InOutExpo(t);
                 case EaseType.InOutBack: return InOutBack(t);
+                case EaseType.InOutBounce: return InOutBounce(t);
             }
 
             return t;

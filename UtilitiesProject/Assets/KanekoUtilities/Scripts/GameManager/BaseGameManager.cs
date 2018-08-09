@@ -22,7 +22,11 @@ public enum ContinueRequestType { Continue, NoThanks, TimeOut }
 public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : MonoBehaviour
 {
     [SerializeField]
-    GameStatePanel[] statePanels = null;
+    protected TitlePanel titlePanel = null;
+    [SerializeField]
+    protected InGamePanel inGamePanel = null;
+    [SerializeField]
+    protected GameOverPanel gameOverPanel = null;
 
     protected abstract GameMode Mode { get; }
 
@@ -36,8 +40,6 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
         set
         {
             currentState = value;
-
-            if (OnStateChanged != null) OnStateChanged.Invoke(value);
         }
     }
 
@@ -52,24 +54,9 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
             return ContinueCount < MaxContinueCount;
         }
     }
-
-    public event Action OnInitialize;
-    public event Action OnGameStart;
-    public event Action OnContinue;
-    public event Action OnGameOver;
-    public event Action OnStageClear;
-    public event Action<GameState> OnStateChanged;
     
     protected ContinueRequestType isContinueRequested;
-
-    protected override void Awake()
-    {
-        for(int i = 0;i <statePanels.Length;i++)
-        {
-            statePanels[i].SetGameMode(Mode);
-        }
-    }
-
+    
     protected override void Start()
     {
         base.Start();
@@ -91,30 +78,29 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
         CurrentState = GameState.Ready;
         ContinueCount = 0;
         isContinueRequested = 0;
-        if (OnInitialize != null) OnInitialize.Invoke();
+        titlePanel.Activate();
+        inGamePanel.Deactivate();
+        gameOverPanel.Deactivate();
     }
     protected virtual void GameStart()
     {
         CurrentState = GameState.InGame;
-
-        if (OnGameStart != null) OnGameStart();
+        titlePanel.Deactivate();
+        inGamePanel.Activate();
     }
     protected virtual void GameOver()
     {
         CurrentState = GameState.GameOver;
-
-        if (OnGameOver != null) OnGameOver();
+        gameOverPanel.Activate();
     }
     protected virtual void Continue()
     {
         ContinueCount++;
-
-        if (OnContinue != null) OnContinue();
+        gameOverPanel.Deactivate();
     }
     protected virtual void StageClear()
     {
         CurrentState = GameState.StageClear;
-        if (OnStageClear != null) OnStageClear.Invoke();
     }
 
     protected abstract IEnumerator SuggestStart();

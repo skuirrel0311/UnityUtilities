@@ -5,10 +5,6 @@ using UnityEngine;
 public partial class StageModeGameManager : BaseGameManager<StageModeGameManager>
 {
     [SerializeField]
-    TitlePanel titlePanel = null;
-    [SerializeField]
-    GameOverPanel gameOverPanel = null;
-    [SerializeField]
     StageClearPanel stageClearPanel = null;
 
     /// <summary>
@@ -17,29 +13,45 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
     [HideInInspector]
     public override int MaxContinueCount { get { return 1; } }
 
+    StageModeScoreManager scoreManager;
     bool isFailedContinue = false;
+
+    protected override void Start()
+    {
+        scoreManager = StageModeScoreManager.Instance;
+        //このStartが呼ばれるとゲームループが走る
+        base.Start();
+    }
 
     protected override void Init()
     {
         base.Init();
+        stageClearPanel.Deactivate();
+        scoreManager.Init();
+        isFailedContinue = false;
         //todo:Playerなどの初期化をする
 
-        isFailedContinue = false;
     }
     protected override void GameStart()
     {
         base.GameStart();
         //todo:ゲームスタート時の挙動をここに書く
+
     }
     protected override void GameOver()
     {
         base.GameOver();
+        scoreManager.UpdateBestScore();
         //todo:ゲームオーバー時の挙動をここに書く
+
     }
     protected override void StageClear()
     {
         base.StageClear();
+        stageClearPanel.Activate();
+        scoreManager.UpdateBestScore();
         //todo:ステージクリア時の挙動をここに書く
+
     }
 
     protected override void Continue()

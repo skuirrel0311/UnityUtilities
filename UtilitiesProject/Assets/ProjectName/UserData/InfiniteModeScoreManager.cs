@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using KanekoUtilities;
 
-public class InGamePanel : Panel
+public class InfiniteModeScoreManager : MyScoreManager<InfiniteModeScoreManager>
 {
+
 }

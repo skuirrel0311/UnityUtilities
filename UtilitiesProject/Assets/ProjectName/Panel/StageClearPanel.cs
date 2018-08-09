@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
 
-public class StageClearPanel : GameStatePanel
+public class StageClearPanel : Panel
 {
-    protected override EventType[] ActivateStates { get { return new[] { EventType.StageClear }; } }
-    protected override EventType[] DeactivateStates { get { return new[] { EventType.Initialize }; } }
-
     [SerializeField]
     GameObject tapToRestartContainer = null;
     [SerializeField]

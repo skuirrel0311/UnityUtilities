@@ -3,11 +3,8 @@ using System.Collections;
 using UnityEngine;
 using KanekoUtilities;
 
-public class GameOverPanel : GameStatePanel
+public class GameOverPanel : Panel
 {
-    protected override EventType[] ActivateStates { get { return new[] { EventType.GameOver }; } }
-    protected override EventType[] DeactivateStates { get { return new[] { EventType.Initialize, EventType.Continue }; } }
-
     [SerializeField]
     ContinueButton continueButton = null;
     [SerializeField]

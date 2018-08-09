@@ -34,6 +34,8 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
             if (isContinueRequested == ContinueRequestType.TimeOut) break;
             
             Continue();
+
+            if (isFailedContinue) break;
         }
 
         if (isStageClear)

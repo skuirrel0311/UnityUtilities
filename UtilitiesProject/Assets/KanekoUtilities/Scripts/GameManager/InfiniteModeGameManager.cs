@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
-using KanekoUtilities;
+﻿using System.Collections;
 
 public partial class InfiniteModeGameManager : BaseGameManager<InfiniteModeGameManager>
 {
@@ -27,6 +24,8 @@ public partial class InfiniteModeGameManager : BaseGameManager<InfiniteModeGameM
             if (isContinueRequested == ContinueRequestType.NoThanks) yield break; ;
             if (isContinueRequested == ContinueRequestType.TimeOut) break;
             Continue();
+
+            if (isFailedContinue) break;
         }
         yield return StartCoroutine(SuggestRestart());
     }

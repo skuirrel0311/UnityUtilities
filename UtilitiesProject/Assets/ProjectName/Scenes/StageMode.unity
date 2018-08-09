@@ -314,9 +314,10 @@ GameObject:
   - component: {fileID: 354790034}
   - component: {fileID: 354790037}
   - component: {fileID: 354790036}
+  - component: {fileID: 354790038}
   - component: {fileID: 354790035}
   m_Layer: 5
-  m_Name: SoundConfigButton
+  m_Name: AudioConfigButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,6 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c0a0b9eade8b145b252b1af73e8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valueName: 0
   enableVisual: {fileID: 2050568185}
   disableVisual: {fileID: 2036183044}
 --- !u!114 &354790036
@@ -407,6 +409,17 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 354790033}
+--- !u!225 &354790038
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 354790033}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &355998460
 GameObject:
   m_ObjectHideFlags: 0
@@ -2145,6 +2158,7 @@ GameObject:
   - component: {fileID: 1293906427}
   - component: {fileID: 1293906430}
   - component: {fileID: 1293906429}
+  - component: {fileID: 1293906431}
   - component: {fileID: 1293906428}
   m_Layer: 5
   m_Name: VibrationConfigButton
@@ -2187,6 +2201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c0a0b9eade8b145b252b1af73e8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valueName: 0
   enableVisual: {fileID: 1984456959}
   disableVisual: {fileID: 1002271570}
 --- !u!114 &1293906429
@@ -2238,6 +2253,17 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1293906426}
+--- !u!225 &1293906431
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1293906426}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1304330095
 GameObject:
   m_ObjectHideFlags: 0
@@ -2286,8 +2312,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c6a4a9c18887824987118cf0c227b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuConteinerObject: {fileID: 1716800279}
+  container: {fileID: 1716800281}
   viewConfigButton: {fileID: 916689775}
+  configButtons:
+  - {fileID: 1293906428}
+  - {fileID: 354790035}
 --- !u!222 &1304330100
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2674,6 +2703,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1716800280}
+  - component: {fileID: 1716800281}
   m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
@@ -2701,6 +2731,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1716800281
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1716800279}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1737440818
 GameObject:
   m_ObjectHideFlags: 0

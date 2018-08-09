@@ -12,7 +12,7 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
         yield return StartCoroutine(SuggestStart());
         GameStart();
         bool isStageClear = false;
-
+        
         while (true)
         {
             while (!IsGameOver())

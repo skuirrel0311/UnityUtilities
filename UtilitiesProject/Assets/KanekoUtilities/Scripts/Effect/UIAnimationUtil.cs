@@ -78,9 +78,8 @@ namespace KanekoUtilities
                     popUPAnimation = new UIAnimation(((parts, t) =>
                     {
                         temp = Easing.OutQuad(t);
-
-                    //LerpUnclampedを使っても良いがAlphaはもともと０～１の値なのでLerpで入れる
-                    parts.Alpha = Mathf.Lerp(0.0f, parts.DefaultAlpha, temp);
+                        
+                        parts.Alpha = Mathf.Lerp(0.0f, parts.DefaultAlpha, temp);
 
                         parts.transform.localScale = Vector3.LerpUnclamped(startScale, endScale, temp);
                     }));

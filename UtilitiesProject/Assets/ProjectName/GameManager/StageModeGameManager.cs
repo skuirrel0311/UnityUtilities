@@ -48,6 +48,14 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
 
         //仮に３秒待つ
         //todo:Swipeされたらとかに変える
+
+        while (true)
+        {
+            if (IsGameOver()) break;
+
+            yield return null;
+        }
+
         yield return new WaitForSeconds(3.0f);
     }
     protected override IEnumerator SuggestContinue()
@@ -90,6 +98,6 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
     
     bool IsStageClear()
     {
-        return true;
+        return false;
     }
 }

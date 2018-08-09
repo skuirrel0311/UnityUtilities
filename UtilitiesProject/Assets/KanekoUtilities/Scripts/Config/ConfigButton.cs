@@ -1,30 +1,43 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace KanekoUtilities
 {
-    [RequireComponent(typeof(Button))]
-    public class ConfigButton : MonoBehaviour
+    [RequireComponent(typeof(CanvasGroup))]
+    public class ConfigButton : UGUIButton
     {
-        Button button;
+        [SerializeField]
+        ConfigValueName valueName = 0;
 
         [SerializeField]
         GameObject enableVisual = null;
         [SerializeField]
         GameObject disableVisual = null;
 
-        public event Action OnClick;
+        CanvasGroup group;
+        CanvasGroup Group
+        {
+            get
+            {
+                if (group != null) return group;
 
+                group = GetComponent<CanvasGroup>();
+
+                return group;
+            }
+        }
+        
         bool currentEnable = true;
 
-        void Awake()
+        public override void Init()
         {
-            button = GetComponent<Button>();
-            button.onClick.AddListener(() =>
+            base.Init();
+
+            SetEnable(GameConfig.Instance.GetValue(valueName));
+
+            OnClick.AddListener(() =>
             {
+                GameConfig.Instance.OnChangeValue(valueName, !currentEnable);
                 SetEnable(!currentEnable);
-                if (OnClick != null) OnClick();
             });
         }
 
@@ -33,6 +46,19 @@ namespace KanekoUtilities
             currentEnable = enable;
             enableVisual.SetActive(enable);
             disableVisual.SetActive(!enable);
+        }
+
+        public override float Alpha
+        {
+            get
+            {
+                return Group.alpha;
+            }
+
+            set
+            {
+                Group.alpha = value;
+            }
         }
     }
 }

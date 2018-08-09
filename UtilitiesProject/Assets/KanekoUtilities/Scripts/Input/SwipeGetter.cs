@@ -40,12 +40,16 @@ namespace KanekoUtilities
         public MyUnityEvent<Vector2> onTouchEnd = new MyUnityEvent<Vector2>();
 
         float screenSizeRate = 1.0f;
-        
+
         Vector2 oldTouchPosition;
         Vector2 swipeValue;
         float swipePower = 0.0f;
         float touchTime = 0.0f;
         bool isStartTouch = false;
+
+        const int bufferSize = 5;
+        Vector2[] inputBuffer = new Vector2[bufferSize];
+        int currentBufIndex = 0;
 
         protected override void Start()
         {
@@ -88,6 +92,11 @@ namespace KanekoUtilities
             //操作受け中ではなかった
             if (!isStartTouch || !CanTouch) return;
 
+            inputBuffer[currentBufIndex] = DeltaPosition;
+            currentBufIndex++;
+            if (currentBufIndex >= bufferSize) currentBufIndex = 0;
+
+
             if (swipePower < swipePowerBoder)
             {
                 touchTime += Time.deltaTime;
@@ -96,6 +105,13 @@ namespace KanekoUtilities
             }
             else
             {
+                Vector2 sum = Vector2.zero;
+                for (int i = 0; i < bufferSize; i++)
+                {
+                    sum += inputBuffer[i];
+                }
+
+                DeltaPosition = sum / bufferSize;
                 if (onSwipe != null) onSwipe.Invoke(DeltaPosition);
             }
         }

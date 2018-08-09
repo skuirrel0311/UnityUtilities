@@ -54,12 +54,15 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
             return ContinueCount < MaxContinueCount;
         }
     }
-    
+
+    protected LevelAdjuster levelAdjuster;
     protected ContinueRequestType isContinueRequested;
-    
+
     protected override void Start()
     {
         base.Start();
+        levelAdjuster = LevelAdjuster.Instance;
+
         StartCoroutine(GameLoop());
     }
 
@@ -78,9 +81,12 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
         CurrentState = GameState.Ready;
         ContinueCount = 0;
         isContinueRequested = 0;
+
         titlePanel.Activate();
         inGamePanel.Deactivate();
         gameOverPanel.Deactivate();
+
+        levelAdjuster.Init();
     }
     protected virtual void GameStart()
     {

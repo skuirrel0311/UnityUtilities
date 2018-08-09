@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KanekoUtilities;
 
 public partial class StageModeGameManager : BaseGameManager<StageModeGameManager>
 {
@@ -28,6 +29,7 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
         base.Init();
         stageClearPanel.Deactivate();
         scoreManager.Init();
+        levelAdjuster.SetScore(scoreManager.CurrentLevel);
         isFailedContinue = false;
         //todo:Playerなどの初期化をする
 
@@ -35,6 +37,7 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
     protected override void GameStart()
     {
         base.GameStart();
+        levelAdjuster.StartAdjustment();
         //todo:ゲームスタート時の挙動をここに書く
 
     }
@@ -44,14 +47,17 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
         scoreManager.UpdateBestScore();
         //todo:ゲームオーバー時の挙動をここに書く
 
+
     }
     protected override void StageClear()
     {
         base.StageClear();
         stageClearPanel.Activate();
+        scoreManager.CurrentLevel++;
         scoreManager.UpdateBestScore();
         //todo:ステージクリア時の挙動をここに書く
 
+        MyAdManager.Instance.ShowStageClearInterstitial();
     }
 
     protected override void Continue()
@@ -80,6 +86,10 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
             isContinueRequested = isRequested;
         });
         
+        if(isContinueRequested != ContinueRequestType.Continue)
+        {
+            MyAdManager.Instance.ShowGameOverInterstitial();
+        }
     }
     protected override IEnumerator SuggestRestart()
     {

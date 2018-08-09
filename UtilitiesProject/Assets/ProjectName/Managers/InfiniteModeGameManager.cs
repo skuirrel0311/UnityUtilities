@@ -31,7 +31,7 @@ public partial class InfiniteModeGameManager : BaseGameManager<InfiniteModeGameM
     protected override void GameStart()
     {
         base.GameStart();
-
+        levelAdjuster.StartAdjustment();
         //todo:ゲームスタート時の挙動をここに書く
 
     }
@@ -68,6 +68,11 @@ public partial class InfiniteModeGameManager : BaseGameManager<InfiniteModeGameM
         {
             isContinueRequested = isRequested;
         });
+
+        if (isContinueRequested != ContinueRequestType.Continue)
+        {
+            MyAdManager.Instance.ShowGameOverInterstitial();
+        }
     }
     protected override IEnumerator SuggestRestart()
     {

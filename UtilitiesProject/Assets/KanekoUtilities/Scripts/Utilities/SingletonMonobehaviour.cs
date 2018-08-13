@@ -25,16 +25,17 @@ namespace KanekoUtilities
 
                 if (instance == null)
                 {
-                    GameObject prefab = Resources.Load<GameObject>("SingletonMonobehaviour/" + typeof(T).Name);
+                    T prefab = Resources.Load<T>("SingletonMonobehaviour/" + typeof(T).Name);
 
                     if (prefab == null)
                     {
-                        Debug.LogWarning(typeof(T).Name +  "のPrefabがResourcesに存在しない \n" + 
+                        Debug.LogWarning(typeof(T).Name + "のPrefabがResourcesに存在しない \n" +
                             "もしくはTagがGameControllerに設定されていません");
                     }
                     else
                     {
-                        instance = Instantiate(Instantiate(prefab)) as T;
+                        instance = Instantiate(prefab);
+
                     }
                 }
                 return instance;

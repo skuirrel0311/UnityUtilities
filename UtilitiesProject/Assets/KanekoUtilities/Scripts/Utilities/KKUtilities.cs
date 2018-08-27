@@ -126,7 +126,7 @@ namespace KanekoUtilities
         /// <summary>
         /// predicateが真を返すまで待機し、その後actionを実行する
         /// </summary>
-        public static void WiatUntil(Func<bool> predicate, Action action, MonoBehaviour mono)
+        public static void WaitUntil(Func<bool> predicate, Action action, MonoBehaviour mono)
         {
             mono.StartCoroutine(WaitUntil(predicate, action));
         }

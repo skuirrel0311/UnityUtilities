@@ -7,9 +7,12 @@ namespace KanekoUtilities
     public class AudioManager : SingletonMonobehaviour<AudioManager>
     {
         [SerializeField]
-        AudioSource audioSource = null;
-        [SerializeField]
         AudioSource loopAudioSource = null;
+
+        [SerializeField]
+        SoundEffectPool soundEffectPool = null;
+
+        const int maxSECount = 50;
 
         public RegisterBoolParameter AudioEnable;
 
@@ -55,7 +58,13 @@ namespace KanekoUtilities
             if (clip == null) return;
 
             volume = volume * MasterSEVolume.GetValue() * MasterVolume.GetValue() * (AudioEnable.GetValue() ? 1.0f : 0.0f);
-            audioSource.PlayOneShot(clip, volume);
+            if (soundEffectPool.ActiveInstanceList.Count > maxSECount)
+            {
+                return;
+            }
+
+            SoundEffect effect = soundEffectPool.GetInstance();
+            effect.Play(clip, () => soundEffectPool.ReturnInstance(effect));
         }
 
         public void PlayOneShot(string name, Vector3 position, float volume = 1.0f)

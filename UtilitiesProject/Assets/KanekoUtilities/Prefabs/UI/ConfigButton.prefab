@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c0a0b9eade8b145b252b1af73e8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valueName: 0
   enableVisual: {fileID: 1108161618490074}
   disableVisual: {fileID: 1421163740388008}
 --- !u!114 &114924740754057676
@@ -335,6 +336,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -145.6}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

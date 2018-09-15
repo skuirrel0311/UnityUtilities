@@ -52,7 +52,7 @@ namespace KanekoUtilities
 
         void SetAudioEnable(bool value)
         {
-            AudioManager.Instance.AudioEnable.SetValue(value);
+            //AudioManager.Instance.AudioEnable.SetValue(value);
         }
     }
 }

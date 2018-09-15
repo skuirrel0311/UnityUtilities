@@ -46,6 +46,29 @@ namespace KanekoUtilities
         }
     }
 
+    public class RegisterLongParameter : RegisterParameter<long>
+    {
+        public RegisterLongParameter(string key, int defaultValue) : base(key, defaultValue) { }
+        public RegisterLongParameter(SaveKeyName key, int defaultValue) : base(key, defaultValue) { }
+
+        protected override long LoadValue(long defaultValue)
+        {
+            long result;
+            if (!long.TryParse(MyPlayerPrefs.LoadString(key, defaultValue.ToString()), out result)) return 0;
+
+            return result;
+        }
+
+        public override void SetValue(long value)
+        {
+            if (GetValue() == value) return;
+
+            this.value = value;
+            OnValueChanged.Invoke(value);
+            MyPlayerPrefs.SaveString(key, value.ToString());
+        }
+    }
+
     public class RegisterFloatParameter : RegisterParameter<float>
     {
         public RegisterFloatParameter(string key, float defaultValue) : base(key, defaultValue) { }

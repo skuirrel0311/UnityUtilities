@@ -9,7 +9,10 @@ using HyperCasual;
 
 namespace KanekoUtilities
 {
-    public enum SaveKeyName { TotalLoginDays, LastLoginDate, CanGetLoginBonus, EnableSound }
+    public enum SaveKeyName
+    {
+        //ここに名前を列挙していく
+    }
 
     /// <summary>
     /// PlayerPrefsのラッパー(のちにHyperCommonのIOUtilies.PlayerPrefsと差し替えるため)

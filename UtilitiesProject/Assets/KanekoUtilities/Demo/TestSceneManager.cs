@@ -6,25 +6,33 @@ using KanekoUtilities;
 
 public class TestSceneManager : MonoBehaviour
 {
-    [SerializeField]
-    int count = 10;
-
-    float t;
-    float interval = 0.2f;
-
     void Update()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            t += Time.deltaTime;
-            if (t < interval) return;
+            AudioManager.Instance.PlayBGM("Yoimaturi_no_kaze");
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            AudioManager.Instance.StopBGM();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            AudioManager.Instance.ReplayBGM();
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (AudioManager.Instance.IsPlayingBGM) AudioManager.Instance.PauseBGM();
+            else AudioManager.Instance.UnPauseBGM();
+        }
 
-            t = 0.0f;
-
-            for (int i = 0; i < count; i++)
-            {
-                AudioManager.Instance.PlayOneShot("Bomb");
-            }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            AudioManager.Instance.PlayOneShot("Bomb");
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            AudioManager.Instance.PlayOneShot("Bomb", 1.0f, 0.1f);
         }
     }
 }

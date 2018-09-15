@@ -272,6 +272,78 @@ namespace KanekoUtilities
             }
             return index;
         }
+
+        static readonly string[] UnitTexts = { "k", "m", "b", "t", "q" };
+
+        /// <summary>
+        /// 桁の多い数字をstringに変換する
+        /// 
+        /// ex.
+        /// 1000->1.00k
+        /// 10000->10.0k
+        /// </summary>
+        public static string GetDigitText(long number)
+        {
+            int digit = GetDigitNum(number);
+
+            if (digit < 4) return number.ToString();
+
+            int temp = ((digit - 1) / 3);
+            int unitTextIndex = temp - 1;
+
+            if (unitTextIndex >= UnitTexts.Length) return "infinite";
+            string unitText = UnitTexts[unitTextIndex];
+
+            long unitValue = LongPow(10, (temp * 3) - 1);
+
+            string result;
+            temp = (digit - 1) % 3;
+
+            float resultValue = (float)number / unitValue;
+
+            if (temp == 0)
+                result = resultValue.ToString("0.00");
+            else if (temp == 1)
+                result = resultValue.ToString("00.0");
+            else
+                result = resultValue.ToString("000");
+
+            return result + unitText;
+        }
+
+        /// <summary>
+        /// 桁数を返す
+        /// </summary>
+        public static int GetDigitNum(long number)
+        {
+            int digitNum = 1;
+
+            while (true)
+            {
+                number = (int)(number * 0.1f);
+
+                if (number < 1) break;
+
+                digitNum++;
+            }
+
+            return digitNum;
+        }
+
+        public static long LongPow(long x, long y)
+        {
+            if (y == 0) return 1;
+            if (y == 1) return x;
+
+            long value = x;
+
+            for (int i = 0; i < y; i++)
+            {
+                value *= x;
+            }
+
+            return value;
+        }
     }
 
     public class MyUnityEvent : UnityEvent { }

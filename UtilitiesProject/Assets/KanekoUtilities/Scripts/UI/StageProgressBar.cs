@@ -3,10 +3,8 @@ using UnityEngine.UI;
 
 namespace KanekoUtilities
 {
-    public class StageProgressBar : MonoBehaviour
+    public class StageProgressBar : ProgressBar
     {
-        [SerializeField]
-        Image bar = null;
         [SerializeField]
         Image nextStageCircle = null;
         [SerializeField]
@@ -18,45 +16,34 @@ namespace KanekoUtilities
         [SerializeField]
         Color stageClearCircleColor = Color.yellow;
 
-        [SerializeField]
-        Transform playerTransform = null;
-        
-        float progress = 0.0f;
-        float Progress
-        {
-            get { return progress; }
-            set
-            {
-                if (progress == value) return;
-
-                progress = value;
-                bar.fillAmount = progress;
-            }
-        }
-
+        float startValue;
         float stageLength;
-        Vector3 goalPosition;
-        
-        void Update()
-        {
-            Progress = 1.0f - (goalPosition - playerTransform.position).magnitude / stageLength;
+        bool isEnd = false;
 
-            if(Progress >= 1.0f)
+        public void UpdateProgressBar(float currentValue)
+        {
+            if (isEnd) return;
+            currentValue = Mathf.Abs(currentValue - startValue);
+            Progress = currentValue / stageLength;
+
+            if (Progress >= 1.0f)
             {
+                isEnd = true;
                 nextStageCircle.color = stageClearCircleColor;
             }
         }
 
-        public void Init(int currentLevel, Vector3 goalPosition)
+        public void Init(int currentLevel, float startValue, float endValue)
         {
+            isEnd = false;
+            this.startValue = startValue;
+            stageLength = Mathf.Abs(endValue - startValue);
+
             Progress = 0.0f;
             nextStageCircle.color = defaultCircleColor;
 
             this.currentLevel.SetValue(currentLevel);
             nextLevel.SetValue(currentLevel + 1);
-
-            this.goalPosition = goalPosition;
-            stageLength = (goalPosition - playerTransform.position).magnitude;
         }
     }
 }

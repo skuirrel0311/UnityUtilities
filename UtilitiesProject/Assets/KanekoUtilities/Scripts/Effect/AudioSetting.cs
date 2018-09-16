@@ -7,7 +7,7 @@ namespace KanekoUtilities
     public enum AudioVolumeSettingType { Master, MasterBGM, MasterSE }
     public class AudioVolumeSetting
     {
-        AudioVolumeSettingType type;
+        public AudioVolumeSettingType Type { get; private set; }
         RegisterFloatParameter volume;
         RegisterBoolParameter mute;
 
@@ -36,7 +36,7 @@ namespace KanekoUtilities
 
         public AudioVolumeSetting(AudioVolumeSettingType type, float defaultValue = 1.0f)
         {
-            this.type = type;
+            Type = type;
             volume = new RegisterFloatParameter(type.ToString() + "Volume", defaultValue);
             mute = new RegisterBoolParameter(type.ToString() + "Mute", false);
         }

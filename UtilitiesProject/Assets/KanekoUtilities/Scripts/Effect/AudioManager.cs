@@ -58,7 +58,21 @@ namespace KanekoUtilities
         {
             masterVolumeSettings.MasterSEVolume = volume;
         }
-        
+        public void SetMasterVolumeMute   (bool isMute)
+        {
+            masterVolumeSettings.SetMute(AudioVolumeSettingType.Master,isMute);
+            backgroundMusic.UpdateVolume();
+        }
+        public void SetMasterBGMVolumeMute(bool isMute)
+        {
+            masterVolumeSettings.SetMute(AudioVolumeSettingType.MasterBGM, isMute);
+            backgroundMusic.UpdateVolume();
+        }
+        public void SetMasterSEVolumeMute (bool isMute)
+        {
+            masterVolumeSettings.SetMute(AudioVolumeSettingType.MasterSE, isMute);
+        }
+
         public void PlayBGM(string bgmName, float volume = 1.0f, float pitch = 1.0f)
         {
             AudioClip clip = GetAudioClip(bgmName);

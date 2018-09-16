@@ -261,7 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
-  m_DragThreshold: 5
+  m_DragThreshold: 30
 --- !u!4 &224967878
 Transform:
   m_ObjectHideFlags: 0
@@ -1385,7 +1385,7 @@ MonoBehaviour:
   dontDestroyOnLoad: 0
   touchPanel: {fileID: 1517168055}
   swipePowerBoder: 10
-  CanTouch: 0
+  CanTouch: 1
 --- !u!1 &1691201768
 GameObject:
   m_ObjectHideFlags: 0

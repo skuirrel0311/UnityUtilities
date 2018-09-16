@@ -5,8 +5,17 @@ namespace KanekoUtilities
 {
     public class NumberText : MonoBehaviour
     {
-        [SerializeField]
-        protected AbstractUGUIText text = null;
+        AbstractUGUIText text;
+        protected AbstractUGUIText Text
+        {
+            get
+            {
+                if (text != null) return text;
+                text = GetComponent<AbstractUGUIText>();
+                return text;
+            }
+        }
+
         protected int value;
 
         public virtual void SetValue(int value, bool isUpdate = false)

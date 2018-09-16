@@ -206,7 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
-  m_DragThreshold: 5
+  m_DragThreshold: 30
 --- !u!4 &224967878
 Transform:
   m_ObjectHideFlags: 0
@@ -692,6 +692,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1553738234490362, guid: 6a00ccf9eb5df894fa9f6997f71fde4e, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6a00ccf9eb5df894fa9f6997f71fde4e, type: 2}
   m_IsPrefabParent: 0
@@ -966,7 +970,7 @@ MonoBehaviour:
   dontDestroyOnLoad: 0
   touchPanel: {fileID: 1517168055}
   swipePowerBoder: 10
-  CanTouch: 0
+  CanTouch: 1
 --- !u!1001 &1560864903
 Prefab:
   m_ObjectHideFlags: 0
@@ -1063,6 +1067,10 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1238348260086854, guid: 2b4beeff2d06ed142af1927e93236237, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2b4beeff2d06ed142af1927e93236237, type: 2}

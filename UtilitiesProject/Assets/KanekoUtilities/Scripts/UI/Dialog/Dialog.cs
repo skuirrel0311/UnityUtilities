@@ -30,7 +30,7 @@ namespace KanekoUtilities
 
         protected virtual void Awake()
         {
-            Container.gameObject.SetActive(false);
+            Container.SetActive(false);
             Vector3 startScale = Vector3.one * 0.5f;
             Vector3 endScale = Vector3.one;
 
@@ -45,7 +45,7 @@ namespace KanekoUtilities
         public virtual void Show()
         {
             panel.gameObject.SetActive(true);
-            Container.gameObject.SetActive(true);
+            Container.SetActive(true);
             Alpha = 1;
             StartCoroutine(KKUtilities.FloatLerp(showAnimationTime * 0.5f, (t) =>
             {
@@ -67,7 +67,7 @@ namespace KanekoUtilities
             StartCoroutine(hideAnimation.GetAnimation(this, hideAnimationTime).OnCompleted(() =>
             {
                 panel.gameObject.SetActive(false);
-                Container.gameObject.SetActive(false);
+                Container.SetActive(false);
                 OnHideAnimationEnd.Invoke();
             }));
         }

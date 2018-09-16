@@ -4,9 +4,9 @@ using KanekoUtilities;
 public class MyScoreManager<T> : SingletonMonobehaviour<T> where T : MonoBehaviour
 {
     [SerializeField]
-    AbstractUGUIText totalScoreText = null;
+    protected AbstractUGUIText totalScoreText = null;
     [SerializeField]
-    AbstractUGUIText bestScoreText = null;
+    protected AbstractUGUIText bestScoreText = null;
 
     public int BestScore
     {
@@ -53,27 +53,19 @@ public class MyScoreManager<T> : SingletonMonobehaviour<T> where T : MonoBehavio
         bestScore = new RegisterIntParameter("BestScore", 0);
     }
 
-    public void Init()
+    public virtual void Init()
     {
         TotalScore = 0;
         IsBestScore = false;
 
-        if(totalScoreText != null) totalScoreText.Text = TotalScore.ToString();
-        if(bestScoreText != null) bestScoreText.Text = "best: " + BestScore;
+        if (totalScoreText != null) totalScoreText.Text = TotalScore.ToString();
+        if (bestScoreText != null) bestScoreText.Text = "best: " + BestScore;
     }
 
-    /// <summary>
-    /// ゲームの状況を見てスコアを増加させる
-    /// </summary>
-    public void UpdateScore()
+    public void AddScore(int value)
     {
-        int addValue = 1;
-
-        //todo : ComboなどによってaddValueの値を変化させる
-
-        TotalScore += addValue;
-
-        OnAddScore.Invoke(addValue);
+        TotalScore += value;
+        OnAddScore.Invoke(value);
     }
 
     /// <summary>
@@ -81,14 +73,10 @@ public class MyScoreManager<T> : SingletonMonobehaviour<T> where T : MonoBehavio
     /// </summary>
     public bool UpdateBestScore()
     {
-        if (TotalScore <= BestScore)
-        {
-            IsBestScore = false;
-            return false;
-        }
+        IsBestScore = TotalScore > BestScore;
 
-        BestScore = TotalScore;
-        IsBestScore = true;
-        return true;
+        if (IsBestScore) BestScore = TotalScore;
+
+        return IsBestScore;
     }
 }

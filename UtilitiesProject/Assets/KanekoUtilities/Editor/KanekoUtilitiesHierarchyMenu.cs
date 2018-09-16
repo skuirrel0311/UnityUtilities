@@ -57,6 +57,12 @@ namespace KanekoUtilities
             CreateUGUIPartsObj("Panel");
         }
 
+        [MenuItem("GameObject/KKUtilities/Window", false, 20)]
+        public static void CreateWindow()
+        {
+            CreateUGUIPartsObj("Window");
+        }
+
         [MenuItem("GameObject/KKUtilities/Dialog/Daialog", false, 20)]
         public static void CreateDialog()
         {

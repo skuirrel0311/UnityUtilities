@@ -8,8 +8,10 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
     /// <summary>
     /// コンテニューができる上限回数(マイナスなら無限)
     /// </summary>
-    [HideInInspector]
     public override int MaxContinueCount { get { return 1; } }
+
+    RegisterIntParameter currentLevel;
+    public int CurrentLevel { get { return currentLevel.GetValue(); } }
 
     StageModeScoreManager scoreManager;
     bool isFailedContinue = false;
@@ -17,6 +19,7 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
     protected override void Start()
     {
         scoreManager = StageModeScoreManager.Instance;
+        currentLevel = new RegisterIntParameter("CurrentLevel", 1);
         //このStartが呼ばれるとゲームループが走る
         base.Start();
     }
@@ -24,35 +27,33 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
     protected override void Init()
     {
         base.Init();
-        scoreManager.Init();
-        levelAdjuster.SetScore(scoreManager.CurrentLevel);
-        isFailedContinue = false;
         //todo:Playerなどの初期化をする
+        scoreManager.Init();
+        levelAdjuster.SetScore(CurrentLevel);
+        isFailedContinue = false;
 
     }
     protected override void GameStart()
     {
         base.GameStart();
-        levelAdjuster.StartAdjustment();
         //todo:ゲームスタート時の挙動をここに書く
+        levelAdjuster.StartAdjustment();
 
     }
     protected override void GameOver()
     {
         base.GameOver();
-        scoreManager.UpdateBestScore();
         //todo:ゲームオーバー時の挙動をここに書く
-
-
+        scoreManager.UpdateBestScore();
     }
     protected override void StageClear()
     {
         base.StageClear();
-        scoreManager.CurrentLevel++;
-        scoreManager.UpdateBestScore();
         //todo:ステージクリア時の挙動をここに書く
-
+        currentLevel.SetValue(CurrentLevel + 1);
+        scoreManager.UpdateBestScore();
         MyAdManager.Instance.ShowStageClearInterstitial();
+
     }
 
     protected override void Continue()

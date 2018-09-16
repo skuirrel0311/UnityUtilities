@@ -8,22 +8,11 @@ public class Window : UGUIParts
     [SerializeField]
     UGUIImage image = null;
     [SerializeField]
-    Transform container = null;
+    CanvasGroup container = null;
 
-    public Transform Container { get { return container; } }
-
-    CanvasGroup group;
-    public CanvasGroup Group
-    {
-        get
-        {
-            if (group == null)
-            {
-                group = Container.GetComponent<CanvasGroup>();
-            }
-            return group;
-        }
-    }
+    public GameObject Container { get { return container.gameObject; } }
+    
+    public CanvasGroup Group { get { return container; } }
 
     public override Color Color
     {

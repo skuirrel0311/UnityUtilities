@@ -13,7 +13,7 @@ namespace KanekoUtilities
         {
             if (!isUpdate && this.value == value) return;
             this.value = value;
-            text.Text = value.ToString().PadLeft(maxDigit, '0');
+            Text.Text = value.ToString().PadLeft(maxDigit, '0');
         }
     }
 }

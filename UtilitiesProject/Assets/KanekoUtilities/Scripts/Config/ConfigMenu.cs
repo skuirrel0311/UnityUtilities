@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
 namespace KanekoUtilities
 {
     public class ConfigMenu : MonoBehaviour
@@ -30,7 +29,7 @@ namespace KanekoUtilities
                 else HideMenu();
             });
 
-            for(int i = 0;i< configButtons.Length;i++)
+            for (int i = 0; i < configButtons.Length; i++)
             {
                 configButtons[i].Init();
             }
@@ -51,9 +50,9 @@ namespace KanekoUtilities
 
         IEnumerator ShowMenuAnimation()
         {
-            WaitForSeconds wait = new WaitForSeconds(0.2f);
+            WaitForSeconds wait = new WaitForSeconds(0.1f);
 
-            for(int i = 0;i < configButtons.Length;i++)
+            for (int i = 0; i < configButtons.Length; i++)
             {
                 configButtons[i].transform.localScale = Vector3.zero;
                 configButtons[i].gameObject.SetActive(false);
@@ -62,15 +61,11 @@ namespace KanekoUtilities
             container.gameObject.SetActive(true);
             container.alpha = 1.0f;
 
-            for(int i = 0;i< configButtons.Length;i++)
+            for (int i = 0; i < configButtons.Length; i++)
             {
                 ConfigButton button = configButtons[i];
                 button.gameObject.SetActive(true);
-
-                StartCoroutine(KKUtilities.FloatLerp(0.3f, (t) =>
-                {
-                    StartCoroutine(buttonShowAnimation.GetAnimation(button, 0.5f));
-                }));
+                StartCoroutine(buttonShowAnimation.GetAnimation(button, 0.3f));
 
                 yield return wait;
             }
@@ -79,11 +74,11 @@ namespace KanekoUtilities
         public void HideMenu()
         {
             StopAllCoroutines();
-            
+
             StartCoroutine(KKUtilities.FloatLerp(0.3f, (t) =>
             {
                 container.alpha = Mathf.Lerp(1.0f, 0.0f, t);
-            }).OnCompleted(()=>
+            }).OnCompleted(() =>
             {
                 container.gameObject.SetActive(false);
             }));

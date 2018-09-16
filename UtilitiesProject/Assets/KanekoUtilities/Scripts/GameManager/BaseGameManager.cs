@@ -21,13 +21,6 @@ public enum ContinueRequestType { Continue, NoThanks, TimeOut }
 
 public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : MonoBehaviour
 {
-    [SerializeField]
-    protected TitlePanel titlePanel = null;
-    [SerializeField]
-    protected InGamePanel inGamePanel = null;
-    [SerializeField]
-    protected GameOverPanel gameOverPanel = null;
-
     protected abstract GameMode Mode { get; }
 
     GameState currentState = GameState.Ready;
@@ -56,13 +49,14 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
     }
 
     protected LevelAdjuster levelAdjuster;
+    protected UIManager uiManager;
     protected ContinueRequestType isContinueRequested;
 
     protected override void Start()
     {
         base.Start();
         levelAdjuster = LevelAdjuster.Instance;
-
+        uiManager = UIManager.Instance;
         StartCoroutine(GameLoop());
     }
 
@@ -82,31 +76,28 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
         ContinueCount = 0;
         isContinueRequested = 0;
 
-        titlePanel.Activate();
-        inGamePanel.Deactivate();
-        gameOverPanel.Deactivate();
-
+        uiManager.OnInitialized();
         levelAdjuster.Init();
     }
     protected virtual void GameStart()
     {
         CurrentState = GameState.InGame;
-        titlePanel.Deactivate();
-        inGamePanel.Activate();
+        uiManager.OnGameStart();
     }
     protected virtual void GameOver()
     {
         CurrentState = GameState.GameOver;
-        gameOverPanel.Activate();
+        uiManager.OnGameOver();
     }
     protected virtual void Continue()
     {
         ContinueCount++;
-        gameOverPanel.Deactivate();
+        uiManager.OnContinue();
     }
     protected virtual void StageClear()
     {
         CurrentState = GameState.StageClear;
+        uiManager.OnStageClear();
     }
 
     protected abstract IEnumerator SuggestStart();

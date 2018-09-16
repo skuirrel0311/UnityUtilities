@@ -57,14 +57,14 @@ public partial class InfiniteModeGameManager : BaseGameManager<InfiniteModeGameM
         //このコルーチンが終了するとゲームが開始される
         
         //ex TitlePanelのボタンを押したらスタート
-        yield return titlePanel.SuggestGameStart();
+        yield return uiManager.TitlePanel.SuggestGameStart();
     }
     protected override IEnumerator SuggestContinue()
     {
         //このコルーチンが終了したときにisContinueRequestedがtrueならコンテニューされる
 
         //ex GameOverPanelのRiviveボタンを押したらコンテニュー、NoThanksを押したらリスタート
-        yield return gameOverPanel.SuggestContinue((isRequested) =>
+        yield return uiManager.GameOverPanel.SuggestContinue((isRequested) =>
         {
             isContinueRequested = isRequested;
         });
@@ -79,7 +79,7 @@ public partial class InfiniteModeGameManager : BaseGameManager<InfiniteModeGameM
         //このコルーチンが終了するとゲームがリセットされる
 
         //ex GameOverPanelのTapToRestartを押したらリスタート
-        yield return gameOverPanel.SuggestRestart();
+        yield return uiManager.GameOverPanel.SuggestRestart();
     }
     
     protected override bool IsGameOver()

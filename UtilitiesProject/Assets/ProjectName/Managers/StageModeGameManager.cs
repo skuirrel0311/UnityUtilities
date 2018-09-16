@@ -5,9 +5,6 @@ using KanekoUtilities;
 
 public partial class StageModeGameManager : BaseGameManager<StageModeGameManager>
 {
-    [SerializeField]
-    StageClearPanel stageClearPanel = null;
-
     /// <summary>
     /// コンテニューができる上限回数(マイナスなら無限)
     /// </summary>
@@ -27,7 +24,6 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
     protected override void Init()
     {
         base.Init();
-        stageClearPanel.Deactivate();
         scoreManager.Init();
         levelAdjuster.SetScore(scoreManager.CurrentLevel);
         isFailedContinue = false;
@@ -52,7 +48,6 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
     protected override void StageClear()
     {
         base.StageClear();
-        stageClearPanel.Activate();
         scoreManager.CurrentLevel++;
         scoreManager.UpdateBestScore();
         //todo:ステージクリア時の挙動をここに書く
@@ -74,14 +69,14 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
         //このコルーチンが終了するとゲームが開始される
 
         //ex TitlePanelのボタンを押したらスタート
-        yield return titlePanel.SuggestGameStart();
+        yield return uiManager.TitlePanel.SuggestGameStart();
     }
     protected override IEnumerator SuggestContinue()
     {
         //このコルーチンが終了したときにisContinueRequestedがtrueならコンテニューされる
 
         //ex GameOverPanelのRiviveボタンを押したらコンテニュー、NoThanksを押したらリスタート
-        yield return gameOverPanel.SuggestContinue((isRequested) =>
+        yield return uiManager.GameOverPanel.SuggestContinue((isRequested) =>
         {
             isContinueRequested = isRequested;
         });
@@ -98,11 +93,11 @@ public partial class StageModeGameManager : BaseGameManager<StageModeGameManager
         //ex GameOver or GameClearPanelのTapToRestartを押したらリスタート
         if (CurrentState == GameState.GameOver)
         {
-            yield return gameOverPanel.SuggestRestart();
+            yield return uiManager.GameOverPanel.SuggestRestart();
         }
         else if (CurrentState == GameState.StageClear)
         {
-            yield return stageClearPanel.SuggestRestart();
+            yield return uiManager.StageClearPanel.SuggestRestart();
         }
         else
         {

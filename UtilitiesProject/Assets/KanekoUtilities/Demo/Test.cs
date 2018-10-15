@@ -5,10 +5,4 @@ using KanekoUtilities;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField]
-    UGUITextUnity text = null;
-    void Update()
-    {
-        text.Text = StageModeGameManager.Instance.CurrentState.ToString();
-    }
 }

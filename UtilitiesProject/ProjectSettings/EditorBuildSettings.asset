@@ -6,5 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/ProjectName/Scenes/InfiniteMode.unity
-    guid: f342d0ff99f37e84ea64b21a10c6eb10
+    path: Assets/KanekoUtilities/Demo/Scenes/test.unity
+    guid: 966a918b93338e74bb6fa50fe4d2a695
+  m_configObjects: {}

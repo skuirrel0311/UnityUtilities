@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using KanekoUtilities;
 
-public class MyScoreManager<T> : SingletonMonobehaviour<T> where T : MonoBehaviour
+public class MyScoreManager : SingletonMonobehaviour<MyScoreManager>
 {
     [SerializeField]
     protected AbstractUGUIText totalScoreText = null;

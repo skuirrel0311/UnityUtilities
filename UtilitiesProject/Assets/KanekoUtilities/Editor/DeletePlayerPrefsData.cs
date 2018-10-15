@@ -10,7 +10,7 @@ namespace KanekoUtilities
         [MenuItem("KanekoUtilities/DeletePlayerPrefsData")]
         public static void DeleteAll()
         {
-            PlayerPrefs.DeleteAll();
+            MyPlayerPrefs.DeleteAll();
         }
     }
 }

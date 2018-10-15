@@ -60,7 +60,7 @@ namespace KanekoUtilities
         /// <summary>
         /// 与えられたActionにduration秒かけて０→１になる値を毎フレーム渡す
         /// </summary>
-        public static void FlaotLerp(float duration, Action<float> action, MonoBehaviour mono, bool isScalable = true)
+        public static void FloatLerp(float duration, Action<float> action, MonoBehaviour mono, bool isScalable = true)
         {
             if (isScalable)
                 mono.StartCoroutine(ScalableFloatLerp(duration, action));
@@ -176,41 +176,7 @@ namespace KanekoUtilities
             action.RemoveListener(act);
             if (callback != null) callback.Invoke();
         }
-
-        /// <summary>
-        /// ２点間の(Y成分に限定した)角度を返す
-        /// </summary>
-        public static float GetAngleY(Vector3 vec1, Vector3 vec2)
-        {
-            Vector3 temp = vec2 - vec1;
-            float vecY = temp.y;
-            //X方向だけのベクトルに変換
-            temp = Vector3.right * temp.magnitude;
-            temp.y = vecY;
-
-            return Vector3.Angle(Vector3.right, temp) * 2.0f;
-        }
-
-        /// <summary>
-        /// 指定した角度の球体座標を返す
-        /// </summary>
-        /// <param name="longitude">経度</param>
-        /// <param name="latitude">緯度</param>
-        public static Vector3 SphereCoordinate(float longitude, float latitude, float distance)
-        {
-            Vector3 position = Vector3.zero;
-
-            //重複した計算
-            float temp1 = distance * Mathf.Cos(latitude * Mathf.Deg2Rad);
-            float temp2 = longitude * Mathf.Deg2Rad;
-
-            position.x = temp1 * Mathf.Sin(temp2);
-            position.y = distance * Mathf.Sin(latitude * Mathf.Deg2Rad);
-            position.z = temp1 * Mathf.Cos(temp2);
-
-            return position;
-        }
-
+        
         /// <summary>
         /// 0~360の値で返す(-10なら350)
         /// </summary>
@@ -232,47 +198,6 @@ namespace KanekoUtilities
             return clampValue;
         }
         
-        /// <summary>
-        /// 指定された確率でtrueを返す
-        /// </summary>
-        public static bool GetRandomBool(int probability)
-        {
-            return UnityEngine.Random.Range(0, 100) < probability;
-        }
-
-        /// <summary>
-        /// 渡された配列の中からランダムで1つを返す
-        /// </summary>
-        public static T GetRandomValue<T>(T[] values)
-        {
-            return values[UnityEngine.Random.Range(0, values.Length)];
-        }
-
-        /// <summary>
-        /// 配列の要素の重みを考慮して要素のインデックスを返す
-        /// </summary>
-        public static int GetRandomIndexWithWeight(params int[] weightArray)
-        {
-            int totalWeight = 0;
-            for (int i = 0; i < weightArray.Length; i++)
-            {
-                totalWeight += weightArray[i];
-            }
-
-            int randomValue = UnityEngine.Random.Range(1, totalWeight + 1);
-            int index = -1;
-            for (var i = 0; i < weightArray.Length; ++i)
-            {
-                if (weightArray[i] >= randomValue)
-                {
-                    index = i;
-                    break;
-                }
-                randomValue -= weightArray[i];
-            }
-            return index;
-        }
-
         static readonly string[] UnitTexts = { "k", "m", "b", "t", "q" };
 
         /// <summary>

@@ -9,8 +9,8 @@ namespace HyperCasual.UI
     public class Gauge : MonoBehaviour
     {
         [SerializeField, Range (0, 1)] float ratio = 1.0f;
-        [SerializeField] RectTransform bar;
-        [SerializeField] Text label;
+        [SerializeField] RectTransform bar = null;
+        [SerializeField] Text label = null;
 
         RectTransform _parent;
         RectTransform parent {

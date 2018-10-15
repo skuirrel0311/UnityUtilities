@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <symbol name="IMPORT_HYPERCOMMON"   comment="HyperCommon導入したか？" />
+    <symbol name="STAGE_MODE"   comment="ステージ制か？" />
+    <symbol name="INFINITE_MODE"   comment="無限ラン制か？" />
+</root>
+

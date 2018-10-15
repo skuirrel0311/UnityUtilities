@@ -96,7 +96,7 @@ namespace KanekoUtilities
         /// </summary>
         public void ShowMessage(string message, Vector2 position, Quaternion rotation, FontSettings settings)
         {
-            ShowMessage(message, position, rotation, transform, settings);
+            ShowMessage(message, position, rotation, textPool.transform, settings);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace KanekoUtilities
         /// </summary>
         public void ShowMessage(string message, Vector3 position)
         {
-            ShowMessage(message, position, DefaultUGUIFontSettings);
+            ShowMessage(message, position, Quaternion.identity, DefaultUGUIFontSettings);
         }
         /// <summary>
         /// 指定された場所にデフォルトの設定でUGUIのメッセージを表示する
@@ -126,7 +126,7 @@ namespace KanekoUtilities
         /// </summary>
         public void ShowMessage(string message, Vector3 position, FontSettings settings)
         {
-            ShowMessage(message, position, settings);
+            ShowMessage(message, position, Quaternion.identity, settings);
         }
         /// <summary>
         /// 指定された場所に指定された設定でUGUIのメッセージを表示する
@@ -145,7 +145,7 @@ namespace KanekoUtilities
         /// </summary>
         public void ShowMessage3D(string message, Vector3 position)
         {
-            ShowMessage3D(message, position, Default3DFontSettings);
+            ShowMessage3D(message, position, Quaternion.identity, Default3DFontSettings);
         }
         /// <summary>
         /// 指定された場所にデフォルトの設定で３Dのメッセージを表示する
@@ -181,7 +181,7 @@ namespace KanekoUtilities
         /// </summary>
         public void ShowMessage3D(string message, Vector3 position, Quaternion rotation, FontSettings settings)
         {
-            ShowMessage3D(message, position, rotation, transform, settings);
+            ShowMessage3D(message, position, rotation, textMeshPool.transform, settings);
         }
 
         #endregion

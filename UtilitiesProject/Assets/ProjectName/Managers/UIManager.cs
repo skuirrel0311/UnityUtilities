@@ -3,47 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
 
+[RequireComponent(typeof(PanelSwitcher))]
 public class UIManager : SingletonMonobehaviour<UIManager>
 {
-    [SerializeField]
-    TitlePanel titlePanel = null;
-    public TitlePanel TitlePanel { get { return titlePanel; } }
-    [SerializeField]
-    InGamePanel inGamePanel = null;
-    public InGamePanel InGamePanel { get { return inGamePanel; } }
-    [SerializeField]
-    GameOverPanel gameOverPanel = null;
-    public GameOverPanel GameOverPanel { get { return gameOverPanel; } }
-    [SerializeField]
-    StageClearPanel stageClearPanel = null;
-    public StageClearPanel StageClearPanel { get { return stageClearPanel; } }
+    public PanelSwitcher PanelSwitcher { get; private set; }
+    
+    public TitlePanel TitlePanel { get { return (TitlePanel)PanelSwitcher.GetPanel(PanelType.Title); } }
+    public InGamePanel InGamePanel { get { return (InGamePanel)PanelSwitcher.GetPanel(PanelType.InGame); } }
+    public GameOverPanel GameOverPanel { get { return (GameOverPanel)PanelSwitcher.GetPanel(PanelType.GameOver); } }
+#if STAGE_MODE
+    public StageClearPanel StageClearPanel { get { return (StageClearPanel)PanelSwitcher.GetPanel(PanelType.StageClear); } }
+#endif
+
+    protected override void Awake()
+    {
+        base.Awake();
+        PanelSwitcher = GetComponent<PanelSwitcher>();
+    }
 
     public void OnInitialized()
     {
-        titlePanel.Activate();
-        inGamePanel.Deactivate();
-        gameOverPanel.Deactivate();
-        if(stageClearPanel != null) stageClearPanel.Deactivate();
+        PanelSwitcher.SwitchPanel(PanelType.Title);
     }
 
     public void OnGameStart()
     {
-        titlePanel.Deactivate();
-        inGamePanel.Activate();
+        PanelSwitcher.SwitchPanel(PanelType.InGame);
     }
 
     public void OnGameOver()
     {
-        gameOverPanel.Activate();
+        PanelSwitcher.AddPanel(PanelType.GameOver);
     }
 
     public void OnContinue()
     {
-        gameOverPanel.Deactivate();
+        PanelSwitcher.HidePanel(PanelType.GameOver);
     }
 
     public void OnStageClear()
     {
-        if(stageClearPanel != null) stageClearPanel.Activate();
+        PanelSwitcher.AddPanel(PanelType.StageClear);
     }
 }

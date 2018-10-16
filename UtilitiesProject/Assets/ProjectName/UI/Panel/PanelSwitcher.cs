@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
 
+/// <summary>
+/// パネルの切り替えを行う（表示順はいじらない）
+/// </summary>
 public class PanelSwitcher : MonoBehaviour
 {
     Dictionary<PanelType, GameStatePanel> panelDic = new Dictionary<PanelType, GameStatePanel>();

@@ -142,6 +142,12 @@ namespace KanekoUtilities
              OutBounce(t * 2.0f - 1.0f) * 0.5f + 0.5f;
         }
 
+        public static float Yoyo(float t)
+        {
+            if (t < 0.5f) return t * 2.0f;
+            else return 1.0f - ((t - 0.5f) * 2.0f);
+        }
+
         public static float GetEase(float t, EaseType ease)
         {
             switch (ease)

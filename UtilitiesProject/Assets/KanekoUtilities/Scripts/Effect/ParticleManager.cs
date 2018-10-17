@@ -117,14 +117,17 @@ namespace KanekoUtilities
         /// <summary>
         /// 指定された地点に瞬間的なパーティクルを再生する
         /// </summary>
+        public void PlayOneShot(string name, Vector3 position)
+        {
+            PlayOneShot(name, position, Quaternion.identity, transform);
+        }
+
+        /// <summary>
+        /// 指定された地点に瞬間的なパーティクルを再生する
+        /// </summary>
         public void PlayOneShot(string name, Vector3 position, Quaternion rotation)
         {
-            MomentParticle particle = GetMomentParticle(name);
-
-            if (particle == null) return;
-
-            particle.transform.SetPositionAndRotation(position, rotation);
-            particle.Play();
+            PlayOneShot(name, position, rotation, transform);
         }
 
         /// <summary>
@@ -148,15 +151,44 @@ namespace KanekoUtilities
             particle.transform.SetParent(parent);
             particle.Play();
 
-            KKUtilities.Delay(0.1f, () => particle.transform.SetParent(transform), this);
+            KKUtilities.Delay(particle.ParticleSystem.main.duration, () => particle.transform.SetParent(transform), this);
         }
 
         /// <summary>
         /// 指定された地点に瞬間的なパーティクルを再生する
         /// </summary>
-        public void PlayOneShot(string name, Vector3 position)
+        public void PlayOneShot(string name, Vector3 position, Color color)
         {
-            PlayOneShot(name, position, Quaternion.identity);
+            PlayOneShot(name, position, Quaternion.identity, color, transform);
+        }
+
+        /// <summary>
+        /// 指定された地点に瞬間的なパーティクルを再生する
+        /// </summary>
+        public void PlayOneShot(string name, Vector3 position,Quaternion rotation,  Color color)
+        {
+            PlayOneShot(name, position, rotation, color, transform);
+        }
+
+        /// <summary>
+        /// 指定された地点に瞬間的なパーティクルを再生する
+        /// </summary>
+        public void PlayOneShot(string name, Vector3 position, Quaternion rotation, Color color, Transform parent)
+        {
+            MomentParticle particle = GetMomentParticle(name);
+
+            if (particle == null) return;
+
+            particle.transform.SetPositionAndRotation(position, rotation);
+            particle.transform.SetParent(parent);
+
+            var main = particle.ParticleSystem.main;
+            var defaultColor = main.startColor;
+            main.startColor = color;
+            particle.Play();
+            main.startColor = defaultColor;
+
+            KKUtilities.Delay(main.duration, () => particle.transform.SetParent(transform), this);
         }
 
         ObjectPool GetParticlePooler(string name)

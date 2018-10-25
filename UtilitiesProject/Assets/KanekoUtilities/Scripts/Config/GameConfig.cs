@@ -31,7 +31,7 @@ namespace KanekoUtilities
             switch (name)
             {
                 case ConfigValueName.UseVibration:
-                    return false;
+                    return MyVibrationManager.Instance.Enable;
                 case ConfigValueName.AudioEnable:
                     return AudioManager.Instance.Enable;
             }
@@ -41,12 +41,11 @@ namespace KanekoUtilities
 
         void SetVibration(bool value)
         {
-            //useVibration = value;
-            //if (useVibration)
-            //{
-            //    VibrationManager.Instance.Vibrate(VibrationManager.VibrationType.ImpactMedium);
-            //}
-            //VibrationManager.Instance.SetEnable(useVibration);
+            if (value)
+            {
+                MyVibrationManager.Instance.Vibrate(VibrationType.ImpactMedium);
+            }
+            MyVibrationManager.Instance.SetEnable(value);
         }
 
         void SetAudioEnable(bool value)

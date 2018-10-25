@@ -15,7 +15,7 @@ namespace KanekoUtilities
         const int maxSECount = 50;
 
         MasterVolumeSettings masterVolumeSettings;
-        public bool Enable { get { return masterVolumeSettings.IsMuteMasterVolume; } }
+        public bool Enable { get { return !masterVolumeSettings.IsMuteMasterVolume; } }
         public float MasterVolume { get { return masterVolumeSettings.MasterVolume; } }
         public float MasterBGMVolume { get { return masterVolumeSettings.MasterBGMVolume; } }
         public float MasterSEVolume { get { return masterVolumeSettings.MasterSEVolume; } }
@@ -40,7 +40,7 @@ namespace KanekoUtilities
 
         public void SetEnable(bool enable)
         {
-            masterVolumeSettings.IsMuteMasterVolume = enable;
+            masterVolumeSettings.IsMuteMasterVolume = !enable;
 
             backgroundMusic.UpdateVolume();
         }

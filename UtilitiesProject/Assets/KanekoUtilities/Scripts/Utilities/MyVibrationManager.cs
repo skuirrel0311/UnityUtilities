@@ -46,12 +46,36 @@ namespace KanekoUtilities
 
     public class MyVibrationManager : Singleton<MyVibrationManager>
     {
-        public void Vibrate(VibrationType type)
+        RegisterBoolParameter enable;
+        public bool Enable
         {
-#if !IMPOERT_HYPERCOMMON
+            get
+            {
+                if (enable == null) return false;
+
+                return enable.GetValue();
+            }
+        }
+
+        public MyVibrationManager()
+        {
+            enable = new RegisterBoolParameter("VibrationEnable", true);
+            SetEnable(enable.GetValue());
+        }
+
+        public void Vibrate(VibrationType type, bool vibrateUnSupported = false)
+        {
+#if !IMPORT_HYPERCOMMON
             Debug.Log("Vibrate " + type);
 #else
-            VibrationManager.Instance.Vibrate(ToHyperCommonVivrationType(type));
+            if(IsSupported)
+            {
+			    VibrationManager.Instance.Vibrate(ToHyperCommonVivrationType(type));
+            }
+            else
+            {
+                if(vibrateUnSupported) VibrationManager.Instance.Vibrate(ToHyperCommonVivrationType(type));
+            }
 #endif
         }
 
@@ -59,7 +83,7 @@ namespace KanekoUtilities
         {
             get
             {
-#if !IMPOERT_HYPERCOMMON
+#if !IMPORT_HYPERCOMMON
                 return false;
 #else
                 return VibrationManager.IsSupported();
@@ -67,6 +91,13 @@ namespace KanekoUtilities
             }
         }
 
+        public void SetEnable(bool enable)
+        {
+            this.enable.SetValue(enable);
+#if IMPORT_HYPERCOMMON
+            VibrationManager.Instance.SetEnable(enable);
+#endif
+        }
 
 #if IMPORT_HYPERCOMMON
         VibrationManager.VibrationType ToHyperCommonVivrationType(VibrationType type)

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
+#if IMPORT_HYPERCOMMON
+using HyperCasual.StageSystem;
+#endif
 
 public partial class MyGameManager : BaseGameManager<MyGameManager>
 {
@@ -12,6 +15,10 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
     
     bool isFailedContinue = false;
     MyScoreManager scoreManager;
+
+#if IMPORT_HYPERCOMMON && STAGE_MODE
+    StageScoreManager stageScoreManager;
+#endif
 
     protected override void Start()
     {
@@ -34,7 +41,9 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
         base.GameStart();
         levelAdjuster.StartAdjustment();
         //todo:ゲームスタート時の挙動をここに書く
-
+#if IMPORT_HYPERCOMMON && STAGE_MODE
+    stageScoreManager.StartStage(CurrentLevel);
+#endif
     }
     protected override void GameOver()
     {
@@ -42,6 +51,9 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
         scoreManager.UpdateBestScore();
         //todo:ゲームオーバー時の挙動をここに書く
 
+#if IMPORT_HYPERCOMMON && STAGE_MODE
+    stageScoreManager.Fail(CurrentLevel);
+#endif
     }
     protected override void Continue()
     {
@@ -58,6 +70,9 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
     {
         base.StageClear();
         //todo:ステージクリア時の挙動をここに書く
+#if IMPORT_HYPERCOMMON && STAGE_MODE
+    stageScoreManager.Success(CurrentLevel, scoreManager.TotalScore, 0);
+#endif
         currentLevel.SetValue(CurrentLevel + 1);
         scoreManager.UpdateBestScore();
         MyAdManager.Instance.ShowStageClearInterstitial();

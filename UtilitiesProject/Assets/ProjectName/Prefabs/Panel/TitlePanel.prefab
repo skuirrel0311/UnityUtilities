@@ -1091,7 +1091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c0a0b9eade8b145b252b1af73e8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  valueName: 0
+  valueName: 1
   enableVisual: {fileID: 1868251249848020}
   disableVisual: {fileID: 1206274317722890}
 --- !u!114 &114680072761263984
@@ -1432,7 +1432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 114712939805333206}
   container: {fileID: 225174046435262272}
-  activeOnAwake: 1
+  activeOnAwake: 0
   showAnimationTime: 0.5
   hideAnimationTime: 0.2
   type: 1

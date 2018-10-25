@@ -13,17 +13,17 @@ public class MyAdManager : Singleton<MyAdManager>
     public MyAdManager()
     {
 #if IMPORT_HYPERCOMMON
-        Condition intervalFromInstall = Conditions.IntervalFromInstall(60.0f, HyperCasual.Calculator.CompareOperation.Greater);
-        Condition intervalFromLastInterstitialAd = Conditions.IntervalFromLastInterstitialAd(30.0f, HyperCasual.Calculator.CompareOperation.Greater);
-        Condition intervalFromOpen = Conditions.IntervalFromOpen(30.0f, HyperCasual.Calculator.CompareOperation.Greater);
+        Condition intervalFromInstall = ConditionFactory.IntervalFromInstall(60.0f, HyperCasual.Calculator.CompareOperation.Greater);
+        Condition intervalFromLastInterstitialAd = ConditionFactory.IntervalFromLastInterstitialAd(30.0f, HyperCasual.Calculator.CompareOperation.Greater);
+        Condition intervalFromOpen = ConditionFactory.IntervalFromOpen(30.0f, HyperCasual.Calculator.CompareOperation.Greater);
 
         AllCondition gameOverCondition = new AllCondition(intervalFromInstall, intervalFromOpen, intervalFromLastInterstitialAd);
 
         //インストールから６０秒、起動から３０秒、前回の広告から３０秒経っていたら出す
-        AdManager.Instance.AddConditionToShow("GameOver", gameOverCondition);
+        AdManager.Instance.SetConditionToShow("GameOver", gameOverCondition);
 
         //インストールしてから６０秒以内のみ出さない。それ以外は確定で出す
-        AdManager.Instance.AddConditionToShow("StageClear", intervalFromInstall);
+        AdManager.Instance.SetConditionToShow("StageClear", intervalFromInstall);
 #endif
     }
 
@@ -32,7 +32,7 @@ public class MyAdManager : Singleton<MyAdManager>
 #if IMPORT_HYPERCOMMON
         if (!AdManager.Instance.ShouldShowAd("GameOver")) return;
 
-        bool enable = AudioManager.Instance.AudioEnable.GetValue();
+        bool enable = AudioManager.Instance.Enable;
         AudioManager.Instance.SetEnable(false);
 
         KKUtilities.Delay(0.5f, () =>
@@ -54,7 +54,7 @@ public class MyAdManager : Singleton<MyAdManager>
 #if IMPORT_HYPERCOMMON
         if (!AdManager.Instance.ShouldShowAd("StageClear")) return;
 
-        bool enable = AudioManager.Instance.AudioEnable.GetValue();
+        bool enable = AudioManager.Instance.Enable;
         AudioManager.Instance.SetEnable(false);
 
         KKUtilities.Delay(0.5f, () =>

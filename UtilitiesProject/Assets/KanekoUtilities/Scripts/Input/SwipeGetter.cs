@@ -55,7 +55,17 @@ namespace KanekoUtilities
         {
             base.Start();
 
-            screenSizeRate = 1.0f / ((float)Screen.width / 1080);
+            Camera mainCamera = Camera.main;
+            float width = mainCamera.ViewportToWorldPoint(new Vector3(1.0f, 0.0f, 1.0f)).x * 2.0f;
+            
+            if (mainCamera.orthographic)
+            {
+                screenSizeRate = (width / mainCamera.orthographicSize) * (1080.0f / Screen.width);
+            }
+            else
+            {
+                screenSizeRate = Screen.width / 1080.0f;
+            }
 
             touchPanel.OnTouchStart.AddListener(OnTouchStart);
             touchPanel.OnTouchEnd.AddListener(OnTouchEnd);

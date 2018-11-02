@@ -8,10 +8,17 @@ using HyperCasual.StageSystem;
 
 public partial class MyGameManager : BaseGameManager<MyGameManager>
 {
+    [SerializeField]
+    PlayerFacade player = null;
+    public PlayerFacade Player { get { return player; } }
+    [SerializeField]
+    StageFacade stage = null;
+    public StageFacade Stage { get { return stage; } }
+
     /// <summary>
     /// コンテニューができる上限回数(マイナスなら無限)
     /// </summary>
-    public override int MaxContinueCount { get { return 1; } }
+    public override int MaxContinueCount { get { return 0; } }
     
     bool isFailedContinue = false;
     MyScoreManager scoreManager;
@@ -34,13 +41,18 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
         isFailedContinue = false;
         scoreManager.Init();
         //todo:Playerなどの初期化をする
-
+        player.Init();
+        stage.Init();
     }
     protected override void GameStart()
     {
         base.GameStart();
         levelAdjuster.StartAdjustment();
         //todo:ゲームスタート時の挙動をここに書く
+
+        player.OnGameStart();
+        stage.OnGameStart();
+
 #if IMPORT_HYPERCOMMON && STAGE_MODE
     stageScoreManager.StartStage(CurrentLevel);
 #endif
@@ -50,6 +62,9 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
         base.GameOver();
         scoreManager.UpdateBestScore();
         //todo:ゲームオーバー時の挙動をここに書く
+
+        player.OnGameEnd();
+        stage.OnGameEnd();
 
 #if IMPORT_HYPERCOMMON && STAGE_MODE
     stageScoreManager.Fail(CurrentLevel);
@@ -70,6 +85,10 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
     {
         base.StageClear();
         //todo:ステージクリア時の挙動をここに書く
+
+        player.OnGameEnd();
+        stage.OnGameEnd();
+
 #if IMPORT_HYPERCOMMON && STAGE_MODE
     stageScoreManager.Success(CurrentLevel, scoreManager.TotalScore, 0);
 #endif

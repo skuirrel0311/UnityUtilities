@@ -7,9 +7,13 @@ using UnityEditor;
 
 public class MyEnvironmentSetting : EnvironmentSetting 
 {
+    //ここに追加したい色の項目を増やす
+
     public override void Apply()
     {
         base.Apply();
+
+        StageColorCoordinator.Instance.ApplyEnviromentSetting(this);
     }
 }
 

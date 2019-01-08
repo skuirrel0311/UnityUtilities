@@ -19,13 +19,6 @@ namespace KanekoUtilities
 
             action.Invoke();
         }
-        /// <summary>
-        /// duration秒後にactionを実行する
-        /// </summary>
-        public static void Delay(float duration, Action action, MonoBehaviour mono, bool isScalable = true)
-        {
-            mono.StartCoroutine(Delay(duration, action));
-        }
 
         /// <summary>
         /// frameCountフレーム後にactionを実行する
@@ -39,13 +32,6 @@ namespace KanekoUtilities
 
             action.Invoke();
         }
-        /// <summary>
-        /// frameCountフレーム後にactionを実行する
-        /// </summary>
-        public static void DelayFrame(int frameCount, Action action, MonoBehaviour mono)
-        {
-            mono.StartCoroutine(DelayFrame(frameCount, action));
-        }
 
         /// <summary>
         /// 与えられたActionにduration秒かけて０→１になる値を毎フレーム渡す
@@ -56,16 +42,6 @@ namespace KanekoUtilities
                 return new MyCoroutine(ScalableFloatLerp(duration, action));
             else
                 return new MyCoroutine(UnscalableFloatLerp(duration, action));
-        }
-        /// <summary>
-        /// 与えられたActionにduration秒かけて０→１になる値を毎フレーム渡す
-        /// </summary>
-        public static void FloatLerp(float duration, Action<float> action, MonoBehaviour mono, bool isScalable = true)
-        {
-            if (isScalable)
-                mono.StartCoroutine(ScalableFloatLerp(duration, action));
-            else
-                mono.StartCoroutine(UnscalableFloatLerp(duration, action));
         }
         static IEnumerator ScalableFloatLerp(float duration, Action<float> action)
         {
@@ -106,12 +82,17 @@ namespace KanekoUtilities
                 yield return null;
             }
         }
+
         /// <summary>
         /// １フレームに１回actionを実行する(updateの戻り値は継続するか？)
         /// </summary>
-        public static void While(Func<bool> update, MonoBehaviour mono)
+        public static IEnumerator DoWhile(Func<bool> update)
         {
-            mono.StartCoroutine(While(update));
+            do
+            {
+                yield return null;
+            }
+            while (update.Invoke());
         }
 
         /// <summary>
@@ -122,13 +103,6 @@ namespace KanekoUtilities
             yield return new WaitUntil(predicate);
 
             action.Invoke();
-        }
-        /// <summary>
-        /// predicateが真を返すまで待機し、その後actionを実行する
-        /// </summary>
-        public static void WaitUntil(Func<bool> predicate, Action action, MonoBehaviour mono)
-        {
-            mono.StartCoroutine(WaitUntil(predicate, action));
         }
 
         /// <summary>
@@ -176,7 +150,7 @@ namespace KanekoUtilities
             action.RemoveListener(act);
             if (callback != null) callback.Invoke();
         }
-        
+
         /// <summary>
         /// 0~360の値で返す(-10なら350)
         /// </summary>
@@ -197,7 +171,7 @@ namespace KanekoUtilities
 
             return clampValue;
         }
-        
+
         static readonly string[] UnitTexts = { "k", "m", "b", "t", "q" };
 
         /// <summary>
@@ -209,6 +183,7 @@ namespace KanekoUtilities
         /// </summary>
         public static string GetDigitText(long number)
         {
+            //桁数を算出する
             int digit = GetDigitNum(number);
 
             if (digit < 4) return number.ToString();
@@ -219,19 +194,17 @@ namespace KanekoUtilities
             if (unitTextIndex >= UnitTexts.Length) return "infinite";
             string unitText = UnitTexts[unitTextIndex];
 
-            long unitValue = LongPow(10, (temp * 3) - 1);
-
-            string result;
             temp = (digit - 1) % 3;
 
-            float resultValue = (float)number / unitValue;
+            string result;
+            string resultValueText = number.ToString();
 
             if (temp == 0)
-                result = resultValue.ToString("0.00");
+                result = resultValueText.Substring(0, 1) + "." + resultValueText.Substring(1, 2);
             else if (temp == 1)
-                result = resultValue.ToString("00.0");
+                result = resultValueText.Substring(0, 2) + "." + resultValueText.Substring(2, 1);
             else
-                result = resultValue.ToString("000");
+                result = resultValueText.Substring(0, 3);
 
             return result + unitText;
         }
@@ -241,18 +214,7 @@ namespace KanekoUtilities
         /// </summary>
         public static int GetDigitNum(long number)
         {
-            int digitNum = 1;
-
-            while (true)
-            {
-                number = (int)(number * 0.1f);
-
-                if (number < 1) break;
-
-                digitNum++;
-            }
-
-            return digitNum;
+            return (int)Math.Log10(number) + 1;
         }
 
         public static long LongPow(long x, long y)

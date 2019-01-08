@@ -11,7 +11,7 @@ namespace KanekoUtilities
         {
             Play(clip, volume, pitch);
 
-            KKUtilities.WaitUntil(() => !IsPlaying, callback, this);
+            this.WaitUntil(() => !IsPlaying, callback);
         }
 
         //loopするSEを鳴らしたい場合は止める条件を設定する
@@ -32,7 +32,7 @@ namespace KanekoUtilities
             Source.loop = true;
             Play(clip, volume, pitch);
 
-            KKUtilities.WaitUntil(predicate, callback, this);
+            this.WaitUntil(predicate, callback);
         }
     }
 }

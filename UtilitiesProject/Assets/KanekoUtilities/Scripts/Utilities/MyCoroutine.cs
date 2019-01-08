@@ -33,18 +33,15 @@ namespace KanekoUtilities
 
         IEnumerator Start()
         {
-            if (onStart != null) onStart.Invoke();
+            onStart.SafeInvoke();
             while (logic.MoveNext())
             {
-                if (onUpdate != null) onUpdate.Invoke();
+                onUpdate.SafeInvoke();
                 yield return null;
             }
 
-            if (onCompleted != null)
-            {
-                onCompleted.Invoke();
-                onCompleted = null;
-            }
+            onCompleted.SafeInvoke();
+            onCompleted = null;
         }
 
         public MyCoroutine OnCompleted(Action onCompleted)
@@ -65,7 +62,8 @@ namespace KanekoUtilities
 
         public void CallCompletedSelf()
         {
-            if (onCompleted != null) onCompleted.Invoke();
+            onCompleted.SafeInvoke();
+            onCompleted = null;
         }
     }
 }

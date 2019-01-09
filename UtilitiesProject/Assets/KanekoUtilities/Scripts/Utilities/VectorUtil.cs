@@ -68,6 +68,14 @@ namespace KanekoUtilities
         {
             return new Vector3(vec.x, 0.0f, vec.y);
         }
+
+        /// <summary>
+        /// 指定されたベクトルをXYのVector3に変換する
+        /// </summary>
+        public static Vector3 ToXYVector3(this Vector2 vec)
+        {
+            return new Vector3(vec.x, vec.y, 0.0f);
+        }
     }
 
     public static class Vector3Extentions

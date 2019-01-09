@@ -23,7 +23,7 @@ namespace KanekoUtilities
         public Vector2 DeltaPosition { get; private set; }
 
         /// <summary>
-        /// 画面がタップされた時（座標）
+        /// 画面がタップされたとき（座標）
         /// </summary>
         public MyUnityEvent<Vector2> onTap = new MyUnityEvent<Vector2>();
         /// <summary>
@@ -34,6 +34,10 @@ namespace KanekoUtilities
         /// 画面に指が触れたとき（座標）
         /// </summary>
         public MyUnityEvent<Vector2> onTouchStart = new MyUnityEvent<Vector2>();
+        /// <summary>
+        /// 画面に指が触れているとき（座標）
+        /// </summary>
+        public MyUnityEvent<Vector2> onTouching = new MyUnityEvent<Vector2>();
         /// <summary>
         /// 画面から指が離れたとき（座標）
         /// </summary>
@@ -101,6 +105,8 @@ namespace KanekoUtilities
 
             //操作受け中ではなかった
             if (!isStartTouch || !CanTouch) return;
+
+            if (onTouching != null) onTouching.Invoke(touchPosition);
 
             inputBuffer[currentBufIndex] = DeltaPosition;
             currentBufIndex++;

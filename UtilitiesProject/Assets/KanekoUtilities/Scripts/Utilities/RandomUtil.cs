@@ -6,10 +6,31 @@ using URandom;
 namespace KanekoUtilities
 {
     /// <summary>
-    /// UnityRandomも使える（Seedが指定したい場合は自分で定義）
+    /// UnityRandomも使える（Seedが指定したい場合はSetSeedをしようする）
     /// </summary>
     public static class RandomUtil
     {
+        static UnityRandom urand;
+        public static UnityRandom Urand
+        {
+            get
+            {
+                if(urand != null) return urand;
+                urand = new UnityRandom();
+                return urand;
+            }
+        }
+
+        public static void SetSeed(int seed)
+        {
+            urand = new UnityRandom(seed);
+        }
+
+        public static void SetUnityRandom(UnityRandom _urand)
+        {
+            urand = _urand;
+        }
+
         /// <summary>
         /// 指定された確率でtrueを返す
         /// </summary>
@@ -19,11 +40,27 @@ namespace KanekoUtilities
         }
 
         /// <summary>
+        /// 指定された確率でtrueを返す
+        /// </summary>
+        public static bool GetUnityRandomBool(int probability)
+        {
+            return RandomUtil.Range(0, 100) < probability;
+        }
+
+        /// <summary>
         /// 渡された配列の中からランダムで1つを返す
         /// </summary>
-        public static T GetRandomValue<T>(T[] values)
+        public static T GetRandomValue<T>(params T[] values)
         {
             return values[UnityEngine.Random.Range(0, values.Length)];
+
+        }
+        /// <summary>
+        /// 渡された配列の中からランダムで1つを返す
+        /// </summary>
+        public static T GetUnityRandomValue<T>(params T[] values)
+        {
+            return values[RandomUtil.Range(0, values.Length)];
         }
 
         /// <summary>
@@ -32,16 +69,16 @@ namespace KanekoUtilities
         public static int GetRandomIndexWithWeight(params int[] weightArray)
         {
             int totalWeight = 0;
-            for (int i = 0; i < weightArray.Length; i++)
+            for(int i = 0 ; i < weightArray.Length ; i++)
             {
                 totalWeight += weightArray[i];
             }
 
             int randomValue = UnityEngine.Random.Range(1, totalWeight + 1);
             int index = -1;
-            for (var i = 0; i < weightArray.Length; ++i)
+            for(var i = 0 ; i < weightArray.Length ; ++i)
             {
-                if (weightArray[i] >= randomValue)
+                if(weightArray[i] >= randomValue)
                 {
                     index = i;
                     break;
@@ -51,19 +88,33 @@ namespace KanekoUtilities
             return index;
         }
 
-        #region UnityRandom
-
-        static UnityRandom urand;
-        static UnityRandom Urand
+        /// <summary>
+        /// 配列の要素の重みを考慮して要素のインデックスを返す
+        /// </summary>
+        public static int GetUnityRandomIndexWithWeight(params int[] weightArray)
         {
-            get
+            int totalWeight = 0;
+            for(int i = 0 ; i < weightArray.Length ; i++)
             {
-                if (urand != null) return urand;
-                urand = new UnityRandom();
-                return urand;
+                totalWeight += weightArray[i];
             }
+
+            int randomValue = RandomUtil.Range(1, totalWeight + 1);
+            int index = -1;
+            for(var i = 0 ; i < weightArray.Length ; ++i)
+            {
+                if(weightArray[i] >= randomValue)
+                {
+                    index = i;
+                    break;
+                }
+                randomValue -= weightArray[i];
+            }
+            return index;
         }
-        
+
+
+
         /// <summary>
         /// 0 - 1
         /// </summary>
@@ -79,12 +130,25 @@ namespace KanekoUtilities
         {
             return Urand.Value(n, t);
         }
-        
+
         /// <summary>
         /// min < x < max
         /// </summary>
-        public static float Range(int minValue, int maxValue)
+        public static int Range(int minValue, int maxValue)
         {
+            if(minValue == maxValue) return minValue;
+
+            if(minValue > maxValue)
+            {
+                var temp = minValue;
+                minValue = maxValue;
+                maxValue = temp;
+            }
+
+            maxValue--;
+
+            if(minValue == maxValue) return minValue;
+
             return Urand.Range(minValue, maxValue);
         }
 
@@ -93,6 +157,19 @@ namespace KanekoUtilities
         /// </summary>
         public static float Range(int minValue, int maxValue, UnityRandom.Normalization n, float t)
         {
+            if(minValue == maxValue) return minValue;
+
+            if(minValue > maxValue)
+            {
+                var temp = minValue;
+                minValue = maxValue;
+                maxValue = temp;
+            }
+
+            maxValue--;
+
+            if(minValue == maxValue) return minValue;
+
             return Urand.Range(minValue, maxValue, n, t);
         }
 
@@ -288,7 +365,7 @@ namespace KanekoUtilities
         {
             return Urand.RollDice(size, type);
         }
-        
+
         /// <summary>
         /// 配列をシャッフルして返す
         /// </summary>
@@ -304,6 +381,5 @@ namespace KanekoUtilities
         {
             return Urand.ShuffleBag(dict);
         }
-        #endregion
     }
 }

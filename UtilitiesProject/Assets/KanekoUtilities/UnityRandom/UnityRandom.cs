@@ -59,7 +59,7 @@ public class UnityRandom
 	}
 	
 	// RANGE Return a Float min < x < max
-	public float Range(Int32 minValue, Int32 maxValue)
+	public int Range(Int32 minValue, Int32 maxValue)
 	{
 		return _rand.Next(minValue, maxValue);
 	}

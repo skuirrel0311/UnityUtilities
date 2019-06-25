@@ -601,6 +601,7 @@ PlayerSettings:
   webGLLinkerTarget: 0
   scriptingDefineSymbols:
     1: 
+    4: 
     7: STAGE_MODE
   platformArchitecture: {}
   scriptingBackend: {}

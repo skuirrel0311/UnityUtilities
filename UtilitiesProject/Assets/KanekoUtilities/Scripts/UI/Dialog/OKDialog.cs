@@ -13,7 +13,7 @@ namespace KanekoUtilities
         
         public void Init(Action onOK)
         {
-            okButton.OnClick.AddListener(()=>
+            okButton.AddListener(()=>
             {
                 if(onOK != null) onOK();
                 if (autoHide) DialogDisplayer.Instance.HideDialog();

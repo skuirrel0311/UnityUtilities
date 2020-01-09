@@ -10,64 +10,77 @@ using HyperCasual.Conditions;
 
 public class MyAdManager : Singleton<MyAdManager>
 {
+    const string GameOverKey = "GameOver";
+    const string StageClearKey = "StageClear";
+
     public MyAdManager()
     {
 #if IMPORT_HYPERCOMMON
-        Condition intervalFromInstall = ConditionFactory.IntervalFromInstall(60.0f, HyperCasual.Calculator.CompareOperation.Greater);
-        Condition intervalFromLastInterstitialAd = ConditionFactory.IntervalFromLastInterstitialAd(30.0f, HyperCasual.Calculator.CompareOperation.Greater);
-        Condition intervalFromOpen = ConditionFactory.IntervalFromOpen(30.0f, HyperCasual.Calculator.CompareOperation.Greater);
+        Condition intervalFromLastInterstitialAd25 = ConditionFactory.IntervalFromLastInterstitialAd(25.0f, HyperCasual.Calculator.CompareOperation.Greater);
+        Condition intervalFromLastInterstitialAd30 = ConditionFactory.IntervalFromLastInterstitialAd(30.0f, HyperCasual.Calculator.CompareOperation.Greater);
+        Condition intervalFromOpen = ConditionFactory.IntervalFromOpen(10.0f, HyperCasual.Calculator.CompareOperation.Greater);
+        Condition intervalFromRewardVideo = ConditionFactory.IntervalFromLastRewardAdSuccess(25.0f, HyperCasual.Calculator.CompareOperation.Greater);
+        Condition playCountFromInstall = ConditionFactory.PlayCountFromInstall(3, HyperCasual.Calculator.CompareOperation.Greater);
 
-        AllCondition gameOverCondition = new AllCondition(intervalFromInstall, intervalFromOpen, intervalFromLastInterstitialAd);
+        AllCondition GameOverAdCondition = new AllCondition(intervalFromOpen, intervalFromLastInterstitialAd30);
+        AllCondition ClearAdCondition = new AllCondition(intervalFromOpen, intervalFromLastInterstitialAd30, intervalFromRewardVideo, playCountFromInstall);
 
-        //インストールから６０秒、起動から３０秒、前回の広告から３０秒経っていたら出す
-        AdManager.Instance.SetConditionToShow("GameOver", gameOverCondition);
-
-        //インストールしてから６０秒以内のみ出さない。それ以外は確定で出す
-        AdManager.Instance.SetConditionToShow("StageClear", intervalFromInstall);
+        AdManager.Instance.SetConditionToShow(GameOverKey, GameOverAdCondition);
+        AdManager.Instance.SetConditionToShow(StageClearKey, ClearAdCondition);
 #endif
     }
 
-    public void ShowGameOverInterstitial()
+    public void ShowGameOverInterstitial(MyUnityEvent callback = null)
+    {
+        ShowInterstitial(GameOverKey, callback);
+    }
+
+    public void ShowStageClearInterstitial(MyUnityEvent callback = null)
+    {
+        ShowInterstitial(StageClearKey, callback);
+    }
+
+    void ShowInterstitial(string key, MyUnityEvent callback)
     {
 #if IMPORT_HYPERCOMMON
-        if (!AdManager.Instance.ShouldShowAd("GameOver")) return;
-
         bool enable = AudioManager.Instance.Enable;
         AudioManager.Instance.SetEnable(false);
 
-        KKUtilities.Delay(0.5f, () =>
+        AdManager.Instance.ShowInterstitialWithKey(key, () =>
         {
-            AdManager.Instance.ShowInterstitialWithKey("GameOver", () =>
-            {
-                AudioManager.Instance.SetEnable(enable);
-            }
-            , (error) =>
-            {
-                AudioManager.Instance.SetEnable(enable);
-            });
-        }, MyGameManager.Instance);
+            AudioManager.Instance.SetEnable(enable);
+            callback.SafeInvoke();
+        }
+        , (error) =>
+        {
+            AudioManager.Instance.SetEnable(enable);
+            callback.SafeInvoke();
+        });
 #endif
     }
 
-    public void ShowStageClearInterstitial()
+    public bool IsRewardVideoLoaded
+    {
+        get
+        {
+#if IMPORT_HYPERCOMMON
+            return AdManager.Instance.IsRewardBasedVideoLoaded();
+#else
+            return true;
+#endif
+        }
+    }
+
+    public void ShowRewardVideo(System.Action onSuccess, System.Action onFailuer)
     {
 #if IMPORT_HYPERCOMMON
-        if (!AdManager.Instance.ShouldShowAd("StageClear")) return;
-
-        bool enable = AudioManager.Instance.Enable;
-        AudioManager.Instance.SetEnable(false);
-
-        KKUtilities.Delay(0.5f, () =>
+        AdManager.Instance.ShowRewardBasedVideo((_) =>
         {
-            AdManager.Instance.ShowInterstitialWithKey("StageClear", () =>
-            {
-                AudioManager.Instance.SetEnable(enable);
-            }
-            , (error) =>
-            {
-                AudioManager.Instance.SetEnable(enable);
-            });
-        }, MyGameManager.Instance);
+            onSuccess.SafeInvoke();
+        }, (_) =>
+        {
+            onFailuer.SafeInvoke();
+        });
 #endif
     }
 }

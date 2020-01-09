@@ -14,7 +14,7 @@ namespace KanekoUtilities
         {
             get
             {
-                if (button == null)
+                if(button == null)
                 {
                     button = GetComponent<Button>();
                 }
@@ -35,22 +35,26 @@ namespace KanekoUtilities
             {
                 Button.interactable = value;
 
-                if (Button.transition != Selectable.Transition.ColorTint) return;
+                //if(Button.transition != Selectable.Transition.ColorTint) return;
 
                 Color tempColor = value ? Button.colors.normalColor : Button.colors.disabledColor;
-                foreach (var key in defaultColorDictionary.Keys)
+                foreach(var key in defaultColorDictionary.Keys)
                 {
                     key.Color = defaultColorDictionary[key] * tempColor;
                 }
             }
         }
 
-        public UnityEvent OnClick
+        public UnityEvent OnClickEvent = new UnityEvent();
+
+        public void AddListener(UnityAction action)
         {
-            get
-            {
-                return Button.onClick;
-            }
+            OnClickEvent.AddListener(action);
+        }
+
+        protected virtual void OnClick()
+        {
+            OnClickEvent.Invoke();
         }
 
         public override Color Color
@@ -61,7 +65,7 @@ namespace KanekoUtilities
             }
             set
             {
-                if (Color == value) return;
+                if(Color == value) return;
                 Button.image.color = value;
             }
         }
@@ -69,14 +73,14 @@ namespace KanekoUtilities
         void Awake()
         {
             UGUIParts[] childParts = GetComponentsInChildren<UGUIParts>();
-            for (int i = 0; i < childParts.Length; i++)
+            for(int i = 0 ; i < childParts.Length ; i++)
             {
                 defaultColorDictionary.Add(childParts[i], childParts[i].Color);
             }
 
             Interactable = Button.interactable;
 
-            
+            button.onClick.AddListener(OnClick);
         }
     }
 }

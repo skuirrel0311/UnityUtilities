@@ -40,23 +40,18 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
         }
     }
 
-#if STAGE_MODE
     protected RegisterIntParameter currentLevel;
     public int CurrentLevel { get { return currentLevel.GetValue(); } }
-#endif
 
-    protected LevelAdjuster levelAdjuster;
     protected UIManager uiManager;
     protected ContinueRequestType isContinueRequested;
 
     protected override void Start()
     {
         base.Start();
-        levelAdjuster = LevelAdjuster.Instance;
         uiManager = UIManager.Instance;
-#if STAGE_MODE
         currentLevel = new RegisterIntParameter("CurrentLevel", 1);
-#endif
+
         StartCoroutine(GameLoop());
     }
 
@@ -77,11 +72,6 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
         isContinueRequested = 0;
 
         uiManager.OnInitialized();
-        levelAdjuster.Init();
-
-#if STAGE_MODE
-        levelAdjuster.SetScore(CurrentLevel);
-#endif
     }
     protected virtual void GameStart()
     {
@@ -112,14 +102,6 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
     protected virtual IEnumerator SuggestRestart()
     {
         //このコルーチンが終了するとゲームがリセットされる
-
-        //ex GameOverPanelのTapToRestartを押したらリスタート
-
-#if INFINITE_MODE
-        yield return uiManager.GameOverPanel.SuggestRestart();
-#endif
-
-#if STAGE_MODE
         if (CurrentState == GameState.GameOver)
         {
             yield return uiManager.GameOverPanel.SuggestRestart();
@@ -132,11 +114,6 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
         {
             yield return null;
         }
-#endif
-
-#if !STAGE_MODE && !INFINITE_MODE
-        yield return null;
-#endif
     }
     protected virtual IEnumerator SuggestContinue()
     {

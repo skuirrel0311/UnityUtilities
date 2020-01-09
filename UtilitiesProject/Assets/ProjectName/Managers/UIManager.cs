@@ -11,9 +11,7 @@ public class UIManager : SingletonMonobehaviour<UIManager>
     public TitlePanel TitlePanel { get { return (TitlePanel)PanelSwitcher.GetPanel(PanelType.Title); } }
     public InGamePanel InGamePanel { get { return (InGamePanel)PanelSwitcher.GetPanel(PanelType.InGame); } }
     public GameOverPanel GameOverPanel { get { return (GameOverPanel)PanelSwitcher.GetPanel(PanelType.GameOver); } }
-#if STAGE_MODE
     public StageClearPanel StageClearPanel { get { return (StageClearPanel)PanelSwitcher.GetPanel(PanelType.StageClear); } }
-#endif
 
     protected override void Awake()
     {

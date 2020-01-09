@@ -1,43 +1,14 @@
 ﻿<Properties StartupConfiguration="{C94DF02C-650A-1255-FCE8-F53EE5E7C3FF}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/KanekoUtilities/Demo/TestSceneManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/KanekoUtilities/Scripts/UI/Text/MessageDisplayer.cs">
     <Files>
-      <File FileName="Assets/KanekoUtilities/Scripts/Utilities/RandomUtil.cs" Line="69" Column="27" />
-      <File FileName="Assets/KanekoUtilities/Scripts/Utilities/WeightedTable.cs" Line="63" Column="55" />
-      <File FileName="Assets/KanekoUtilities/Demo/TestSceneManager.cs" Line="19" Column="75" />
+      <File FileName="Assets/ProjectName/Managers/MyGameManager.cs" Line="170" Column="10" />
+      <File FileName="Assets/KanekoUtilities/Scripts/UI/Text/MessageDisplayer.cs" Line="7" Column="2" />
+      <File FileName="Assets/ProjectName/Effects/Scripts/MyEffector.cs" Line="8" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="UtilitiesProject" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="KanekoUtilities" expanded="True">
-                <Node name="Demo" expanded="True">
-                  <Node name="TestSceneManager.cs" selected="True" />
-                </Node>
-                <Node name="Scripts" expanded="True">
-                  <Node name="Utilities" expanded="True" />
-                </Node>
-                <Node name="UnityRandom" expanded="True">
-                  <Node name="lib" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-      <Pad Id="MonoDevelop.UnitTesting.TestPad">
-        <State name="__root__">
-          <Node name="UtilitiesProject" expanded="True" selected="True" />
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="2323cbe7-97a1-4206-a21f-2190ae70154e" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d89b2564-66f4-487b-99be-eb529502f794" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

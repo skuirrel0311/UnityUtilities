@@ -34,7 +34,7 @@ namespace KanekoUtilities
 
             SetEnable(GameConfig.Instance.GetValue(valueName));
 
-            OnClick.AddListener(() =>
+            AddListener(() =>
             {
                 GameConfig.Instance.OnChangeValue(valueName, !currentEnable);
                 SetEnable(!currentEnable);

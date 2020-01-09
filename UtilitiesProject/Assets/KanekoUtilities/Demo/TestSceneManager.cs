@@ -2,21 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
+using UnityEngine.UI;
 
 public class TestSceneManager : MonoBehaviour
 {
-    [SerializeField, OneLine.OneLine]
-    GameObjectWeightedTableElement[] elements = null;
-    WeightedTable<GameObject> gameoObjectWeightedTable;
+    [SerializeField]
+    AudioSource source = null;
+
+    [SerializeField]
+    Slider volumeSlider = null;
+    [SerializeField]
+    Slider pitchSlider = null;
 
     void Start()
     {
-        gameoObjectWeightedTable = new WeightedTable<GameObject>(elements);
+        volumeSlider.minValue = 0.0f;
+        volumeSlider.maxValue = 1.0f;
+        pitchSlider.minValue = 0.0f;
+        pitchSlider.maxValue = 3.0f;
     }
 
     void Update()
     {
-        Debug.Log("random value = " + gameoObjectWeightedTable.GetData());
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            source.volume = volumeSlider.value;
+            source.pitch = pitchSlider.value;
+            source.Play();
+        }
     }
-
 }

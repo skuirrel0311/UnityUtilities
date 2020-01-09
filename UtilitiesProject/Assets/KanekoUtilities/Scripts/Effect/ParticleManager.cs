@@ -22,6 +22,18 @@ namespace KanekoUtilities
         Dictionary<string, ObjectPool> particleDictionary = new Dictionary<string, ObjectPool>();
         Dictionary<string, MomentParticle> momentParticleDictionary = new Dictionary<string, MomentParticle>();
 
+        [SerializeField]
+        string[] preloadParticleNames = null;
+        [SerializeField]
+        string[] preloadMomentParticleNames = null;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            foreach(var p in preloadParticleNames) GetMomentParticle(p);
+            foreach(var p in preloadMomentParticleNames) GetMomentParticle(p);
+        }
+
         /// <summary>
         /// 指定された地点にパーティクルを配置する
         /// </summary>

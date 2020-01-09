@@ -233,7 +233,7 @@ namespace KanekoUtilities
         }
     }
 
-    public class MyUnityEvent : UnityEvent { }
+    public class MyUnityEvent : UnityEvent {}
     public class MyUnityEvent<T> : UnityEvent<T> { }
     public class MyUnityEvent<T1, T2> : UnityEvent<T1, T2> { }
 }

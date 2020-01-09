@@ -22,7 +22,7 @@ namespace KanekoUtilities
         {
             if (!isUpdate && this.value == value) return;
             this.value = value;
-            text.Text = value.ToString();
+            Text.Text = value.ToString();
         }
 
         public virtual int GetValue()

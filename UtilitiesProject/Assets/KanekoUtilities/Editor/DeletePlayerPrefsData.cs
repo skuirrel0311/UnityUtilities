@@ -7,10 +7,16 @@ namespace KanekoUtilities
 {
     public class DeletePlayerPrefsData : MonoBehaviour
     {
-        [MenuItem("KanekoUtilities/DeletePlayerPrefsData")]
+        [MenuItem("KanekoUtilities/DeleteAllSaveData")]
         public static void DeleteAll()
         {
             MyPlayerPrefs.DeleteAll();
+        }
+
+        [MenuItem("KanekoUtilities/DeleteLevelSaveData")]
+        public static void DeleteLevelData()
+        {
+            MyPlayerPrefs.Delete("CurrentLevel");
         }
     }
 }

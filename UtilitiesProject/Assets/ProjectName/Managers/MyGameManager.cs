@@ -6,7 +6,7 @@ using KanekoUtilities;
 using HyperCasual.StageSystem;
 #endif
 
-public partial class MyGameManager : BaseGameManager<MyGameManager>
+public class MyGameManager : BaseGameManager<MyGameManager>
 {
     [SerializeField]
     PlayerFacade player = null;
@@ -19,18 +19,19 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
     /// コンテニューができる上限回数(マイナスなら無限)
     /// </summary>
     public override int MaxContinueCount { get { return 0; } }
-    
-    bool isFailedContinue = false;
-    MyScoreManager scoreManager;
 
-#if IMPORT_HYPERCOMMON && STAGE_MODE
+    bool isFailedContinue = false;
+
+#if IMPORT_HYPERCOMMON
     StageScoreManager stageScoreManager;
 #endif
 
     protected override void Start()
     {
-        scoreManager = MyScoreManager.Instance;
-        
+#if IMPORT_HYPERCOMMON
+        stageScoreManager = StageScoreManager.Default;
+#endif
+
         //このStartが呼ばれるとゲームループが走る
         base.Start();
     }
@@ -39,7 +40,6 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
     {
         base.Init();
         isFailedContinue = false;
-        scoreManager.Init();
         //todo:Playerなどの初期化をする
         player.Init();
         stage.Init();
@@ -47,27 +47,25 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
     protected override void GameStart()
     {
         base.GameStart();
-        levelAdjuster.StartAdjustment();
         //todo:ゲームスタート時の挙動をここに書く
 
         player.OnGameStart();
         stage.OnGameStart();
 
-#if IMPORT_HYPERCOMMON && STAGE_MODE
-    stageScoreManager.StartStage(CurrentLevel);
+#if IMPORT_HYPERCOMMON
+        stageScoreManager.StartStage(CurrentLevel);
 #endif
     }
     protected override void GameOver()
     {
         base.GameOver();
-        scoreManager.UpdateBestScore();
         //todo:ゲームオーバー時の挙動をここに書く
 
         player.OnGameEnd();
         stage.OnGameEnd();
-        
-#if IMPORT_HYPERCOMMON && STAGE_MODE
-    stageScoreManager.Fail(CurrentLevel);
+
+#if IMPORT_HYPERCOMMON
+        stageScoreManager.Fail(CurrentLevel);
 #endif
     }
     protected override void Continue()
@@ -80,7 +78,6 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
         //isFailedContinue = true;
     }
 
-#if STAGE_MODE
     protected override void StageClear()
     {
         base.StageClear();
@@ -89,14 +86,11 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
         player.OnGameEnd();
         stage.OnGameEnd();
 
-#if IMPORT_HYPERCOMMON && STAGE_MODE
-    stageScoreManager.Success(CurrentLevel, scoreManager.TotalScore, 0);
+#if IMPORT_HYPERCOMMON
+        stageScoreManager.Success(CurrentLevel, 0, 0);
 #endif
         currentLevel.SetValue(CurrentLevel + 1);
-        scoreManager.UpdateBestScore();
-        MyAdManager.Instance.ShowStageClearInterstitial();
     }
-#endif
 
     protected override IEnumerator SuggestStart()
     {
@@ -127,89 +121,58 @@ public partial class MyGameManager : BaseGameManager<MyGameManager>
         return false;
     }
 
-#if STAGE_MODE
     bool IsStageClear()
     {
         return false;
     }
-#endif
 
-#if INFINITE_MODE
     protected override IEnumerator OneGame()
     {
-        Init();
-
-        yield return StartCoroutine(SuggestStart());
-        GameStart();
-
-        while (true)
-        {
-            while (!IsGameOver())
-            {
-                yield return null;
-            }
-            GameOver();
-            if (!CanContinue) break;
-            yield return StartCoroutine(SuggestContinue());
-
-            if (isContinueRequested == ContinueRequestType.NoThanks) yield break; ;
-            if (isContinueRequested == ContinueRequestType.TimeOut) break;
-            Continue();
-
-            if (isFailedContinue) break;
-        }
-        yield return StartCoroutine(SuggestRestart());
-    }
-#endif
-
-#if STAGE_MODE
-    protected override IEnumerator OneGame()
-    {
-        Init();
-        yield return StartCoroutine(SuggestStart());
-        GameStart();
+        Debug.Log("start game on stage mode");
         bool isStageClear = false;
+        var callback = new MyUnityEvent();
 
-        while (true)
+        Init();
+        yield return StartCoroutine(SuggestStart());
+        GameStart();
+
+        while(true)
         {
-            while (!IsGameOver())
+            while(!IsGameOver())
             {
                 yield return null;
-                if (IsStageClear())
+                if(IsStageClear())
                 {
                     isStageClear = true;
                     break;
                 }
             }
 
-            if (isStageClear) break;
+            if(isStageClear) break;
             GameOver();
-            if (!CanContinue) break;
+            if(!CanContinue) break;
             yield return StartCoroutine(SuggestContinue());
 
-            if (isContinueRequested == ContinueRequestType.NoThanks) yield break;
-            if (isContinueRequested == ContinueRequestType.TimeOut) break;
+            if(isContinueRequested == ContinueRequestType.NoThanks)
+            {
+                MyAdManager.Instance.ShowStageClearInterstitial(callback);
+                yield return KKUtilities.WaitAction(callback);
+                
+            }
+            if(isContinueRequested == ContinueRequestType.TimeOut) break;
 
             Continue();
 
-            if (isFailedContinue) break;
+            if(isFailedContinue) break;
         }
 
-        if (isStageClear)
+        if(isStageClear)
         {
             StageClear();
         }
         yield return StartCoroutine(SuggestRestart());
-    }
-#endif
 
-#if !STAGE_MODE && !INFINITE_MODE
-    protected override IEnumerator OneGame()
-    {
-        while(true)
-        {
-            yield return null;
-        }
+        MyAdManager.Instance.ShowStageClearInterstitial(callback);
+        yield return KKUtilities.WaitAction(callback);
     }
-#endif
 }

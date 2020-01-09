@@ -12,6 +12,9 @@ namespace KanekoUtilities
         [SerializeField]
         SoundEffectPool soundEffectPool = null;
 
+        [SerializeField]
+        string[] preloadAudioClipNames = null;
+
         const int maxSECount = 50;
 
         MasterVolumeSettings masterVolumeSettings;
@@ -30,6 +33,7 @@ namespace KanekoUtilities
             base.Awake();
 
             masterVolumeSettings = new MasterVolumeSettings();
+            foreach(var p in preloadAudioClipNames) GetAudioClip(p);
         }
 
         protected override void OnDestroy()

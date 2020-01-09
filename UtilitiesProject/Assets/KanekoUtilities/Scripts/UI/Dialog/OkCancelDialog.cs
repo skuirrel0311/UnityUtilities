@@ -26,15 +26,15 @@ namespace KanekoUtilities
 
         public void Init(Action onOk, Action onCancel)
         {
-            okButton.OnClick.RemoveAllListeners();
-            cancelButton.OnClick.RemoveAllListeners();
+            okButton.OnClickEvent.RemoveAllListeners();
+            cancelButton.OnClickEvent.RemoveAllListeners();
 
-            okButton.OnClick.AddListener(()=>
+            okButton.AddListener(()=>
             {
                 if(onOk != null) onOk.Invoke();
                 if (autoHide) DialogDisplayer.Instance.HideDialog();
             });
-            cancelButton.OnClick.AddListener(() =>
+            cancelButton.AddListener(() =>
             {
                 if (onCancel != null) onCancel.Invoke();
                 if (autoHide) DialogDisplayer.Instance.HideDialog();

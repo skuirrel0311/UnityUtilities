@@ -23,8 +23,8 @@ namespace KanekoUtilities
                 StopCoroutine(countDownCoroutine);
             }
 
-            noThanksButton.OnClick.RemoveAllListeners();
-            noThanksButton.OnClick.AddListener(() =>
+            noThanksButton.OnClickEvent.RemoveAllListeners();
+            noThanksButton.AddListener(() =>
             {
                 if(onNoThanks != null) onNoThanks.Invoke();
             });

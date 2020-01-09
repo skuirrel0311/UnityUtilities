@@ -23,5 +23,20 @@ namespace KanekoUtilities
         {
             if (action != null) action.Invoke(param1, param2, param3);
         }
+
+        public static void SafeInvoke(this MyUnityEvent action)
+        {
+            if(action != null) action.Invoke();
+        }
+
+        public static void SafeInvoke<T>(this MyUnityEvent<T> action, T param)
+        {
+            if(action != null) action.Invoke(param);
+        }
+
+        public static void SafeInvoke<T, U>(this MyUnityEvent<T, U> action, T param1, U param2)
+        {
+            if(action != null) action.Invoke(param1, param2);
+        }
     }
 }

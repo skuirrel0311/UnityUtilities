@@ -1,9 +1,7 @@
 ﻿<Properties StartupConfiguration="{C94DF02C-650A-1255-FCE8-F53EE5E7C3FF}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/KanekoUtilities/Scripts/UI/Text/MessageDisplayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/KanekoUtilities/Scripts/Effect/UIAnimationUtil.cs">
     <Files>
-      <File FileName="Assets/ProjectName/Managers/MyGameManager.cs" Line="170" Column="10" />
-      <File FileName="Assets/KanekoUtilities/Scripts/UI/Text/MessageDisplayer.cs" Line="7" Column="2" />
-      <File FileName="Assets/ProjectName/Effects/Scripts/MyEffector.cs" Line="8" Column="1" />
+      <File FileName="Assets/KanekoUtilities/Scripts/Effect/UIAnimationUtil.cs" Line="79" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

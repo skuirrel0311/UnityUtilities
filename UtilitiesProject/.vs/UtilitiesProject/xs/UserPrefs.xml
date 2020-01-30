@@ -1,12 +1,15 @@
 ﻿<Properties StartupConfiguration="{C94DF02C-650A-1255-FCE8-F53EE5E7C3FF}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/KanekoUtilities/Scripts/Effect/UIAnimationUtil.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/KanekoUtilities/Demo/Test.cs">
     <Files>
-      <File FileName="Assets/KanekoUtilities/Scripts/Effect/UIAnimationUtil.cs" Line="79" Column="1" />
+      <File FileName="Assets/ProjectName/Managers/MyGameManager.cs" Line="66" Column="1" />
+      <File FileName="Assets/KanekoUtilities/Shaders/InstancingShader.shader" />
+      <File FileName="Assets/KanekoUtilities/Demo/Test.cs" Line="24" Column="60" />
+      <File FileName="Assets/KanekoUtilities/Scripts/Utilities/VectorUtil.cs" Line="86" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d89b2564-66f4-487b-99be-eb529502f794" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="2a2af0c0-63f4-4a1a-89f2-9d1c92ce4382" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

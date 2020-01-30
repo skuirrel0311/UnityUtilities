@@ -55,7 +55,7 @@ public abstract class BaseGameManager<T> : SingletonMonobehaviour<T> where T : M
         StartCoroutine(GameLoop());
     }
 
-    IEnumerator GameLoop()
+    protected IEnumerator GameLoop()
     {
         while (true)
         {

@@ -117,13 +117,34 @@ public class MyGameManager : BaseGameManager<MyGameManager>
     protected override bool IsGameOver()
     {
         //この関数がfalseを返す間はゲームが継続される
-
         return false;
     }
 
     bool IsStageClear()
     {
         return false;
+    }
+
+    public void ChangeLevel(int level)
+    {
+        currentLevel.SetValue(level);
+        StopAllCoroutines();
+        StartCoroutine(GameLoop());
+    }
+
+    public void GotoBackLevel()
+    {
+        ChangeLevel(CurrentLevel - 1);
+    }
+
+    public void GotoNextLevel()
+    {
+        ChangeLevel(CurrentLevel + 1);
+    }
+
+    public void Retry()
+    {
+        ChangeLevel(CurrentLevel);
     }
 
     protected override IEnumerator OneGame()

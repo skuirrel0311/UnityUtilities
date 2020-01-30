@@ -4,12 +4,6 @@ using UnityEngine;
 
 namespace KanekoUtilities
 {
-    //position-start,end
-    //scale-start,end
-    //rotationZ-start,end
-    //alpha-start,end
-    //easing(curve or easetype)
-
     public class UIAnimation
     {
         Action<UIParts, float> logic;

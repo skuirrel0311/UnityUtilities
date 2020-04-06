@@ -6,17 +6,19 @@ using KanekoUtilities;
 public class StageClearPanel : GameStatePanel
 {
     [SerializeField]
-    GameObject tapToRestartContainer = null;
+    UGUIButton nextButton = null;
+
     [SerializeField]
-    UGUIButton tapToRestartButton = null;
+    AbstractUGUIText message = null;
+
+    public override void Activate()
+    {
+        message.Text = "level " + MyGameManager.Instance.CurrentLevel + "\n completed!!";
+        base.Activate();
+    }
 
     public IEnumerator SuggestRestart()
     {
-        tapToRestartContainer.SetActive(true);
-
-        yield return KKUtilities.WaitAction(tapToRestartButton.OnClickEvent, ()=>
-        {
-            tapToRestartContainer.SetActive(false);
-        });
+        yield return KKUtilities.WaitAction(nextButton.OnClickEvent);
     }
 }

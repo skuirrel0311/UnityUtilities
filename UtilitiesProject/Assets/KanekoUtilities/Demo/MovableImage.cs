@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using KanekoUtilities;
+using DG.Tweening;
 
 public class MovableImage : UGUIImage
 {
@@ -9,6 +10,15 @@ public class MovableImage : UGUIImage
     float endX = 360.0f;
 
     public EaseType ease = EaseType.InQuad;
+
+    //void Start()
+    //{
+    //    Sequence sequence = DOTween.Sequence();
+
+    //    sequence.Append(transform.DOMoveX(40.0f, 3.0f).SetEase(Ease.InQuad));
+    //    sequence.Join(transform.DOMoveY(40.0f, 3.0f));
+    //}
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.A))

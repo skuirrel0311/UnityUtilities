@@ -151,7 +151,6 @@ public class MyGameManager : BaseGameManager<MyGameManager>
     {
         Debug.Log("start game on stage mode");
         bool isStageClear = false;
-        var callback = new MyUnityEvent();
 
         Init();
         yield return StartCoroutine(SuggestStart());
@@ -174,13 +173,11 @@ public class MyGameManager : BaseGameManager<MyGameManager>
             if(!CanContinue) break;
             yield return StartCoroutine(SuggestContinue());
 
-            if(isContinueRequested == ContinueRequestType.NoThanks)
+            if(isContinueRequested != ContinueRequestType.Continue)
             {
-                MyAdManager.Instance.ShowStageClearInterstitial(callback);
-                yield return KKUtilities.WaitAction(callback);
-                
+                MyAdManager.Instance.ShowStageClearInterstitial();
+                yield break;
             }
-            if(isContinueRequested == ContinueRequestType.TimeOut) break;
 
             Continue();
 
@@ -193,7 +190,6 @@ public class MyGameManager : BaseGameManager<MyGameManager>
         }
         yield return StartCoroutine(SuggestRestart());
 
-        MyAdManager.Instance.ShowStageClearInterstitial(callback);
-        yield return KKUtilities.WaitAction(callback);
+        MyAdManager.Instance.ShowStageClearInterstitial();
     }
 }

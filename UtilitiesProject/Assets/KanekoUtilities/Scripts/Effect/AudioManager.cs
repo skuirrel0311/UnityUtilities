@@ -17,11 +17,11 @@ namespace KanekoUtilities
 
         const int maxSECount = 50;
 
+        RegisterBoolParameter enable;
         MasterVolumeSettings masterVolumeSettings;
-        public bool Enable { get { return !masterVolumeSettings.IsMuteMasterVolume; } }
-        public float MasterVolume { get { return masterVolumeSettings.MasterVolume; } }
-        public float MasterBGMVolume { get { return masterVolumeSettings.MasterBGMVolume; } }
-        public float MasterSEVolume { get { return masterVolumeSettings.MasterSEVolume; } }
+        public bool Enable { get { return enable.GetValue(); } }
+        public float MasterBGMVolume { get { return masterVolumeSettings.BGM.Volume; } }
+        public float MasterSEVolume { get { return masterVolumeSettings.SE.Volume; } }
         
         public bool IsPlayingBGM { get { return backgroundMusic.IsPlaying; } }
         
@@ -32,6 +32,7 @@ namespace KanekoUtilities
         {
             base.Awake();
 
+            enable = new RegisterBoolParameter("AudioManagerEnable", true);
             masterVolumeSettings = new MasterVolumeSettings();
             foreach(var p in preloadAudioClipNames) GetAudioClip(p);
         }
@@ -44,37 +45,15 @@ namespace KanekoUtilities
 
         public void SetEnable(bool enable)
         {
-            masterVolumeSettings.IsMuteMasterVolume = !enable;
+            this.enable.SetValue(enable);
+            masterVolumeSettings.BGM.Enable = enable;
+            masterVolumeSettings.SE.Enable = enable;
+        }
 
-            backgroundMusic.UpdateVolume();
-        }
-        public void SetMasterVolume(float volume)
+        public void SetMute(bool isMute)
         {
-            masterVolumeSettings.MasterVolume = volume;
-            backgroundMusic.UpdateVolume();
-        }
-        public void SetMasterBGMVolume(float volume)
-        {
-            masterVolumeSettings.MasterBGMVolume = volume;
-            backgroundMusic.UpdateVolume();
-        }
-        public void SetMasterSEVolume(float volume)
-        {
-            masterVolumeSettings.MasterSEVolume = volume;
-        }
-        public void SetMasterVolumeMute   (bool isMute)
-        {
-            masterVolumeSettings.SetMute(AudioVolumeSettingType.Master,isMute);
-            backgroundMusic.UpdateVolume();
-        }
-        public void SetMasterBGMVolumeMute(bool isMute)
-        {
-            masterVolumeSettings.SetMute(AudioVolumeSettingType.MasterBGM, isMute);
-            backgroundMusic.UpdateVolume();
-        }
-        public void SetMasterSEVolumeMute (bool isMute)
-        {
-            masterVolumeSettings.SetMute(AudioVolumeSettingType.MasterSE, isMute);
+            masterVolumeSettings.BGM.IsMute = isMute;
+            masterVolumeSettings.SE.IsMute = isMute;
         }
 
         public void PlayBGM(string bgmName, float volume = 1.0f, float pitch = 1.0f)
@@ -83,6 +62,7 @@ namespace KanekoUtilities
 
             if (clip == null) return;
 
+            volume = volume * MasterBGMVolume;
             backgroundMusic.Play(clip, volume, pitch);
         }
 
@@ -90,6 +70,7 @@ namespace KanekoUtilities
         {
             if (!backgroundMusic.IsPlaying) return;
 
+            volume = volume * MasterBGMVolume;
             backgroundMusic.Replay(volume, pitch);
         }
 
@@ -108,7 +89,7 @@ namespace KanekoUtilities
             backgroundMusic.Stop();
         }
 
-        public void PlayOneShot(string name, float volume = 1.0f, float pitch = 1.0f)
+        public void PlaySE(string name, float volume = 1.0f, float pitch = 1.0f)
         {
             AudioClip clip = GetAudioClip(name);
 
@@ -132,7 +113,7 @@ namespace KanekoUtilities
             }, volume, pitch);
         }
 
-        public void PlayOneShot(string name, Vector3 position, float volume = 1.0f)
+        public void PlaySE(string name, Vector3 position, float volume = 1.0f)
         {
             AudioClip clip = GetAudioClip(name);
 

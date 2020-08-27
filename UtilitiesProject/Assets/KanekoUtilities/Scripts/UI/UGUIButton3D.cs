@@ -10,10 +10,28 @@ namespace KanekoUtilities
     public class UGUIButton3D : UGUIButton
     {
         [SerializeField]
+        bool autoShadowColor = false;
+        [SerializeField]
+        Color buttonColor = Color.white;
+
+        [Space]
+        [SerializeField]
         UGUIImage buttonImage = null;
 
         [SerializeField]
         UGUIImage shadowImage = null;
+        
+        void OnValidate()
+        {
+            if (!autoShadowColor) return;
+            var c = buttonColor;
+            float h, s, v;
+            Color.RGBToHSV(c, out h, out s, out v);
+            v -= 0.2f;
+
+            buttonImage.Color = buttonColor;
+            shadowImage.Color = Color.HSVToRGB(h, s, v);
+        }
 
         protected override void OnClick()
         {

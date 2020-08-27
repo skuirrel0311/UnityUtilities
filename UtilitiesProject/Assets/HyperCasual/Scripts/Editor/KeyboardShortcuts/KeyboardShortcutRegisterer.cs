@@ -17,7 +17,7 @@ namespace HyperCasual
                     keyDown = true;
 
                     // '_' が入力されたら、Hierarchy で選択しているオブジェクトのアクティブ状態を反転させる
-                    if (Event.current.keyCode == KeyCode.Underscore
+                    if (Event.current.keyCode == KeyCode.LeftBracket
                         && ToggleGameObjectActiveKeyboardShortcut.IsAvailable()) {
                         ToggleGameObjectActiveKeyboardShortcut.Execute();
                     }

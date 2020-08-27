@@ -6,10 +6,10 @@ using UnityEngine.Events;
 
 namespace KanekoUtilities
 {
-    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(Button),typeof(CanvasGroup))]
     public class UGUIButton : UGUIParts
     {
-        Button button;
+        protected Button button;
         public Button Button
         {
             get
@@ -23,7 +23,8 @@ namespace KanekoUtilities
             }
         }
 
-        Dictionary<UGUIParts, Color> defaultColorDictionary = new Dictionary<UGUIParts, Color>();
+        [SerializeField]
+        CanvasGroup group = null;
 
         public bool Interactable
         {
@@ -34,14 +35,6 @@ namespace KanekoUtilities
             set
             {
                 Button.interactable = value;
-
-                //if(Button.transition != Selectable.Transition.ColorTint) return;
-
-                Color tempColor = value ? Button.colors.normalColor : Button.colors.disabledColor;
-                foreach(var key in defaultColorDictionary.Keys)
-                {
-                    key.Color = defaultColorDictionary[key] * tempColor;
-                }
             }
         }
 
@@ -70,14 +63,21 @@ namespace KanekoUtilities
             }
         }
 
-        void Awake()
+        public override float Alpha
         {
-            UGUIParts[] childParts = GetComponentsInChildren<UGUIParts>();
-            for(int i = 0 ; i < childParts.Length ; i++)
+            get
             {
-                defaultColorDictionary.Add(childParts[i], childParts[i].Color);
+                return group.alpha;
             }
 
+            set
+            {
+                group.alpha = value;
+            }
+        }
+
+        protected virtual void Awake()
+        {
             Interactable = Button.interactable;
 
             button.onClick.AddListener(OnClick);

@@ -79,6 +79,12 @@ namespace KanekoUtilities
 #endif
         }
 
+        public void VibrateCustomVibrate(string action)
+        {
+            var actions = VibrationAction.StringToActions(action);
+            VibrationCreator.Instance.Play(actions, MyGameManager.Instance);
+        }
+
         public bool IsSupported
         {
             get

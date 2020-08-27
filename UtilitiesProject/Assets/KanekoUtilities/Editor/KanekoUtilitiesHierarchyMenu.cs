@@ -56,13 +56,7 @@ namespace KanekoUtilities
         {
             CreateUGUIPartsObj("Panel");
         }
-
-        [MenuItem("GameObject/KKUtilities/Window", false, 20)]
-        public static void CreateWindow()
-        {
-            CreateUGUIPartsObj("Window");
-        }
-
+        
         [MenuItem("GameObject/KKUtilities/Dialog/Daialog", false, 20)]
         public static void CreateDialog()
         {
@@ -87,6 +81,12 @@ namespace KanekoUtilities
             CreateUGUIPartsObj("MessageDialog");
         }
 
+        [MenuItem("GameObject/KKUtilities/Dialog/SuggestWindow", false, 20)]
+        public static void CreateSuggestWindow()
+        {
+            CreateUGUIPartsObj("SuggestWindow");
+        }
+
         [MenuItem("GameObject/KKUtilities/Canvas", false, 20)]
         public static void CreateCanvas()
         {
@@ -105,18 +105,48 @@ namespace KanekoUtilities
             CreateObject(UIPrefabDirectory, "Text3DPro");
         }
 
-        [MenuItem("GameObject/KKUtilities/UGUIButton", false, 20)]
+        [MenuItem("GameObject/KKUtilities/Button/UGUIButton", false, 20)]
         public static void CreateUGUIButton()
         {
             CreateObject(UIPrefabDirectory, "UGUIButton");
         }
 
-        [MenuItem("GameObject/KKUtilities/UGUIButton3D", false, 20)]
+        [MenuItem("GameObject/KKUtilities/Button/UGUIButton3D", false, 20)]
         public static void CreateUGUIButton3D()
         {
             CreateObject(UIPrefabDirectory, "UGUIButton3D");
         }
 
+        [MenuItem("GameObject/KKUtilities/Button/RewardButton", false, 20)]
+        public static void CreateRewardButton()
+        {
+            CreateObject(UIPrefabDirectory, "RewardButton");
+        }
+
+        [MenuItem("GameObject/KKUtilities/UI/Dropdown", false, 20)]
+        public static void CreateDropdown()
+        {
+            CreateObject(UIPrefabDirectory, "Dropdown");
+        }
+
+        [MenuItem("GameObject/KKUtilities/UI/InputField", false, 20)]
+        public static void CreateInputField()
+        {
+            CreateObject(UIPrefabDirectory, "InputField");
+        }
+
+        [MenuItem("GameObject/KKUtilities/UI/Slider", false, 20)]
+        public static void CreateSlider()
+        {
+            CreateObject(UIPrefabDirectory, "Slider");
+        }
+
+        [MenuItem("GameObject/KKUtilities/UI/Toggle", false, 20)]
+        public static void CreateToggle()
+        {
+            CreateObject(UIPrefabDirectory, "Toggle");
+        }
+        
         static T LoadPrefab<T>(string path, string name) where T : Object
         {
             return AssetDatabase.LoadAssetAtPath(path + name + ".prefab", typeof(T)) as T;

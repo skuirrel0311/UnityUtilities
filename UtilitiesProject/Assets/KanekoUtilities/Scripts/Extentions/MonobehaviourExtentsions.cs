@@ -73,5 +73,24 @@ namespace KanekoUtilities
         {
             return mono.StartCoroutine(KKUtilities.WaitAction(action, callback));
         }
+
+        public static Coroutine Move(this MonoBehaviour mono, float duration, Vector3 targetPos, EaseType ease, bool isScalable = true)
+        {
+            Vector3 startPos = mono.transform.position;
+            return mono.StartCoroutine(KKUtilities.FloatLerp(duration, (t) =>
+            {
+                mono.transform.position = Vector3.LerpUnclamped(startPos, targetPos, Easing.GetEase(t, ease));
+            }, isScalable));
+        }
+
+        public static Coroutine LocalMove(this MonoBehaviour mono, float duration, Vector3 targetPos, EaseType ease, bool isScalable = true)
+        {
+            Vector3 startPos = mono.transform.localPosition;
+            return mono.StartCoroutine(KKUtilities.FloatLerp(duration, (t) =>
+            {
+                mono.transform.localPosition = Vector3.LerpUnclamped(startPos, targetPos, Easing.GetEase(t, ease));
+            }, isScalable));
+        }
+
     }
 }

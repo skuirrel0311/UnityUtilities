@@ -5,5 +5,11 @@ using KanekoUtilities;
 
 public class MyEffector : SingletonMonobehaviour<MyEffector>
 {
+    [SerializeField]
+    CameraShake cameraShake = null;
 
+    public void CameraShake()
+    {
+        cameraShake.Shake();
+    }
 }

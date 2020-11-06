@@ -13,7 +13,7 @@ public class TitlePanel : GameStatePanel
 
     public override void Activate()
     {
-        currentLevelText.Text = "level " + MyGameManager.Instance.CurrentLevel;
+        currentLevelText.Text = "LEVEL " + MyGameManager.Instance.CurrentLevel;
         base.Activate();
     }
 

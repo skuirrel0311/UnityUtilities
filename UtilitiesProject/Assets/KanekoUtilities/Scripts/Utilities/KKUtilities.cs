@@ -172,6 +172,15 @@ namespace KanekoUtilities
             return clampValue;
         }
 
+        public static float LerpRotation(float currentRotation, float targetRotation, float t)
+        {
+            var diff = targetRotation - currentRotation;
+
+            if (diff > 180.0f) targetRotation -= 360.0f;
+            if (diff < -180.0f) targetRotation += 360.0f;
+            return Mathf.Lerp(currentRotation, targetRotation, t);
+        }
+
         static readonly string[] UnitTexts = { "k", "m", "b", "t", "q" };
 
         /// <summary>
@@ -230,6 +239,23 @@ namespace KanekoUtilities
             }
 
             return value;
+        }
+
+        public static float GetDuration(float length, float speed)
+        {
+            //d = l / s
+            speed *= 100;
+            return length / speed;
+        }
+
+        public static float GetDuration(Vector3 start, Vector3 end, float speed)
+        {
+            return GetDuration(Vector3.Distance(start, end), speed);
+        }
+
+        public static float GetDuration(Vector2 start, Vector2 end, float speed)
+        {
+            return GetDuration(Vector2.Distance(start, end), speed);
         }
     }
 

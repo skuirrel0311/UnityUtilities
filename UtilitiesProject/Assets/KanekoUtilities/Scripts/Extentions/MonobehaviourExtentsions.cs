@@ -91,6 +91,5 @@ namespace KanekoUtilities
                 mono.transform.localPosition = Vector3.LerpUnclamped(startPos, targetPos, Easing.GetEase(t, ease));
             }, isScalable));
         }
-
     }
 }

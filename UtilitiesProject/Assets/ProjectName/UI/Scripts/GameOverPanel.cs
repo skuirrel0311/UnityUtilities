@@ -28,19 +28,19 @@ public class GameOverPanel : GameStatePanel
         continueButton.AddListener(() =>
         {
             isEnd = true;
-            if (onSelected != null) onSelected(ContinueRequestType.Continue);
+            onSelected.SafeInvoke(ContinueRequestType.Continue);
         });
 
 
         continueButton.StartCountDown(() =>
         {
             isEnd = true;
-            if (onSelected != null) onSelected(ContinueRequestType.TimeOut);
+            onSelected.SafeInvoke(ContinueRequestType.TimeOut);
         },
         () =>
         {
             isEnd = true;
-            if (onSelected != null) onSelected(ContinueRequestType.NoThanks);
+            onSelected.SafeInvoke(ContinueRequestType.NoThanks);
         });
 
         yield return new WaitUntil(() => isEnd);

@@ -7,23 +7,25 @@ namespace KanekoUtilities
     public class TapTutorialPanel : TutorialPanel
     {
         [SerializeField]
-        UGUIImage fingerImage = null;
+        float waitTime = 1.0f;
 
-        [SerializeField]
-        float speed = 3.0f;
+        protected override void Awake()
+        {
+            fingerRectTransform.gameObject.SetActive(false);
 
-        [SerializeField]
-        AnimationCurve curve = null;
+            base.Awake();
+        }
 
         protected override IEnumerator TutorialAnimation()
         {
-            float maxScale = 1.2f;
-            while(true)
+            WaitForSeconds wait = new WaitForSeconds(waitTime);
+            fingerRectTransform.gameObject.SetActive(true);
+            while (true)
             {
-                yield return KKUtilities.FloatLerp(speed, (t) =>
-                {
-                    fingerImage.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * maxScale, curve.Evaluate(t));
-                });
+                ChangeImage(FingerType.Down);
+                yield return wait;
+                ChangeImage(FingerType.Up);
+                yield return wait;
             }
         }
     }

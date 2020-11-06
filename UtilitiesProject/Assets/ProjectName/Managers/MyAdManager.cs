@@ -69,6 +69,8 @@ public class MyAdManager : Singleton<MyAdManager>
             callback.SafeInvoke();
             Debug.Log(error);
         });
+#else
+        callback.SafeInvoke();
 #endif
     }
 

@@ -68,7 +68,7 @@ namespace KanekoUtilities
             }
             else
             {
-                screenSizeRate = Screen.width / 1080.0f;
+                screenSizeRate = 1080.0f / Screen.width;
             }
 
             touchPanel.OnTouchStart.AddListener(OnTouchStart);

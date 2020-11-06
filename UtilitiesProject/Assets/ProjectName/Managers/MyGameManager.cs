@@ -21,10 +21,20 @@ public class MyGameManager : BaseGameManager<MyGameManager>
     public override int MaxContinueCount { get { return 0; } }
 
     bool isFailedContinue = false;
+    bool isGameOver = false;
+    bool isStageClear = false;
 
 #if IMPORT_HYPERCOMMON
     StageScoreManager stageScoreManager;
 #endif
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+    }
 
     protected override void Start()
     {
@@ -40,6 +50,8 @@ public class MyGameManager : BaseGameManager<MyGameManager>
     {
         base.Init();
         isFailedContinue = false;
+        isGameOver = false;
+        isStageClear = false;
         //todo:Playerなどの初期化をする
         player.Init();
         stage.Init();
@@ -114,22 +126,31 @@ public class MyGameManager : BaseGameManager<MyGameManager>
         yield return base.SuggestRestart();
     }
 
+    public void OnGameOver()
+    {
+        isGameOver = true;
+    }
     protected override bool IsGameOver()
     {
         //この関数がfalseを返す間はゲームが継続される
-        return false;
+        return isGameOver;
     }
 
+    public void OnStageClear()
+    {
+        isStageClear = true;
+    }
     bool IsStageClear()
     {
-        return false;
+        return isStageClear;
     }
 
     public void ChangeLevel(int level)
     {
         currentLevel.SetValue(level);
         StopAllCoroutines();
-        StartCoroutine(GameLoop());
+        //StartCoroutine(GameLoop());
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
     public void GotoBackLevel()
@@ -144,7 +165,9 @@ public class MyGameManager : BaseGameManager<MyGameManager>
 
     public void Retry()
     {
-        ChangeLevel(CurrentLevel);
+        var callback = new MyUnityEvent();
+        callback.AddListener(() => ChangeLevel(CurrentLevel));
+        MyAdManager.Instance.ShowStageClearInterstitial(callback);
     }
 
     protected override IEnumerator OneGame()
@@ -169,7 +192,7 @@ public class MyGameManager : BaseGameManager<MyGameManager>
             }
 
             if(isStageClear) break;
-            GameOver();
+            yield return this.Delay(0.75f, ()=> GameOver());
             if(!CanContinue) break;
             yield return StartCoroutine(SuggestContinue());
 
@@ -186,10 +209,11 @@ public class MyGameManager : BaseGameManager<MyGameManager>
 
         if(isStageClear)
         {
-            StageClear();
+            yield return this.Delay(0.75f, ()=>  StageClear());
         }
         yield return StartCoroutine(SuggestRestart());
-
-        MyAdManager.Instance.ShowStageClearInterstitial();
+        
+        Retry();
+        //MyAdManager.Instance.ShowStageClearInterstitial();
     }
 }

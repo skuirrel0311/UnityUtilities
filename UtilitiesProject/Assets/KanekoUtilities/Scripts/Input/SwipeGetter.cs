@@ -58,7 +58,7 @@ namespace KanekoUtilities
         protected override void Start()
         {
             base.Start();
-
+            Input.multiTouchEnabled = false;
             Camera mainCamera = Camera.main;
             float width = mainCamera.ViewportToWorldPoint(new Vector3(1.0f, 0.0f, 1.0f)).x * 2.0f;
             
